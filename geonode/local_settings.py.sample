@@ -1,19 +1,20 @@
 DATABASES = {
     'default': {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': 'geonode',
+         'NAME': 'geonode-imports',
          'USER': 'geonode',
          'PASSWORD': 'geonode',
+         'HOST' :  '10.11.40.84',
+         'PORT' : '5432'
      },
     # vector datastore for uploads
     'datastore' : {
-        #'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'ENGINE': '', # Empty ENGINE name disables 
-        'NAME': 'geonode',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'geonode-imports',
         'USER' : 'geonode',
         'PASSWORD' : 'geonode',
-        'HOST' : 'localhost',
-        'PORT' : '5432',
+        'HOST' : '10.11.40.84',
+        'PORT' : '5432'
     }
 }
 
@@ -36,6 +37,9 @@ OGC_SERVER = {
         'DATASTORE': '', #'datastore',
     }
 }
+
+
+
 
 # Default preview library
 #LAYER_PREVIEW_LIBRARY = 'geoext'
