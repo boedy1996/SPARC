@@ -24,10 +24,40 @@
   {% block mainbody %}
   <div class="container">
     <div class="row">
+      <div class="col-md-4">
+            <div class="flood_icon text-center"></div>
+          <h2 class="text-center">{% trans "Flood Hazard" %}</h2>
+
+          <p class="text-center">{% trans "Click to search the country to explore the Flood Hazard." %}</p> 
+          <p class="text-center"><a class="btn btn-default" href="{% url "layer_browse" %}" role="button">{% trans "Explore Flood" %} &raquo;</a></p>
+      </div>  
+
+      <div class="col-md-4">
+            <div class="cyclone_icon text-center"></div>
+          <h2 class="text-center">{% trans "Cyclone Hazard" %}</h2>
+
+          <p class="text-center">{% trans "Click to search the country to explore the Cyclone Hazard." %}</p> 
+          <p class="text-center"><a class="btn btn-default" href="{% url "layer_browse" %}" role="button">{% trans "Explore Cyclone" %} &raquo;</a></p>
+      </div>
+
+       <div class="col-md-4">
+            <div class="question_icon text-center"></div>
+          <h2 class="text-center">{% trans "Draught Hazard" %}</h2>
+
+          <p class="text-center">{% trans "Click to search the country to explore the other Hazard." %}</p> 
+          <p class="text-center"><a class="btn btn-default" href="{% url "layer_browse" %}" role="button">{% trans "Explore Draught" %} &raquo;</a></p>
+      </div>
+    </div>
+
+
+    <!--
+    <div class="row">
     {% with facet_type='home' %}
      {% facets as facets %}
       <div class="col-md-4">
-        <p class="text-center"><i class="fa fa-square-o fa-5x rotate-45"></i></p>
+        <p class="text-center">
+          <i class="fa fa-square-o fa-5x rotate-45"></i>
+        </p>
         <h2 class="text-center">{{ facets.layer|default:_("No") }} {% trans "Layer" %}{{ facets.layer|pluralize }}</h2>
 
         <p class="text-center">{% trans "Click to search for geospatial data published by other users, organizations and public sources. Download data in standard formats." %}</p> 
@@ -46,7 +76,7 @@
         <p class="text-center"><a class="btn btn-default" href="{% url "layer_upload" %}" role="button">{% trans "Share data" %} &raquo;</a></p>
       </div>
     {% endwith %}
-    </div>
+    </div>-->
   </div>
   {% verbatim %}
   <div ng-app="featured">
