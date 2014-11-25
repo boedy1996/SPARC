@@ -1,0 +1,11 @@
+body {
+	background: #333 !important;
+}
+
+#head{
+  background: url(../img/bg_header2.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;	
+}
