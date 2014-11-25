@@ -256,6 +256,10 @@ GEONODE_APPS = (
     # it's signals may rely on other apps' signals.
     'geonode.geoserver',
     'geonode.upload',
+
+
+    #hazard apps
+    'geonode.countrybyhazard',
 )
 
 INSTALLED_APPS = (
