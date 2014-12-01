@@ -1,0 +1,26 @@
+{% load i18n %}
+  <div class="col-md-12 filter">      
+    {% include "search/_sort_filters.html" %}
+  </div>
+  <div class="col-md-12">
+    <div class="row" id="contain-slider">
+      <div class="col-md-3">
+        <div class="selections">
+          <h5>
+            {% trans "Your selections" %}
+            <a href="." id="clear-search" class="pull-right">{% trans "Clear all filters" %}</a>
+          </h5>
+        </div>
+          {% include "search/_text_filter.html" %}
+        <div id="slide-pane">
+          {% include "_general_hazard_filters.html" %}
+        </div>
+      </div>
+      <div class="col-md-9">
+      {% include 'search/_pagination.html' %}
+      </div>
+      <div class="col-md-9">
+        {% include '_resourcebase_hazard_snippet.html' %}
+      </div>
+    </div>
+  </div>

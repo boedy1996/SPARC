@@ -1,5 +1,6 @@
 import autocomplete_light
 from models import ResourceBase, Region
+from geonode.countrybyhazard.models import Country
 
 autocomplete_light.register(Region,
                             search_fields=['^name'],
@@ -8,3 +9,7 @@ autocomplete_light.register(Region,
 autocomplete_light.register(ResourceBase,
                             search_fields=['^title'],
                             autocomplete_js_attributes={'placeholder': 'Resource name..', },)
+
+autocomplete_light.register(Country,
+                            search_fields=['^name'],
+                            autocomplete_js_attributes={'placeholder': 'Region/Country ..', },)

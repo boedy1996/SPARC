@@ -21,10 +21,13 @@ from tastypie.resources import ModelResource
 from tastypie.constants import ALL
 from tastypie.utils import trailing_slash
 
+from geonode.countrybyhazard.models import Area, Country
+
 FILTER_TYPES = {
     'layer': Layer,
     'map': Map,
-    'document': Document
+    'document': Document,
+    'country':Country
 }
 
 
@@ -41,9 +44,7 @@ class TypeFilteredResource(ModelResource):
         raise Exception('dehydrate_count not implemented in the child class')
 
     def build_filters(self, filters={}):
-
         orm_filters = super(TypeFilteredResource, self).build_filters(filters)
-
         if 'type' in filters and filters['type'] in FILTER_TYPES.keys():
             self.type_filter = FILTER_TYPES[filters['type']]
         else:
@@ -86,6 +87,21 @@ class TagResource(TypeFilteredResource):
             'slug': ALL,
         }
 
+class ContinentResource(TypeFilteredResource):
+    """Continent api"""
+
+    def dehydrate_count(self, bundle):
+        resources = bundle.obj.country_set.all()
+        return resources.count()
+
+
+    class Meta:
+        queryset = Area.objects.all()
+        resource_name = 'continent'
+        allowed_methods = ['get']
+        filtering = {
+            'identifier': ALL,
+        }
 
 class TopicCategoryResource(TypeFilteredResource):
 

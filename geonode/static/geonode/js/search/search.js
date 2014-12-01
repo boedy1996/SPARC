@@ -27,6 +27,18 @@
   // Load categories and keywords
   module.load_categories = function ($http, $rootScope, $location){
         var params = typeof FILTER_TYPE == 'undefined' ? {} : {'type': FILTER_TYPE};
+		
+		$http.get(CONTINENT_ENDPOINT, {params: params}).success(function(data){
+            if($location.search().hasOwnProperty('continent__identifier__in')){
+                data.objects = module.set_initial_filters_from_query(data.objects,
+                    $location.search()['continent__identifier__in'], 'identifier');
+            }
+            $rootScope.continent = data.objects;
+            if (HAYSTACK_FACET_COUNTS && $rootScope.query_data) {
+                module.haystack_facets($http, $rootScope, $location);
+            }
+        });
+		
         $http.get(CATEGORIES_ENDPOINT, {params: params}).success(function(data){
             if($location.search().hasOwnProperty('category__identifier__in')){
                 data.objects = module.set_initial_filters_from_query(data.objects,
@@ -53,6 +65,19 @@
   // Update facet counts for categories and keywords
   module.haystack_facets = function($http, $rootScope, $location) {
       var data = $rootScope.query_data;
+	  
+	  if ("continent" in $rootScope) {
+          $rootScope.continent_counts = data.meta.facets.continent;
+          for (var id in $rootScope.continent) {
+              var continent = $rootScope.continent[id];
+              if (continent.identifier in $rootScope.continent_counts) {
+                  continent.count = $rootScope.continent_counts[continent.identifier]
+              } else {
+                  continent.count = 0;
+              }
+          }
+      }
+	  
       if ("categories" in $rootScope) {
           $rootScope.category_counts = data.meta.facets.category;
           for (var id in $rootScope.categories) {

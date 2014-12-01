@@ -25,6 +25,7 @@ from geonode.utils import bbox_to_wkt
 from geonode.utils import forward_mercator
 from geonode.security.models import PermissionLevelMixin
 from taggit.managers import TaggableManager
+from geonode.countrybyhazard.models import Area, Country
 
 from geonode.people.enumerations import ROLE_VALUES
 
@@ -283,7 +284,7 @@ class ResourceBase(PolymorphicModel, PermissionLevelMixin):
 
     category = models.ForeignKey(TopicCategory, null=True, blank=True, limit_choices_to=Q(is_choice=True),
                                  help_text=category_help_text)
-
+                                 
     spatial_representation_type = models.ForeignKey(SpatialRepresentationType, null=True, blank=True,
                                                     limit_choices_to=Q(is_choice=True),
                                                     help_text=spatial_representation_type_help_text)

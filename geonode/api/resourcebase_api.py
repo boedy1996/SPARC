@@ -23,10 +23,14 @@ from geonode.maps.models import Map
 from geonode.documents.models import Document
 from geonode.base.models import ResourceBase
 
+#added for hazard
+from geonode.countrybyhazard.models import Country
+from geonode.countrybyhazard.custom import HazardModelApi
+
 from .authorization import GeoNodeAuthorization
 
 from .api import TagResource, ProfileResource, TopicCategoryResource, \
-    FILTER_TYPES
+    FILTER_TYPES, ContinentResource
 
 LAYER_SUBTYPES = {
     'vector': 'dataStore',
@@ -44,10 +48,10 @@ class CommonMetaApi:
                  'category': ALL_WITH_RELATIONS,
                  'owner': ALL_WITH_RELATIONS,
                  'date': ALL,
+                 'continent' : ALL_WITH_RELATIONS
                  }
     ordering = ['date', 'title', 'popular_count']
     max_limit = None
-
 
 class CommonModelApi(ModelResource):
     keywords = fields.ToManyField(TagResource, 'keywords', null=True)
@@ -505,3 +509,15 @@ class DocumentResource(CommonModelApi):
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'documents'
+
+class CountryResource(HazardModelApi):
+
+    """Country API"""
+
+    class Meta:
+        filtering = CommonMetaApi.filtering
+        filtering.update({'doc_type': ALL})
+        queryset = Country.objects.distinct().order_by('name')
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'hazards'        
