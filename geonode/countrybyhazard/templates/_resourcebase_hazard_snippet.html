@@ -1,25 +1,17 @@
 {% verbatim %}
   <article ng-repeat="item in results" resource_id="{{ item.iso3 }}" ng-cloak>
   	<div class="row items-list">
-  	  <div class="col-md-4">
-  	    <a href="{{ item.detail_url }}"><img class="thumb" ng-src="{{ item.thumbnail_url }}" /></a>
-  	  </div>
       <div class="col-md-8">
-        <h4><a href="{{ item.resource_uri }}">{{ item.title }}</a> <span class="owner">{{ item.owner.username }}</span></h4>
-        <p>{{ item.extended_name }}</p>
-        <p class="abstract">{{ item.abstract|limitTo:250 }}...</p>
-        <p class="actions">
-          <a ng-if="item.detail_url.indexOf('/layers/') > -1" 
-            href="{% endverbatim %}{% url "new_map" %}?layer={% verbatim %}{{ item.detail_url.substring(8) }}">
-            <i class="fa fa-map-marker"></i>Create a Map</a> |
-          <a href="{{ item.detail_url }}#info"><i class="fa fa-calendar-o"></i>{{ item.date|date:'d MMM y' }}</a> |
-          <a href="{{ item.detail_url }}"><i class="fa fa-eye"></i>{{ item.popular_count }}</a> |
-          <a href="{{ item.detail_url }}#share"><i class="fa fa-share"></i>{{ item.share_count }}</a> |
-          <a href="{{ item.detail_url }}#rate"><i class="fa fa-star"></i>{{ item.rating }}</a> 
-          {% endverbatim %}{% if request.user.is_authenticated %}
-          | <button class="btn btn-primary btn-xs" ng-click="feature_select($event)">Select</button>
-          {% endif %}{% verbatim %}
+        <h4><a href="{{ item.resource_uri }}">{{ item.extended_name }}</a> <span class="owner">{{ item.owner.username }}</span></h4>
+        <p class="abstract"  ng-if="item.extreme.pop == 0">No Data</p>
+        <p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period</p>
+        <div ng-if="item.popatrisk.length > 0">
+        	<div ng-repeat="mdata in item.popatrisk">{{ mdata.mjun__sum }}</div>	
+        </div>	
       </div>
+      <div class="col-md-4">
+  	    <img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x&cht=lc&chd=t:{{ item.chartvalue }}&chco=AAB4FB&chls=2.0&chs=300x125&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec" />
+  	  </div>
     </div>
   </article>
 {% endverbatim %}

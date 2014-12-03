@@ -24,13 +24,15 @@ from geonode.documents.models import Document
 from geonode.base.models import ResourceBase
 
 #added for hazard
-from geonode.countrybyhazard.models import Country
+from geonode.countrybyhazard.models import Country, FloodedPopAtRisk
 from geonode.countrybyhazard.custom import HazardModelApi
 
 from .authorization import GeoNodeAuthorization
 
 from .api import TagResource, ProfileResource, TopicCategoryResource, \
     FILTER_TYPES, ContinentResource
+
+from django.db.models import Sum   
 
 LAYER_SUBTYPES = {
     'vector': 'dataStore',
@@ -48,7 +50,8 @@ class CommonMetaApi:
                  'category': ALL_WITH_RELATIONS,
                  'owner': ALL_WITH_RELATIONS,
                  'date': ALL,
-                 'continent' : ALL_WITH_RELATIONS
+                 'continent' : ALL_WITH_RELATIONS,
+                 'country': ALL_WITH_RELATIONS
                  }
     ordering = ['date', 'title', 'popular_count']
     max_limit = None
@@ -511,13 +514,57 @@ class DocumentResource(CommonModelApi):
         resource_name = 'documents'
 
 class CountryResource(HazardModelApi):
-
     """Country API"""
+    def dehydrate(self, bundle):
+        extreme = {'pop': 0, 'month' : "No Data", 'RP':'No Data'}
+        monthCode = ['mjan','mfeb','mmar','mapr','mmay','mjun','mjul','maug','msep','moct','mnov','mdes']
+        transaction = FloodedPopAtRisk.objects.filter(iso3_id=bundle.data['iso3']).values('iso3', 'rper').order_by('iso3').annotate(Sum(monthCode[0])).annotate(Sum(monthCode[1])).annotate(Sum(monthCode[2])).annotate(Sum(monthCode[3])).annotate(Sum(monthCode[4])).annotate(Sum(monthCode[5])).annotate(Sum(monthCode[6])).annotate(Sum(monthCode[7])).annotate(Sum(monthCode[8])).annotate(Sum(monthCode[9])).annotate(Sum(monthCode[10])).annotate(Sum(monthCode[11]))
+        bundle.data['popatrisk'] = transaction
+        ttt = bundle.data['popatrisk']
+        for x in ttt :
+            for y in x:
+                if x[y]>extreme['pop']:
+                    if y not in ['rper','iso3']:
+                        extreme['pop'] = x[y]
+                        if y=='mjan__sum':
+                            month = 'January'
+                        elif y=='mfeb__sum':
+                            month = 'February' 
+                        elif y=='mmar__sum':
+                            month = 'March'
+                        elif y=='mapr__sum':
+                            month = 'April'  
+                        elif y=='mmay__sum':
+                            month = 'May' 
+                        elif y=='mjun__sum':
+                            month = 'June'   
+                        elif y=='mjul__sum':
+                            month = 'July'
+                        elif y=='maug__sum':
+                            month = 'August'  
+                        elif y=='msep__sum':
+                            month = 'September'   
+                        elif y=='moct__sum':
+                            month = 'October'  
+                        elif y=='mnov__sum':
+                            month = 'November' 
+                        elif y=='mdes__sum':
+                            month = 'December'                                                           
+                        extreme['month'] = month
+                        extreme['RP'] = x['rper']
+                      
+        for x in ttt :
+            if x['rper']==25:
+                bundle.data['chartvalue']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0) 
+
+        bundle.data['extreme'] = extreme
+        bundle.data['max_pop'] = extreme['pop']
+        return bundle
 
     class Meta:
         filtering = CommonMetaApi.filtering
         filtering.update({'doc_type': ALL})
-        queryset = Country.objects.distinct().order_by('name')
+        queryset = Country.objects.all()
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
-        resource_name = 'hazards'        
+        resource_name = 'hazards'       

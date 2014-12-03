@@ -26,6 +26,15 @@ class HazardModelApi(ModelResource):
             query = filters['wfp_area__id__in']
             orm_filters['wfp_area__id__in']  = query
         return orm_filters
+
+    def build_haystack_filters(self, parameters):
+        from haystack.inputs import Raw
+        from haystack.query import SearchQuerySet, SQ  # noqa
+
+        sqs = None
+
+        sqs = (
+                SearchQuerySet() if sqs is None else sqs).order_by("name")    
   
 
     
