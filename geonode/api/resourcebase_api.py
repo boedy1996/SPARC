@@ -46,6 +46,7 @@ class CommonMetaApi:
     authorization = GeoNodeAuthorization()
     allowed_methods = ['get']
     filtering = {'title': ALL,
+                 'name':ALL,
                  'keywords': ALL_WITH_RELATIONS,
                  'category': ALL_WITH_RELATIONS,
                  'owner': ALL_WITH_RELATIONS,
@@ -515,6 +516,15 @@ class DocumentResource(CommonModelApi):
 
 class CountryResource(HazardModelApi):
     """Country API"""
+    def alter_list_data_to_serialize(self, request, data):
+        #t=list(data['objects'])
+        #print t
+        #sorted(t, key=lambda country: country[0])
+        #print data['objects'][0].data['max_pop']
+        #for x in data['objects']:
+        #    print x.data['max_pop']
+        return data
+
     def dehydrate(self, bundle):
         extreme = {'pop': 0, 'month' : "No Data", 'RP':'No Data'}
         monthCode = ['mjan','mfeb','mmar','mapr','mmay','mjun','mjul','maug','msep','moct','mnov','mdes']
@@ -552,11 +562,22 @@ class CountryResource(HazardModelApi):
                             month = 'December'                                                           
                         extreme['month'] = month
                         extreme['RP'] = x['rper']
-                      
+        grab = {'25':'', '50' : '', '100':'', '200':'', '500':'', '1000':''}              
         for x in ttt :
             if x['rper']==25:
-                bundle.data['chartvalue']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0) 
+                grab['25']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0)
+            if x['rper']==50:
+                grab['50']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0)
+            if x['rper']==100:
+                grab['100']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0)
+            if x['rper']==200:
+                grab['200']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0)
+            if x['rper']==500:
+                grab['500']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0)
+            if x['rper']==1000:
+                grab['1000']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0)
 
+        bundle.data['chartvalue']=grab['25']+'|'+grab['50']+'|'+grab['100']+'|'+grab['200']+'|'+grab['500']+'|'+grab['1000']
         bundle.data['extreme'] = extreme
         bundle.data['max_pop'] = extreme['pop']
         return bundle
@@ -565,6 +586,11 @@ class CountryResource(HazardModelApi):
         filtering = CommonMetaApi.filtering
         filtering.update({'doc_type': ALL})
         queryset = Country.objects.all()
+        ordering = ['name','extended_name']
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
-        resource_name = 'hazards'       
+        resource_name = 'hazards'  
+
+    #def get_object_list(self, request):
+    #    print 'kontol'
+    #    return super(CountryResource, self).get_object_list(request).order_by('max_pop')          

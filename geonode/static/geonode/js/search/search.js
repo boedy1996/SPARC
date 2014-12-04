@@ -331,7 +331,7 @@
         if (HAYSTACK_SEARCH)
             $scope.query['q'] = $('#text_search_input').val();
         else
-            $scope.query['title__contains'] = $('#text_search_input').val();
+            $scope.query['name__contains'] = $('#text_search_input').val();
         query_api($scope.query);
     });
 
