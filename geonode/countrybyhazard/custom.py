@@ -23,15 +23,11 @@ class HazardModelApi(ModelResource):
             filters = {}
         orm_filters = super(HazardModelApi, self).build_filters(filters)
         if('wfp_area__id__in' in filters):
-            query = filters['wfp_area__id__in']
+            query = filters.getlist("wfp_area__id__in")
             orm_filters['wfp_area__id__in']  = query
         if('title__contains' in filters):
             query = filters['name__contains']
-            orm_filters['name__contains'] = query
-        #for filter in orm_filters:
-        #    print filter
-        #    if filter in ['title__contains', 'q']:
-        #        orm_filters[filter] = orm_filters[filter].replace("+", " ")    
+            orm_filters['name__contains'] = query 
         return orm_filters
 
     def build_haystack_filters(self, parameters):

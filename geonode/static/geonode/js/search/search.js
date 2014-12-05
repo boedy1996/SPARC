@@ -302,6 +302,18 @@
 
         element.addClass('selected');
 
+        //added for max_pop ranking
+        if (typeof $scope.query.order_by != "undefined"){
+           delete $scope.query.order_by;
+        }
+        if (typeof $scope.query.rank_by != "undefined"){
+           delete $scope.query.rank_by;
+        }
+        if (data_filter=='rank_by' || data_filter=='-rank_by'){
+          $scope.query.limit = 100;
+        } else if (data_filter=='order_by' || data_filter=='-order_by'){
+          $scope.query.limit = 10;
+        }
         //save back the new query entry to the scope query
         $scope.query[data_filter] = query_entry;
 

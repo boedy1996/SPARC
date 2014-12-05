@@ -32,7 +32,10 @@ from .authorization import GeoNodeAuthorization
 from .api import TagResource, ProfileResource, TopicCategoryResource, \
     FILTER_TYPES, ContinentResource
 
-from django.db.models import Sum   
+from django.db.models import Sum 
+
+import operator  
+import copy
 
 LAYER_SUBTYPES = {
     'vector': 'dataStore',
@@ -517,12 +520,16 @@ class DocumentResource(CommonModelApi):
 class CountryResource(HazardModelApi):
     """Country API"""
     def alter_list_data_to_serialize(self, request, data):
-        #t=list(data['objects'])
-        #print t
-        #sorted(t, key=lambda country: country[0])
-        #print data['objects'][0].data['max_pop']
-        #for x in data['objects']:
-        #    print x.data['max_pop']
+        def getKey(item):
+            return item.data['max_pop']
+
+        if "rank_by" in request.GET:
+            data_med = copy.copy(data)
+            data['objects']=[]
+            if request.GET["rank_by"]=='max_pop':      
+                data['objects'] = sorted(data_med['objects'], key=getKey, reverse=True)
+            else:
+                data['objects'] = sorted(data_med['objects'], key=getKey)   
         return data
 
     def dehydrate(self, bundle):
@@ -586,7 +593,7 @@ class CountryResource(HazardModelApi):
         filtering = CommonMetaApi.filtering
         filtering.update({'doc_type': ALL})
         queryset = Country.objects.all()
-        ordering = ['name','extended_name']
+        ordering = ['name','extended_name','max_pop']
         if settings.RESOURCE_PUBLISHING:
             queryset = queryset.filter(is_published=True)
         resource_name = 'hazards'  
