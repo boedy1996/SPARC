@@ -2,7 +2,8 @@
   <article ng-repeat="item in results" resource_id="{{ item.iso3 }}" ng-cloak>
   	<div class="row items-list">
       <div class="col-md-6">
-        <h4><a href="{{ item.resource_uri }}">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
+        <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}
+">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
         <p class="abstract"  ng-if="item.extreme.pop == 0">No Data</p>
         <p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>
         <p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>	

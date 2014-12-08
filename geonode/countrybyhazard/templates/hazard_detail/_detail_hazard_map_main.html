@@ -1,0 +1,18 @@
+{% load leaflet_tags %}
+{% leaflet_js %}
+{% leaflet_css %}
+{% load staticfiles %}
+
+<style>
+  .angular-leaflet-map{
+    height: 425px;
+    position : relative;
+    border: 4px #fff solid;
+    box-shadow: 0 0 5px -1px rgba(0, 0, 0, 1);
+  }
+</style> 
+
+
+<div class="leaflet_map" ng-controller="hazard_map_Controller">
+  <leaflet center="center" defaults="defaults" layers="layers"></leaflet>
+</div>

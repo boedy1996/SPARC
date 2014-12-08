@@ -1,0 +1,59 @@
+{% load i18n %}
+<nav class="filter">
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Base Layers" %}</a></h4>
+  <ul class="nav" id="baselayers">
+    <li><a data-value="warden" data-filter="warden" ng-click="single_choice_listener($event)" class="active">MapBox Warden</a></li>
+    <li><a data-value="opencyclemap" data-filter="opencyclemap" ng-click="single_choice_listener($event)">OpenCycleMap</a></li>
+    <li><a data-value="outdoors" data-filter="outdoors" ng-click="single_choice_listener($event)">Outdoors</a></li>
+    <li><a data-value="osm" data-filter="osm" ng-click="single_choice_listener($event)">OpenStreetMap</a></li>
+  </ul>
+</nav>  
+<nav class="filter">
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Layers" %}</a></h4>
+  <ul class="nav closed" id="layers">
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)" class="active">Flood Hazard</a></li>
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)" class="active">Population at Risk (block map)</a></li>
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">Population at Risk (heat map)</a></li>
+  </ul>
+</nav>  
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Month" %}</a></h4>
+  <ul class="nav closed" id="months">
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">January</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">February</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">March</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">April</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">May</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">June</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">July</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">August</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">September</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">October</a><li> 
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)" class="active">November</a><li>
+    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">December</a><li>
+  </ul>
+</nav>  
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Flooded Probability" %}</a></h4>
+  <ul class="nav closed" id="rps">
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">4% change on any year</a><li>
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">2% change on any year</a><li>
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)" class="active">1% change on any year</a><li>
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">0.5% change on any year</a><li>
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">0.2% change on any year</a><li>
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">0.1% change on any year</a><li>
+  </ul>
+</nav>  
+<nav class="filter">  
+   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "External Sources" %}</a></h4>
+  <ul class="nav closed" id="external">
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">Food Consumption</a></li>
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">CSI</a></li>
+    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">Income Sources</a></li>
+  </ul>
+</nav>  
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Legend" %}</a></h4>
+  <ul class="nav closed" id="legend">
+  </ul>
+</nav>  
