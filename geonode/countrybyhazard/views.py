@@ -46,19 +46,20 @@ def getGeoJSON_Flood_Data(request):
 
 	for x in results["features"]:
 		for y in rows:
+
 			if type(y[0]) is not dict :
 				newY = json.loads(y[0])
 			else:
-				newY = y[0]
+				newY = y[0]	
 
 			if newY["rp"]==25 and str(newY["adm2_code"])==str(x["properties"]["adm2_code"]):
 				x["properties"]["RP25"]=newY
 			elif newY["rp"]==50 and str(newY["adm2_code"])==str(x["properties"]["adm2_code"]):	
 				x["properties"]["RP50"]=newY
 			elif newY["rp"]==100 and str(newY["adm2_code"])==str(x["properties"]["adm2_code"]):	
-				x["properties"]["RP100"]=newY
+				x["properties"]["RP100"]=newY	
 			elif newY["rp"]==200 and str(newY["adm2_code"])==str(x["properties"]["adm2_code"]):	
-				x["properties"]["RP200"]=newY	
+				x["properties"]["RP200"]=newY
 			elif newY["rp"]==500 and str(newY["adm2_code"])==str(x["properties"]["adm2_code"]):	
 				x["properties"]["RP500"]=newY
 			elif newY["rp"]==1000 and str(newY["adm2_code"])==str(x["properties"]["adm2_code"]):	
