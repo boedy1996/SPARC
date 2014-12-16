@@ -205,7 +205,7 @@
           });
           
           //$scope.updateGEOJSON($scope.popFloodedData);
-          angular.forEach(data[0].features, function(rows){
+          angular.forEach(data.features, function(rows){
             //console.log(rows);
             geoJSON.addData(rows);
           });
@@ -244,7 +244,7 @@
 
       angular.forEach(rps, function(rp){
         var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
-        angular.forEach(data[0].features, function(row){
+        angular.forEach(data.features, function(row){
           for (var monthNumber in _shortMonthName){
             _each.data[monthNumber] += row.properties[rp][_shortMonthName[monthNumber]];
           }
@@ -260,7 +260,7 @@
         $scope.rowCollection.pop();
       }
 
-      angular.forEach(data[0].features, function(row){
+      angular.forEach(data.features, function(row){
         var _each = {adm2_code:'',region:'',jan :0,feb:0,mar:0,apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0};
         _each.region = row.properties.adm2_name;
         angular.forEach(rps, function(rp){
@@ -339,39 +339,39 @@
       var value = element.attr('data-value');
       $scope.selectedMonth = value;
 
-      for (var x in $scope.popFloodedData[0].features){
+      for (var x in $scope.popFloodedData.features){
         var pertama = true;
         for (var key in $scope.selectedRP){
           if (pertama){
-            $scope.popFloodedData[0].features[x].properties.active.jan=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jan;
-            $scope.popFloodedData[0].features[x].properties.active.feb=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].feb;
-            $scope.popFloodedData[0].features[x].properties.active.mar=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].mar;
-            $scope.popFloodedData[0].features[x].properties.active.apr=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].apr;
-            $scope.popFloodedData[0].features[x].properties.active.may=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].may;
-            $scope.popFloodedData[0].features[x].properties.active.jun=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jun;
-            $scope.popFloodedData[0].features[x].properties.active.jul=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jul;
-            $scope.popFloodedData[0].features[x].properties.active.aug=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].aug;
-            $scope.popFloodedData[0].features[x].properties.active.sep=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].sep;
-            $scope.popFloodedData[0].features[x].properties.active.oct=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].oct;
-            $scope.popFloodedData[0].features[x].properties.active.nov=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].nov;
-            $scope.popFloodedData[0].features[x].properties.active.dec=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].dec;
+            $scope.popFloodedData.features[x].properties.active.jan=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jan;
+            $scope.popFloodedData.features[x].properties.active.feb=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].feb;
+            $scope.popFloodedData.features[x].properties.active.mar=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].mar;
+            $scope.popFloodedData.features[x].properties.active.apr=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].apr;
+            $scope.popFloodedData.features[x].properties.active.may=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].may;
+            $scope.popFloodedData.features[x].properties.active.jun=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jun;
+            $scope.popFloodedData.features[x].properties.active.jul=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jul;
+            $scope.popFloodedData.features[x].properties.active.aug=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].aug;
+            $scope.popFloodedData.features[x].properties.active.sep=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].sep;
+            $scope.popFloodedData.features[x].properties.active.oct=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].oct;
+            $scope.popFloodedData.features[x].properties.active.nov=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].nov;
+            $scope.popFloodedData.features[x].properties.active.dec=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].dec;
             pertama = false;
           } else {
-            $scope.popFloodedData[0].features[x].properties.active.jan+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jan;
-            $scope.popFloodedData[0].features[x].properties.active.feb+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].feb;
-            $scope.popFloodedData[0].features[x].properties.active.mar+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].mar;
-            $scope.popFloodedData[0].features[x].properties.active.apr+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].apr;
-            $scope.popFloodedData[0].features[x].properties.active.may+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].may;
-            $scope.popFloodedData[0].features[x].properties.active.jun+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jun;
-            $scope.popFloodedData[0].features[x].properties.active.jul+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jul;
-            $scope.popFloodedData[0].features[x].properties.active.aug+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].aug;
-            $scope.popFloodedData[0].features[x].properties.active.sep+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].sep;
-            $scope.popFloodedData[0].features[x].properties.active.oct+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].oct;
-            $scope.popFloodedData[0].features[x].properties.active.nov+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].nov;
-            $scope.popFloodedData[0].features[x].properties.active.dec+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].dec;
+            $scope.popFloodedData.features[x].properties.active.jan+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jan;
+            $scope.popFloodedData.features[x].properties.active.feb+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].feb;
+            $scope.popFloodedData.features[x].properties.active.mar+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].mar;
+            $scope.popFloodedData.features[x].properties.active.apr+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].apr;
+            $scope.popFloodedData.features[x].properties.active.may+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].may;
+            $scope.popFloodedData.features[x].properties.active.jun+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jun;
+            $scope.popFloodedData.features[x].properties.active.jul+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jul;
+            $scope.popFloodedData.features[x].properties.active.aug+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].aug;
+            $scope.popFloodedData.features[x].properties.active.sep+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].sep;
+            $scope.popFloodedData.features[x].properties.active.oct+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].oct;
+            $scope.popFloodedData.features[x].properties.active.nov+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].nov;
+            $scope.popFloodedData.features[x].properties.active.dec+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].dec;
           }
         }   
-        $scope.popFloodedData[0].features[x].properties.active.active_month=$scope.popFloodedData[0].features[x].properties.active[value];
+        $scope.popFloodedData.features[x].properties.active.active_month=$scope.popFloodedData.features[x].properties.active[value];
       }
       $scope.updateGEOJSON($scope.popFloodedData);
       //console.log($scope.popFloodedData);
@@ -423,39 +423,39 @@
         $scope.selectedRP.push(value);
       }  
 
-      for (var x in $scope.popFloodedData[0].features){
+      for (var x in $scope.popFloodedData.features){
         var pertama = true;
         for (var key in $scope.selectedRP){
           if (pertama){
-            $scope.popFloodedData[0].features[x].properties.active.jan=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jan;
-            $scope.popFloodedData[0].features[x].properties.active.feb=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].feb;
-            $scope.popFloodedData[0].features[x].properties.active.mar=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].mar;
-            $scope.popFloodedData[0].features[x].properties.active.apr=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].apr;
-            $scope.popFloodedData[0].features[x].properties.active.may=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].may;
-            $scope.popFloodedData[0].features[x].properties.active.jun=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jun;
-            $scope.popFloodedData[0].features[x].properties.active.jul=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jul;
-            $scope.popFloodedData[0].features[x].properties.active.aug=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].aug;
-            $scope.popFloodedData[0].features[x].properties.active.sep=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].sep;
-            $scope.popFloodedData[0].features[x].properties.active.oct=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].oct;
-            $scope.popFloodedData[0].features[x].properties.active.nov=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].nov;
-            $scope.popFloodedData[0].features[x].properties.active.dec=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].dec;
+            $scope.popFloodedData.features[x].properties.active.jan=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jan;
+            $scope.popFloodedData.features[x].properties.active.feb=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].feb;
+            $scope.popFloodedData.features[x].properties.active.mar=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].mar;
+            $scope.popFloodedData.features[x].properties.active.apr=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].apr;
+            $scope.popFloodedData.features[x].properties.active.may=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].may;
+            $scope.popFloodedData.features[x].properties.active.jun=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jun;
+            $scope.popFloodedData.features[x].properties.active.jul=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jul;
+            $scope.popFloodedData.features[x].properties.active.aug=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].aug;
+            $scope.popFloodedData.features[x].properties.active.sep=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].sep;
+            $scope.popFloodedData.features[x].properties.active.oct=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].oct;
+            $scope.popFloodedData.features[x].properties.active.nov=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].nov;
+            $scope.popFloodedData.features[x].properties.active.dec=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].dec;
             pertama = false;
           } else {
-            $scope.popFloodedData[0].features[x].properties.active.jan+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jan;
-            $scope.popFloodedData[0].features[x].properties.active.feb+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].feb;
-            $scope.popFloodedData[0].features[x].properties.active.mar+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].mar;
-            $scope.popFloodedData[0].features[x].properties.active.apr+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].apr;
-            $scope.popFloodedData[0].features[x].properties.active.may+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].may;
-            $scope.popFloodedData[0].features[x].properties.active.jun+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jun;
-            $scope.popFloodedData[0].features[x].properties.active.jul+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].jul;
-            $scope.popFloodedData[0].features[x].properties.active.aug+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].aug;
-            $scope.popFloodedData[0].features[x].properties.active.sep+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].sep;
-            $scope.popFloodedData[0].features[x].properties.active.oct+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].oct;
-            $scope.popFloodedData[0].features[x].properties.active.nov+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].nov;
-            $scope.popFloodedData[0].features[x].properties.active.dec+=$scope.popFloodedData[0].features[x].properties[$scope.selectedRP[key]].dec;
+            $scope.popFloodedData.features[x].properties.active.jan+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jan;
+            $scope.popFloodedData.features[x].properties.active.feb+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].feb;
+            $scope.popFloodedData.features[x].properties.active.mar+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].mar;
+            $scope.popFloodedData.features[x].properties.active.apr+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].apr;
+            $scope.popFloodedData.features[x].properties.active.may+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].may;
+            $scope.popFloodedData.features[x].properties.active.jun+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jun;
+            $scope.popFloodedData.features[x].properties.active.jul+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jul;
+            $scope.popFloodedData.features[x].properties.active.aug+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].aug;
+            $scope.popFloodedData.features[x].properties.active.sep+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].sep;
+            $scope.popFloodedData.features[x].properties.active.oct+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].oct;
+            $scope.popFloodedData.features[x].properties.active.nov+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].nov;
+            $scope.popFloodedData.features[x].properties.active.dec+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].dec;
           }
         }   
-        $scope.popFloodedData[0].features[x].properties.active.active_month=$scope.popFloodedData[0].features[x].properties.active[$scope.selectedMonth];
+        $scope.popFloodedData.features[x].properties.active.active_month=$scope.popFloodedData.features[x].properties.active[$scope.selectedMonth];
       }
 
       $scope.updateGEOJSON($scope.popFloodedData);
