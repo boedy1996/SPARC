@@ -31,7 +31,11 @@ def getGeoJSON_Flood_Data(request):
 	#print 'test'
 	cursor.execute(query)
 	res = cursor.fetchone()
-	
+	if type(res[0]) is not dict :
+		results = json.loads(res[0])
+	else:
+		results = res[0]	
+
 	query = "select row_to_json(fin) "
 	query += "from (select row_to_json(row) "
 	query += "from ("
@@ -40,7 +44,7 @@ def getGeoJSON_Flood_Data(request):
 	cursor.execute(query)
 	rows = cursor.fetchall()
 
-	for x in res[0]["features"]:
+	for x in results["features"]:
 		for y in rows:
 			if y[0]["rp"]==25 and str(y[0]["adm2_code"])==str(x["properties"]["adm2_code"]):
 				x["properties"]["RP25"]=y[0]
