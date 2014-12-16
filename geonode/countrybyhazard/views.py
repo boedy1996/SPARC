@@ -74,7 +74,7 @@ def getGeoJSON_Flood_Data(request):
 	del cursor
 	connection.close()	
 
-	geom = json.dumps(res, default=jdefault)
+	geom = json.dumps(results, default=jdefault)
 
 	return HttpResponse(geom, mimetype = 'application/json')
 
