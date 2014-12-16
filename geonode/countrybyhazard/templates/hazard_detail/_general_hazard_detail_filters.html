@@ -1,4 +1,5 @@
 {% load i18n %}
+
 <nav class="filter">
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Base Layers" %}</a></h4>
   <ul class="nav" id="baselayers">
@@ -18,30 +19,30 @@
 </nav>  
 <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Month" %}</a></h4>
-  <ul class="nav closed" id="months">
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">January</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">February</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">March</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">April</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">May</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">June</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">July</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">August</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">September</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">October</a><li> 
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)" class="active">November</a><li>
-    <li><a data-value="" data-filter="" ng-click="single_choice_listener($event)">December</a><li>
+  <ul class="nav closed" id="months">   
+    <li><a data-value="jan" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "January" monthName %} class="active" {% endifequal %}>January</a><li>
+    <li><a data-value="feb" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "February" monthName %} class="active" {% endifequal %}>February</a><li>
+    <li><a data-value="mar" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "March" monthName %} class="active" {% endifequal %}>March</a><li>
+    <li><a data-value="apr" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "April" monthName %} class="active" {% endifequal %}>April</a><li>
+    <li><a data-value="may" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "May" monthName %} class="active" {% endifequal %}>May</a><li>
+    <li><a data-value="jun" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "June" monthName %} class="active" {% endifequal %}>June</a><li>
+    <li><a data-value="jul" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "July" monthName %} class="active" {% endifequal %}>July</a><li>
+    <li><a data-value="aug" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "August" monthName %} class="active" {% endifequal %}>August</a><li>
+    <li><a data-value="sep" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "September" monthName %} class="active" {% endifequal %}>September</a><li>
+    <li><a data-value="oct" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "October" monthName %} class="active" {% endifequal %}>October</a><li> 
+    <li><a data-value="nov" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "November" monthName %} class="active" {% endifequal %}>November</a><li>
+    <li><a data-value="dec" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %}>December</a><li>
   </ul>
 </nav>  
 <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Flooded Probability" %}</a></h4>
   <ul class="nav closed" id="rps">
-    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">4% change on any year</a><li>
-    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">2% change on any year</a><li>
-    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)" class="active">1% change on any year</a><li>
-    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">0.5% change on any year</a><li>
-    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">0.2% change on any year</a><li>
-    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">0.1% change on any year</a><li>
+    <li><a data-value="RP25" data-filter="" ng-click="RP_choice_listener($event)" class="active">4% change on any year</a><li>
+    <li><a data-value="RP50" data-filter="" ng-click="RP_choice_listener($event)">2% change on any year</a><li>
+    <li><a data-value="RP100" data-filter="" ng-click="RP_choice_listener($event)">1% change on any year</a><li>
+    <li><a data-value="RP200" data-filter="" ng-click="RP_choice_listener($event)">0.5% change on any year</a><li>
+    <li><a data-value="RP500" data-filter="" ng-click="RP_choice_listener($event)">0.2% change on any year</a><li>
+    <li><a data-value="RP1000" data-filter="" ng-click="RP_choice_listener($event)">0.1% change on any year</a><li>
   </ul>
 </nav>  
 <nav class="filter">  
@@ -57,3 +58,4 @@
   <ul class="nav closed" id="legend">
   </ul>
 </nav>  
+

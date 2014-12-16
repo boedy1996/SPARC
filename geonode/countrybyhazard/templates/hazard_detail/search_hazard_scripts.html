@@ -3,6 +3,10 @@
 <script src="{{ STATIC_URL }}lib/js/angular.js"></script>
 <script src="{{ STATIC_URL }}lib/js/angular-leaflet-directive.min.js"></script>
 {% endif %}
+<script src="http://code.highcharts.com/highcharts.src.js"></script>
+<script src="{{ STATIC_URL }}lib/js/highcharts-ng.js"></script>
+<script src="{{ STATIC_URL }}lib/js/smart-table.debug.js"></script>
+
 
 {% if include_spatial == 'true' %}
 <style>
@@ -18,9 +22,6 @@
 <script type="text/javascript">
   $("body").attr('ng-controller', 'hazard_map_Controller');
   var module = angular.module('search', ['hazard_main_search']);
-  module.constant('Configs', {
-    url: ''
-  });
-  var deps = ['search','leaflet-directive'];
+  var deps = ['search','leaflet-directive','highcharts-ng','smart-table'];
   angular.bootstrap(document, deps);
 </script>
