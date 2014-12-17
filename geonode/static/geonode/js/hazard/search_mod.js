@@ -90,6 +90,11 @@
        scrollWheelZoom: false
     }
     angular.extend($scope, {
+      /*legend: {
+          position: 'bottomleft',
+          colors: [ '#ff0000', '#28c9ff', '#0000ff', '#ecf386' ],
+          labels: [ 'National Cycle Route', 'Regional Cycle Route', 'Local Cycle Network', 'Cycleway' ]
+      },*/
       center: {
                 lat: 40.8471,
                 lng: 14.0625,
@@ -485,22 +490,19 @@
       $scope.addPrivateChartSeries($scope.selectedRP, $scope.selectedObject);
     }
 
+    
+    leafletData.getMap().then(function (map) {
+      console.log(L);
+        var div = L.DomUtil.get('legendCustom'),
+            grades = [0, 2, 5, 7, 10, 25, 50, 75,100,250,500,750,1000,2500,5000,7500,10000],
+            labels = [];
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<li><a class=""><i style="background:' + getColor(grades[i] + 1) + '"></i>'+grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1]  : '+')+'</a></li>';
+        }
+    });
+
   });
 })();
 
-jQuery(function($) {
-        var panelList = $('#info');
-        panelList.sortable({
-            // Only make the .panel-heading child elements support dragging.
-            // Omit this to make then entire <li>...</li> draggable.
-            handle: '.panel-heading', 
-            update: function() {
-                $('.panel', panelList).each(function(index, elem) {
-                     var $listItem = $(elem),
-                         newIndex = $listItem.index();
-                      console.log($listItem)   
-                     // Persist the new indices.
-                });
-            }
-        });
-    });

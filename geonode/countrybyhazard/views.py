@@ -31,7 +31,7 @@ def getGeoJSON_Flood_Data(request):
 	#print 'test'
 	cursor.execute(query)
 	res = cursor.fetchone()
-	print type(res[0])
+	#print type(res[0])
 	if type(res[0]) is not dict :
 		results = json.loads(res[0])
 	else:
