@@ -3,7 +3,7 @@ from tastypie.api import Api
 from .api import TagResource, TopicCategoryResource, ProfileResource, \
     GroupResource, ContinentResource
 from .resourcebase_api import LayerResource, MapResource, DocumentResource, \
-    ResourceBaseResource, FeaturedResourceBaseResource, CountryResource
+    ResourceBaseResource, FeaturedResourceBaseResource, CountryResource, CycloneCountryResource
 
 api = Api(api_name='api')
 
@@ -19,3 +19,4 @@ api.register(FeaturedResourceBaseResource())
 #added for hazards
 api.register(ContinentResource())
 api.register(CountryResource())
+api.register(CycloneCountryResource())

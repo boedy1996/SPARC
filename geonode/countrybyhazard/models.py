@@ -36,4 +36,21 @@ class FloodedPopAtRisk(models.Model):
 	mdes = models.IntegerField(null=True, blank=True)
 	def __unicode__(self):
 		return self.adm2name
+
+class CountryGeneralInfo(models.Model):
+	country 	= models.OneToOneField(Country)
+	tot_pop 	= models.IntegerField(null=True, blank=True)
+	gdp_per_cap	= models.DecimalField(null=True, blank=True, max_digits=12, decimal_places=2)
+	hdi			= models.DecimalField(null=True, blank=True, max_digits=12, decimal_places=2)
+	num_cat_0_5_cyclones = models.IntegerField(null=True, blank=True)
+	num_cat_1_5_cyclones = models.IntegerField(null=True, blank=True)
+	exposed_pop = models.IntegerField(null=True, blank=True)
+	storm_surge_exposed_pop = models.IntegerField(null=True, blank=True)
+	low_risk_cyclone	 = models.IntegerField(null=True, blank=True)
+	low_med_risk_cyclone = models.IntegerField(null=True, blank=True)
+	med_risk_cyclone 	 = models.IntegerField(null=True, blank=True)
+	med_high_risk_cyclone= models.IntegerField(null=True, blank=True)
+	high_risk_cyclone 	 = models.IntegerField(null=True, blank=True)
+	def __unicode__(self):
+		return self.country.name
 	

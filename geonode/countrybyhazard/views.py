@@ -9,6 +9,9 @@ __dbConnect= "dbname='geonode-imports' user='geonode' host='10.11.40.84' passwor
 def index(request):
 	return render_to_response('country_list.html', context_instance=RequestContext(request))
 
+def cyclone_country_list(request):
+	return render_to_response('cyclone_country_list.html', context_instance=RequestContext(request))
+
 def hazard_detail(request):
 	currentDate = datetime.datetime.now()
 	return render_to_response('hazard_detail/hazard_detail.html', {'monthName':currentDate.strftime("%B")}, context_instance=RequestContext(request))

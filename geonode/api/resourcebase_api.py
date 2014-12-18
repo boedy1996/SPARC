@@ -24,7 +24,7 @@ from geonode.documents.models import Document
 from geonode.base.models import ResourceBase
 
 #added for hazard
-from geonode.countrybyhazard.models import Country, FloodedPopAtRisk
+from geonode.countrybyhazard.models import Country, FloodedPopAtRisk, CountryGeneralInfo
 from geonode.countrybyhazard.custom import HazardModelApi
 
 from .authorization import GeoNodeAuthorization
@@ -598,6 +598,37 @@ class CountryResource(HazardModelApi):
             queryset = queryset.filter(is_published=True)
         resource_name = 'hazards'  
 
-    #def get_object_list(self, request):
-    #    print 'kontol'
-    #    return super(CountryResource, self).get_object_list(request).order_by('max_pop')          
+class CycloneCountryResource(HazardModelApi):
+    """Country API"""
+    def alter_list_data_to_serialize(self, request, data): 
+        return data
+
+    def dehydrate(self, bundle):
+        transaction = CountryGeneralInfo.objects.filter(country=bundle.data['iso3']).values('tot_pop', 'gdp_per_cap','hdi','num_cat_0_5_cyclones','num_cat_1_5_cyclones','exposed_pop','storm_surge_exposed_pop','low_risk_cyclone','low_med_risk_cyclone','med_risk_cyclone','med_high_risk_cyclone','high_risk_cyclone')
+        for x in transaction:
+            for y in x:
+                if x[y] == None:
+                    x[y]=0          
+        bundle.data['tot_pop'] = transaction[0]['tot_pop']
+        bundle.data['gdp_per_cap'] = transaction[0]['gdp_per_cap']
+        bundle.data['hdi'] = transaction[0]['hdi']
+        bundle.data['num_cat_0_5_cyclones'] = transaction[0]['num_cat_0_5_cyclones']
+        bundle.data['num_cat_1_5_cyclones'] = transaction[0]['num_cat_1_5_cyclones']
+        bundle.data['exposed_pop'] = transaction[0]['exposed_pop']
+        bundle.data['storm_surge_exposed_pop'] = transaction[0]['storm_surge_exposed_pop']
+        bundle.data['low_risk_cyclone'] = transaction[0]['low_risk_cyclone']
+        bundle.data['low_med_risk_cyclone'] = transaction[0]['low_med_risk_cyclone']
+        bundle.data['med_risk_cyclone'] = transaction[0]['med_risk_cyclone']
+        bundle.data['med_high_risk_cyclone'] = transaction[0]['med_high_risk_cyclone']
+        bundle.data['high_risk_cyclone'] = transaction[0]['high_risk_cyclone']
+        return bundle
+
+    class Meta:
+        filtering = CommonMetaApi.filtering
+        filtering.update({'doc_type': ALL})
+        queryset = Country.objects.all()
+        ordering = ['name','extended_name']
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'cyclones'         
+

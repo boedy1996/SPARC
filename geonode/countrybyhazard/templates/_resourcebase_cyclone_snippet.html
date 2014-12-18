@@ -1,0 +1,22 @@
+{% verbatim %}
+  <article ng-repeat="item in results" resource_id="{{ item.iso3 }}" ng-cloak>
+  	<div class="row items-list">
+      <div class="col-md-6">
+        <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.extended_name}}
+">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
+        <p class="abstract"  ng-if="item.tot_pop == 0">No Data</p>
+        <p class="abstract"  ng-if="item.tot_pop > 0">Total population (2011) : {{ item.tot_pop }} </p>
+        <p class="abstract"  ng-if="item.gdp_per_cap > 0">GDP Per Capita : {{ item.gdp_per_cap }} </p>
+        <p class="abstract"  ng-if="item.hdi > 0">Human Development Index (2012) : {{ item.hdi }} </p>
+        <p class="abstract"  ng-if="item.num_cat_0_5_cyclones > 0"># of all Cyclones 1969-2011  : {{ item.num_cat_0_5_cyclones }} </p>
+        <p class="abstract"  ng-if="item.num_cat_1_5_cyclones > 0"># of Saffir-Simpson Category 1-5 Cyclones 1969-2011   : {{ item.num_cat_1_5_cyclones }} </p>
+        <p class="abstract"  ng-if="item.exposed_pop > 0">Total Population in Cyclone Prone Areas : {{ item.exposed_pop }} </p>
+        <p class="abstract"  ng-if="item.exposed_pop > 0">Total Population in Coastal Storm Surge Prone Areas  : {{ item.storm_surge_exposed_pop }} </p>
+        <p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>	
+      </div>
+      <div class="col-md-6">
+  	    <img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x&cht=lc&chd=t:{{ item.chartvalue }}&chco=AAB4FB,AABBBC,FF0000,00FF00,0000FF,00FFFF&chls=2.0&chs=350x150&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low" />
+  	  </div>
+    </div>
+  </article>
+{% endverbatim %}

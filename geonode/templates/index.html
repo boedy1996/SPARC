@@ -37,7 +37,7 @@
           <h2 class="text-center">{% trans "Cyclone Hazard" %}</h2>
 
           <p class="text-center">{% trans "Click to search the country to explore the Cyclone Hazard." %}</p> 
-          <p class="text-center"><a class="btn btn-default" href="{% url "country_browse" %}" role="button">{% trans "Explore Cyclone" %} &raquo;</a></p>
+          <p class="text-center"><a class="btn btn-default" href="{% url "cyclone_country_list" %}" role="button">{% trans "Explore Cyclone" %} &raquo;</a></p>
       </div>
 
        <div class="col-md-4">
@@ -45,7 +45,7 @@
           <h2 class="text-center">{% trans "Draught Hazard" %}</h2>
 
           <p class="text-center">{% trans "Click to search the country to explore the other Hazard." %}</p> 
-          <p class="text-center"><a class="btn btn-default" href="{% url "country_browse" %}" role="button">{% trans "Explore Draught" %} &raquo;</a></p>
+          <p class="text-center"><a class="btn btn-default disabled" href="{% url "country_browse" %}" role="button">{% trans "Explore Draught" %} &raquo;</a></p>
       </div>
     </div>
 
