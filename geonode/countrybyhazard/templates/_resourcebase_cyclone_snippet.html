@@ -16,7 +16,7 @@
         <p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>	
       </div>
       <div class="col-md-6">
-  	    <img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x&cht=lc&chd=t:{{ item.chartvalue }}&chco=AAB4FB,AABBBC,FF0000,00FF00,0000FF,00FFFF&chls=2.0&chs=350x150&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low" />
+        <img ng-if="item.tot_pop > 0" class="thumb" ng-src="https://chart.googleapis.com/chart?chs=300x150&cht=bvs&chd=t:{{ item.low_risk_cyclone/item.tot_pop*100| number:0 }},{{ item.low_med_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.med_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.med_high_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.high_risk_cyclone/item.tot_pop*100| number:0  }}&chds=0,100&chxt=x,x,x,y&chco=4D89F9|C6D9FD|DEF3BD|00A5C6|DEBDDE&chxl=0:|1-20%|21-40%|41-60%|61-80%|81-100%|1:|Low||||High|2:|||Cyclone occurrence probability per year&chbh=25,20&chtt=% Population exposed to cyclones&chts=919191,10&chxs=4,0000DD,13,0,t" />
   	  </div>
     </div>
   </article>
