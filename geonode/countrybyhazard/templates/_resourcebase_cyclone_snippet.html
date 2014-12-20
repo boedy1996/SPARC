@@ -16,7 +16,10 @@
         <p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>	
       </div>
       <div class="col-md-6">
-        <img ng-if="item.tot_pop > 0" class="thumb" ng-src="https://chart.googleapis.com/chart?chs=300x150&cht=bvs&chd=t:{{ item.low_risk_cyclone/item.tot_pop*100| number:0 }},{{ item.low_med_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.med_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.med_high_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.high_risk_cyclone/item.tot_pop*100| number:0  }}&chds=0,100&chxt=x,x,x,y&chco=4D89F9|C6D9FD|DEF3BD|00A5C6|DEBDDE&chxl=0:|1-20%|21-40%|41-60%|61-80%|81-100%|1:|Low||||High|2:|||Cyclone occurrence probability per year&chbh=25,20&chtt=% Population exposed to cyclones&chts=919191,10&chxs=4,0000DD,13,0,t" />
+        <img ng-if="item.tot_pop > 0" class="thumb" ng-src="https://chart.googleapis.com/chart?chs=300x150&cht=bvs&chd=t:{{ item.low_risk_cyclone/item.tot_pop*100| number:0 }},{{ item.low_med_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.med_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.med_high_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.high_risk_cyclone/item.tot_pop*100| number:0  }}&chds=0,100&chxt=x,x,x,y&chco=C6D9FD|C6D9FD|C6D9FD|C6D9FD|C6D9FD&chxl=0:|1-20%|21-40%|41-60%|61-80%|81-100%|1:|Low||||High|2:|||Cyclone occurrence probability per year&chbh=25,10&chtt=% Population exposed to cyclones&chts=919191,10&chxs=0,919191,9,0,lt|1,919191,9,0,t|2,919191,9,0,t|3,919191,9,0,lt" />
+
+        <img ng-if="item.tot_pop > 0" class="thumb" ng-src="https://chart.googleapis.com/chart?chs=350x150&cht=bvs&chd=t:{{ item.chartvalue }}&chds=a&chxt=x,y&chco=7E9FD1,72A984,D08C82,A49D8C,E8D5C8,D0DDB9&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chbh=15,5&chtt=Monthly Historical Cyclone Occurrences|1969-2011
+&chts=919191,10&chxs=0,919191,9,0,lt|1,919191,9,0,lt&chdl=Cat 0|Cat 1|Cat 2|Cat 3|Cat 4|Cat 5&chdls=919191,9" />
   	  </div>
     </div>
   </article>

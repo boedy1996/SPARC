@@ -24,7 +24,7 @@ from geonode.documents.models import Document
 from geonode.base.models import ResourceBase
 
 #added for hazard
-from geonode.countrybyhazard.models import Country, FloodedPopAtRisk, CountryGeneralInfo
+from geonode.countrybyhazard.models import Country, FloodedPopAtRisk, CountryGeneralInfo, CountryMonthlyCyclonesInfo
 from geonode.countrybyhazard.custom import HazardModelApi
 
 from .authorization import GeoNodeAuthorization
@@ -621,6 +621,24 @@ class CycloneCountryResource(HazardModelApi):
         bundle.data['med_risk_cyclone'] = transaction[0]['med_risk_cyclone']
         bundle.data['med_high_risk_cyclone'] = transaction[0]['med_high_risk_cyclone']
         bundle.data['high_risk_cyclone'] = transaction[0]['high_risk_cyclone']
+
+        ##### CountryMonthlyCyclonesInfo
+        transaction2 = CountryMonthlyCyclonesInfo.objects.filter(country=bundle.data['iso3']).values('country', 'category', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec')
+        grab = {'Cat 0':'', 'Cat 1' : '', 'Cat 2':'', 'Cat 3':'', 'Cat 4':'', 'Cat 5':''}  
+        for x in transaction2 :
+            if x['category']=='Cat 0':
+                grab['Cat 0']=str(x['jan'])+','+str(x['feb'])+','+str(x['mar'])+','+str(x['apr'])+','+str(x['may'])+','+str(x['jun'])+','+str(x['jul'])+','+str(x['aug'])+','+str(x['sep'])+','+str(x['oct'])+','+str(x['nov'])+','+str(x['dec'])         
+            if x['category']=='Cat 1':
+                grab['Cat 1']=str(x['jan'])+','+str(x['feb'])+','+str(x['mar'])+','+str(x['apr'])+','+str(x['may'])+','+str(x['jun'])+','+str(x['jul'])+','+str(x['aug'])+','+str(x['sep'])+','+str(x['oct'])+','+str(x['nov'])+','+str(x['dec'])         
+            if x['category']=='Cat 2':
+                grab['Cat 2']=str(x['jan'])+','+str(x['feb'])+','+str(x['mar'])+','+str(x['apr'])+','+str(x['may'])+','+str(x['jun'])+','+str(x['jul'])+','+str(x['aug'])+','+str(x['sep'])+','+str(x['oct'])+','+str(x['nov'])+','+str(x['dec'])         
+            if x['category']=='Cat 3':
+                grab['Cat 3']=str(x['jan'])+','+str(x['feb'])+','+str(x['mar'])+','+str(x['apr'])+','+str(x['may'])+','+str(x['jun'])+','+str(x['jul'])+','+str(x['aug'])+','+str(x['sep'])+','+str(x['oct'])+','+str(x['nov'])+','+str(x['dec'])         
+            if x['category']=='Cat 4':
+                grab['Cat 4']=str(x['jan'])+','+str(x['feb'])+','+str(x['mar'])+','+str(x['apr'])+','+str(x['may'])+','+str(x['jun'])+','+str(x['jul'])+','+str(x['aug'])+','+str(x['sep'])+','+str(x['oct'])+','+str(x['nov'])+','+str(x['dec'])         
+            if x['category']=='Cat 5':
+                grab['Cat 5']=str(x['jan'])+','+str(x['feb'])+','+str(x['mar'])+','+str(x['apr'])+','+str(x['may'])+','+str(x['jun'])+','+str(x['jul'])+','+str(x['aug'])+','+str(x['sep'])+','+str(x['oct'])+','+str(x['nov'])+','+str(x['dec'])         
+        bundle.data['chartvalue']=grab['Cat 0']+'|'+grab['Cat 1']+'|'+grab['Cat 2']+'|'+grab['Cat 3']+'|'+grab['Cat 4']+'|'+grab['Cat 5']
         return bundle
 
     class Meta:

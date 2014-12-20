@@ -53,4 +53,22 @@ class CountryGeneralInfo(models.Model):
 	high_risk_cyclone 	 = models.IntegerField(null=True, blank=True)
 	def __unicode__(self):
 		return self.country.name
-	
+
+class CountryMonthlyCyclonesInfo(models.Model):
+	country 	= models.ForeignKey(Country)
+	category    = models.CharField(max_length=15)		
+	jan	= models.IntegerField(null=True, blank=True)
+	feb	= models.IntegerField(null=True, blank=True)
+	mar	= models.IntegerField(null=True, blank=True)
+	apr	= models.IntegerField(null=True, blank=True)
+	may	= models.IntegerField(null=True, blank=True)
+	jun	= models.IntegerField(null=True, blank=True)
+	jul	= models.IntegerField(null=True, blank=True)
+	aug	= models.IntegerField(null=True, blank=True)
+	sep	= models.IntegerField(null=True, blank=True)
+	oct	= models.IntegerField(null=True, blank=True)
+	nov	= models.IntegerField(null=True, blank=True)
+	dec	= models.IntegerField(null=True, blank=True)
+	storm_serial = models.TextField()
+	def __unicode__(self):
+		return self.country.category
