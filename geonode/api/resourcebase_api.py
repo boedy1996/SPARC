@@ -604,6 +604,15 @@ class CycloneCountryResource(HazardModelApi):
         return data
 
     def dehydrate(self, bundle):
+        monthCode = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
+        high_risk = {'max':0,'month':''}
+        transaction3 = CountryMonthlyCyclonesInfo.objects.filter(country=bundle.data['iso3']).values('country').annotate(Sum(monthCode[0])).annotate(Sum(monthCode[1])).annotate(Sum(monthCode[2])).annotate(Sum(monthCode[3])).annotate(Sum(monthCode[4])).annotate(Sum(monthCode[5])).annotate(Sum(monthCode[6])).annotate(Sum(monthCode[7])).annotate(Sum(monthCode[8])).annotate(Sum(monthCode[9])).annotate(Sum(monthCode[10])).annotate(Sum(monthCode[11]))
+        for x in transaction3:
+            for y in monthCode:
+                if x[y+'__sum'] > high_risk['max']:
+                    high_risk['max'] = x[y+'__sum']
+                    high_risk['month'] = y
+
         transaction = CountryGeneralInfo.objects.filter(country=bundle.data['iso3']).values('tot_pop', 'gdp_per_cap','hdi','num_cat_0_5_cyclones','num_cat_1_5_cyclones','exposed_pop','storm_surge_exposed_pop','low_risk_cyclone','low_med_risk_cyclone','med_risk_cyclone','med_high_risk_cyclone','high_risk_cyclone')
         for x in transaction:
             for y in x:
@@ -621,6 +630,7 @@ class CycloneCountryResource(HazardModelApi):
         bundle.data['med_risk_cyclone'] = transaction[0]['med_risk_cyclone']
         bundle.data['med_high_risk_cyclone'] = transaction[0]['med_high_risk_cyclone']
         bundle.data['high_risk_cyclone'] = transaction[0]['high_risk_cyclone']
+        bundle.data['high_risk'] = high_risk
 
         ##### CountryMonthlyCyclonesInfo
         transaction2 = CountryMonthlyCyclonesInfo.objects.filter(country=bundle.data['iso3']).values('country', 'category', 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec')

@@ -5,7 +5,7 @@
         <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.extended_name}}
 ">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
         <p class="abstract"  ng-if="item.tot_pop == 0">No Data</p>
-        <p class="abstract"  ng-if="item.tot_pop > 0">{{ item.exposed_pop/item.tot_pop * 100 | number:0 }}% of the population live in cyclone prone areas and greatest risk is on </p>
+        <p class="abstract"  ng-if="item.tot_pop > 0">{{ item.exposed_pop/item.tot_pop * 100 | number:0 }}% of the population live in cyclone prone areas and greatest risk is on {{ item.high_risk.month | uppercase }}.</p>
         <p class="abstract"  ng-if="item.tot_pop > 0">Total population (2011) : {{ item.tot_pop | number:0 }} </p>
         <p class="abstract"  ng-if="item.gdp_per_cap > 0">GDP Per Capita (USD) : {{ item.gdp_per_cap | number:2 }} </p>
         <p class="abstract"  ng-if="item.hdi > 0">Human Development Index (2012) : {{ item.hdi | number:2 }} </p>
@@ -13,7 +13,6 @@
         <p class="abstract"  ng-if="item.num_cat_1_5_cyclones > 0"># of Saffir-Simpson Category 1-5 Cyclones 1969-2011   : {{ item.num_cat_1_5_cyclones | number:0 }} </p>
         <p class="abstract"  ng-if="item.exposed_pop > 0">Total Population in Cyclone Prone Areas : {{ item.exposed_pop | number:0 }} </p>
         <p class="abstract"  ng-if="item.exposed_pop > 0">Total Population in Coastal Storm Surge Prone Areas  : {{ item.storm_surge_exposed_pop | number:0 }} </p>
-        <p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>	
       </div>
       <div class="col-md-6">
         <img ng-if="item.tot_pop > 0" class="thumb" ng-src="https://chart.googleapis.com/chart?chs=300x150&cht=bvs&chd=t:{{ item.low_risk_cyclone/item.tot_pop*100| number:0 }},{{ item.low_med_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.med_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.med_high_risk_cyclone/item.tot_pop*100| number:0  }},{{ item.high_risk_cyclone/item.tot_pop*100| number:0  }}&chds=0,100&chxt=x,x,x,y&chco=C6D9FD|C6D9FD|C6D9FD|C6D9FD|C6D9FD&chxl=0:|1-20%|21-40%|41-60%|61-80%|81-100%|1:|Low||||High|2:|||Cyclone occurrence probability per year&chbh=25,10&chtt=% Population exposed to cyclones&chts=919191,10&chxs=0,919191,9,0,lt|1,919191,9,0,t|2,919191,9,0,t|3,919191,9,0,lt" />
