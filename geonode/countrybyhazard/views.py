@@ -53,7 +53,8 @@ def getGeoJSON_Cyclone_Data(request):
 
 	print type(rows)
 	print type(rows[0])
-
+	print type(results)
+	
 	currentDate = datetime.datetime.now()
 	monthNameTemp = currentDate.strftime("%b").lower()
 
