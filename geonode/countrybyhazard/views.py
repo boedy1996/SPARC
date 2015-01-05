@@ -51,11 +51,12 @@ def getGeoJSON_Cyclone_Data(request):
 	cursor.execute(query)
 	rows = cursor.fetchall()
 
-	if type(rows[0]) is not tuple :
+	if type(rows[0]) is not tuple or  type(rows[0]) is not dict:
 		newRows = json.loads(rows[0])
 	else:
 		newRows = rows[0]
 
+	print newRows
 	currentDate = datetime.datetime.now()
 	monthNameTemp = currentDate.strftime("%b").lower()
 
