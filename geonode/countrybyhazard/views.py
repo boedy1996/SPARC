@@ -51,14 +51,11 @@ def getGeoJSON_Cyclone_Data(request):
 	cursor.execute(query)
 	rows = cursor.fetchall()
 
-	print type(rows)
-	print type(rows[0])
-	print type(results)
-	
 	currentDate = datetime.datetime.now()
 	monthNameTemp = currentDate.strftime("%b").lower()
 
 	for x in results["features"]:
+		print type(x)
 		hasil = [row[0] for row in rows if row[0]["adm2_code"] == str(x["properties"]["adm2_code"])]
 		x["properties"]["addinfo"] = hasil
 		for item in hasil:
