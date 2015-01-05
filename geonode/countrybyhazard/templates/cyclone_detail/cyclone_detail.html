@@ -1,0 +1,19 @@
+{% extends "country_base.html" %}
+{% load i18n %}
+{% load taggit_extras %}
+{% load staticfiles %}
+{% load url from future %}
+
+{% block title %} {% trans "Explore Hazard" %} - {{ block.super }} {% endblock %}
+
+{% block body_class %}hazards explore{% endblock %}
+
+{% block body %}
+ 
+  {% include "cyclone_detail/_search_cyclone_detail_content.html" %}
+
+{% endblock %}
+
+{% block extra_script %}
+  {% include 'cyclone_detail/search_cyclone_scripts.html' %}
+{% endblock extra_script %}

@@ -1,0 +1,27 @@
+{% if DEBUG_STATIC %}
+<script src="{{ STATIC_URL }}lib/js/bootstrap-datepicker.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}lib/js/angular.js"></script>
+<script src="{{ STATIC_URL }}lib/js/angular-leaflet-directive.min.js"></script>
+{% endif %}
+<script src="http://code.highcharts.com/highcharts.src.js"></script>
+<script src="{{ STATIC_URL }}lib/js/highcharts-ng.js"></script>
+<script src="{{ STATIC_URL }}lib/js/smart-table.debug.js"></script>
+
+
+{% if include_spatial == 'true' %}
+<style>
+  .leaflet-container {  /* all maps */
+    height: 300px;
+  }
+</style>
+
+
+{% endif %}s
+<script src="{{ STATIC_URL }}geonode/js/search/explore.js"></script>
+<script src="{{ STATIC_URL }}geonode/js/hazard/search_cyclone_mod.js"></script>
+<script type="text/javascript">
+  $("body").attr('ng-controller', 'hazard_map_Controller');
+  var module = angular.module('search', ['hazard_main_search']);
+  var deps = ['search','leaflet-directive','highcharts-ng','smart-table'];
+  angular.bootstrap(document, deps);
+</script>

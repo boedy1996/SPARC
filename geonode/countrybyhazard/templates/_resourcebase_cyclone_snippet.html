@@ -2,7 +2,7 @@
   <article ng-repeat="item in results" resource_id="{{ item.iso3 }}" ng-cloak>
   	<div class="row items-list">
       <div class="col-md-6">
-        <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.extended_name}}
+        <h4><a href="{% endverbatim %}{% url "cyclone_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.extended_name}}
 ">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
         <p class="abstract"  ng-if="item.tot_pop == 0">No Data</p>
         <p class="abstract"  ng-if="item.tot_pop > 0">{{ item.exposed_pop/item.tot_pop * 100 | number:0 }}% of the population live in cyclone prone areas and greatest risk is on {{ item.high_risk.month | uppercase }}.</p>

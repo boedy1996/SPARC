@@ -1,0 +1,16 @@
+{% load i18n %}
+  <div class="col-md-12 filter">      
+    
+  </div>
+  <div class="col-md-12">
+    <div class="row" id="contain-slider">
+      <div class="col-md-3">
+        <div id="slide-pane">
+          {% include "cyclone_detail/_general_cyclone_detail_filters.html" %}
+        </div>
+      </div>
+      <div class="col-md-9">
+        {% include 'cyclone_detail/_detail_cyclone_map_main.html' %}
+      </div>
+    </div>
+  </div>

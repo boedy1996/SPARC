@@ -601,6 +601,22 @@ class CountryResource(HazardModelApi):
 class CycloneCountryResource(HazardModelApi):
     """Country API"""
     def alter_list_data_to_serialize(self, request, data): 
+        def getKey(item):
+            return item.data['exposed_pop']
+        def getKey1(item):
+            return item.data['storm_surge_exposed_pop']    
+
+        if "rank_by" in request.GET:
+            data_med = copy.copy(data)
+            data['objects']=[]
+            if request.GET["rank_by"]=='max_pop':      
+                data['objects'] = sorted(data_med['objects'], key=getKey, reverse=True)
+            elif request.GET["rank_by"]=='-max_pop':
+                data['objects'] = sorted(data_med['objects'], key=getKey)   
+            elif request.GET["rank_by"]=='max_surge':
+                data['objects'] = sorted(data_med['objects'], key=getKey1, reverse=True)   
+            elif request.GET["rank_by"]=='-max_surge':
+                data['objects'] = sorted(data_med['objects'], key=getKey1)        
         return data
 
     def dehydrate(self, bundle):
