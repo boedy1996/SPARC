@@ -51,7 +51,7 @@ def getGeoJSON_Cyclone_Data(request):
 	cursor.execute(query)
 	rows = cursor.fetchall()
 
-	if type(rows[0]) is not dict :
+	if type(rows[0]) is not tuple :
 		newRows = json.loads(rows[0])
 	else:
 		newRows = rows[0]
