@@ -58,8 +58,7 @@ def getGeoJSON_Cyclone_Data(request):
 		for row in rows :
 			print type(row)
 			print type(row[0])
-			break
-
+			print row[0]
 		hasil = [row[0] for row in rows if row[0]["adm2_code"] == str(x["properties"]["adm2_code"])]
 		x["properties"]["addinfo"] = hasil
 		for item in hasil:
