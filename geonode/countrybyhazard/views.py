@@ -51,15 +51,17 @@ def getGeoJSON_Cyclone_Data(request):
 	cursor.execute(query)
 	rows = cursor.fetchall()
 
+	if type(rows[0]) is not dict :
+		newRows = json.loads(rows[0])
+	else:
+		newRows = rows[0]
+
 	currentDate = datetime.datetime.now()
 	monthNameTemp = currentDate.strftime("%b").lower()
 
 	for x in results["features"]:
-		for row in rows :
-			print type(row)
-			print type(row[0])
-			print row[0]
-		hasil = [row[0] for row in rows if row[0]["adm2_code"] == str(x["properties"]["adm2_code"])]
+		#hasil = [row[0] for row in rows if row[0]["adm2_code"] == str(x["properties"]["adm2_code"])]
+		hasil = [row for row in newRows if row["adm2_code"] == str(x["properties"]["adm2_code"])]
 		x["properties"]["addinfo"] = hasil
 		for item in hasil:
 			if item["category"]=='cat1_5' and item["prob_class"]=='0.01-0.1':
