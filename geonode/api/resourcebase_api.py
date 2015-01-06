@@ -571,6 +571,8 @@ class CountryResource(HazardModelApi):
                         extreme['RP'] = x['rper']
         grab = {'25':'', '50' : '', '100':'', '200':'', '500':'', '1000':''}              
         for x in ttt :
+            if extreme['pop'] == 0 :
+                break
             if x['rper']==25:
                 grab['25']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0)
             if x['rper']==50:
