@@ -54,14 +54,21 @@ def getGeoJSON_Cyclone_Data(request):
 	currentDate = datetime.datetime.now()
 	monthNameTemp = currentDate.strftime("%b").lower()
 
+
+
 	for x in results["features"]:
-		hasil = [row[0] for row in rows if row[0]["adm2_code"] == str(x["properties"]["adm2_code"])]
-		x["properties"]["addinfo"] = hasil
-		for item in hasil:
-			if item["category"]=='cat1_5' and item["prob_class"]=='0.01-0.1':
-				#print item["prob_class"]
-				#print '-----------------------------'
-				x["properties"]["active_month"] += item[monthNameTemp]
+		for row in rows:
+			type(row[0])
+			print row[0]["adm2_code"]
+
+
+		#hasil = [row[0] for row in rows if row[0]["adm2_code"] == str(x["properties"]["adm2_code"])]
+		
+		#hasil = [row for row in rows if json.loads(row[0])["adm2_code"] == str(x["properties"]["adm2_code"])]
+		#x["properties"]["addinfo"] = hasil
+		#for item in hasil:
+		#	if item["category"]=='cat1_5' and item["prob_class"]=='0.01-0.1':
+		#		x["properties"]["active_month"] += item[monthNameTemp]
 	
 	cursor.close()
 	del cursor
