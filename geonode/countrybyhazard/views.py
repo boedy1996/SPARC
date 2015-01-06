@@ -58,7 +58,7 @@ def getGeoJSON_Cyclone_Data(request):
 
 	for x in results["features"]:
 		for row in rows:
-			type(row[0])
+			print type(row[0])
 			print row[0]["adm2_code"]
 
 
