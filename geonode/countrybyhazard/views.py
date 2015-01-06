@@ -58,8 +58,12 @@ def getGeoJSON_Cyclone_Data(request):
 
 	for x in results["features"]:
 		for row in rows:
-			print type(row[0])
-			print row[0]["adm2_code"]
+			if type(row[0]) is not dict :
+				newRow = json.loads(row[0])
+			else:
+				newRow = row[0]	
+			print type(newRow)
+			print newRow["adm2_code"]
 
 
 		#hasil = [row[0] for row in rows if row[0]["adm2_code"] == str(x["properties"]["adm2_code"])]
