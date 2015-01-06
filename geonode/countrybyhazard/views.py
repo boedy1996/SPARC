@@ -4,6 +4,12 @@ import psycopg2
 import json
 import datetime
 
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
+    
 # Create your views here.
 __dbConnect= "dbname='geonode-imports' user='geonode' host='10.11.40.84' password='geonode'"
 def index(request):
