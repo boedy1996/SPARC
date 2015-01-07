@@ -5,7 +5,10 @@
         <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.extended_name}}
 ">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
         <p class="abstract"  ng-if="item.extreme.pop == 0">No Data</p>
-        <p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>
+        <p class="abstract"  ng-if="item.tot_pop > 0">Total Population (2011) : {{ item.tot_pop | number:0 }} </p>
+        <p class="abstract"  ng-if="item.tot_pop > 0">GDP Percapita (USD) : {{ item.gdp_per_cap | number:0 }} </p>
+        <p class="abstract"  ng-if="item.tot_pop > 0">Human Development Index : {{ item.hdi | number:2 }} </p>
+        <p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop | number:0 }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>
         <p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>	
       </div>
       <div class="col-md-6">

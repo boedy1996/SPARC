@@ -586,6 +586,17 @@ class CountryResource(HazardModelApi):
             if x['rper']==1000:
                 grab['1000']=str(float(x['mjan__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mfeb__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmar__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mapr__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mmay__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjun__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mjul__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['maug__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['msep__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['moct__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mnov__sum'])/float(extreme['pop'])*100.0)+','+str(float(x['mdes__sum'])/float(extreme['pop'])*100.0)
 
+        transaction2 = CountryGeneralInfo.objects.filter(country=bundle.data['iso3']).values('tot_pop', 'gdp_per_cap','hdi')
+        for x in transaction2:
+            for y in x:
+                if x[y] == None:
+                    x[y]=0   
+
+        bundle.data['tot_pop'] = transaction2[0]['tot_pop']
+        bundle.data['gdp_per_cap'] = transaction2[0]['gdp_per_cap']
+        bundle.data['hdi'] = transaction2[0]['hdi']  
+
+
         bundle.data['chartvalue']=grab['25']+'|'+grab['50']+'|'+grab['100']+'|'+grab['200']+'|'+grab['500']+'|'+grab['1000']
         bundle.data['extreme'] = extreme
         bundle.data['max_pop'] = extreme['pop']
