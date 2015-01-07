@@ -200,14 +200,25 @@
       });  
     });
 
+    $scope.refreshGEOJSON = function(){
+      leafletData.getMap().then(function (map) {      
+        leafletData.getGeoJSON().then(function(geoJSON) { 
+          angular.forEach(geoJSON._layers, function(rows){
+            geoJSON.resetStyle(rows);
+          });
+        });
+
+      });
+    }
+
     $scope.updateGEOJSON = function(data){
       //console.log(data);
       leafletData.getMap().then(function (map) {  
         leafletData.getGeoJSON().then(function(geoJSON) { 
 
-          angular.forEach(geoJSON._layers, function(rows){
-            map.removeLayer(rows);
-          });
+          //angular.forEach(geoJSON._layers, function(rows){
+          //  map.removeLayer(rows);
+          //});
           
           //$scope.updateGEOJSON($scope.popFloodedData);
           angular.forEach(data.features, function(rows){
@@ -378,7 +389,7 @@
         }   
         $scope.popFloodedData.features[x].properties.active.active_month=$scope.popFloodedData.features[x].properties.active[value];
       }
-      $scope.updateGEOJSON($scope.popFloodedData);
+      $scope.refreshGEOJSON(); 
       //console.log($scope.popFloodedData);
 
       if(!element.hasClass('active')){
@@ -463,7 +474,7 @@
         $scope.popFloodedData.features[x].properties.active.active_month=$scope.popFloodedData.features[x].properties.active[$scope.selectedMonth];
       }
 
-      $scope.updateGEOJSON($scope.popFloodedData);
+      $scope.refreshGEOJSON(); 
       $scope.addChartSeries($scope.selectedRP,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedRP,$scope.popFloodedData);
 
