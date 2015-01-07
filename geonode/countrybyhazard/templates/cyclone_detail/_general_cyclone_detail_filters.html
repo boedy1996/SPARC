@@ -1,5 +1,9 @@
 {% load i18n %}
-
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Legend" %}</a></h4>
+  <ul class="nav closed legend" id="legendCustom">
+  </ul>
+</nav> 
 <nav class="filter">
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Base Layers" %}</a></h4>
   <ul class="nav" id="baselayers">
@@ -12,8 +16,8 @@
 <nav class="filter">
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Layers" %}</a></h4>
   <ul class="nav closed" id="layers">
-    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)" class="active">Cyclone Hazard</a></li>
-    <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)" class="active">Pop On Prone Area (block map)</a></li>
+    <li><a data-value="raster" data-filter="" ng-click="multiple_choice_listener($event)" class="">Cyclone Hazard</a></li>
+    <li><a data-value="popatrisk_block" data-filter="" ng-click="multiple_choice_listener($event)" class="active">Pop On Prone Area (block map)</a></li>
   </ul>
 </nav>  
 <nav class="filter">  
@@ -64,9 +68,5 @@
     <li><a data-value="" data-filter="" ng-click="multiple_choice_listener($event)">Income Sources</a></li>
   </ul>
 </nav>  
-<nav class="filter">  
-  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Legend" %}</a></h4>
-  <ul class="nav closed legend" id="legendCustom">
-  </ul>
-</nav>  
+ 
 

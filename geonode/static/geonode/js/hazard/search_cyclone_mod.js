@@ -210,9 +210,9 @@
       leafletData.getMap().then(function (map) {  
         
         leafletData.getGeoJSON().then(function(geoJSON) { 
-          //angular.forEach(geoJSON._layers, function(rows){
-          //  map.removeLayer(rows);
-          //});
+          angular.forEach(geoJSON._layers, function(rows){
+            map.removeLayer(rows);
+          });
           angular.forEach(data.features, function(rows){
             geoJSON.addData(rows);
           });
@@ -301,10 +301,25 @@
     }     
 
     $scope.multiple_choice_listener = function($event){    
+      var selectedLayerOverlay = [];
       var element = $($event.target);
       var query_entry = [];
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
+      //console.log(element);
+      var allElement = angular.element(element).parent().parent();
+      //console.log(allElement[0].children);
+
+      angular.forEach(allElement[0].children, function(rows){
+        var temp = $(rows.children);
+        if (temp.hasClass('active')){
+          if (temp.attr('data-value')!=value){
+            //console.log(temp.attr('data-value'));
+            selectedLayerOverlay.push(temp.attr('data-value'));
+          }  
+        }  
+      });
+
 
       // If the element is active active then deactivate it
       if(element.hasClass('active')){
@@ -320,7 +335,19 @@
           query_entry.push(value);  
         }         
         element.addClass('active');
+        selectedLayerOverlay.push(value);
+      }  
+
+      console.log(selectedLayerOverlay);
+      if ($.inArray('popatrisk_block', selectedLayerOverlay)){
+        $scope.updateGEOJSON({
+              type : "FeatureCollection",
+              features : []
+        }); 
+      } else {
+        $scope.updateGEOJSON($scope.popFloodedData);     
       }
+
     }
 
     $scope.single_choice_listener = function($event){
