@@ -11,7 +11,8 @@ body {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-size: cover;	
+  background-size: cover;
+  height: 255px;	
 }
 
 .flood_icon{
@@ -43,7 +44,7 @@ body {
 }
 
 .blue {
-	color: #36a9e1;
+	color: black;
 }
 
 .box {
@@ -57,7 +58,7 @@ body {
 }
 
 .box .box-header {
-	background: #555555;
+	background: #004357;
 	color: white;
 	font-size: 16px;
 	overflow: hidden;
@@ -95,7 +96,8 @@ body {
 }
 
 .table_font {
-	font-size: 8.5px !important;
+	font-size: 9px !important;
+	font-weight: bolder;
 }
 
 .header-fixed {
@@ -143,4 +145,23 @@ body {
     float: left;
     margin-right: 8px;
     opacity: 0.7;
+}
+
+.navbar-inverse {
+	background-color: #004357 !important;
+	border-color: #836C6C !important;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+	color: #028baf;
+}
+
+footer {
+	border-top: 1px solid #999;
+	padding: 20px;
+	background-color: #004357;
+}
+
+nav.filter h4 {
+	background: #004357;
 }
