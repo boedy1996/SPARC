@@ -15,7 +15,7 @@
   module.controller('hazard_map_Controller', function($injector, $scope, $location, $http, leafletData){
     $scope.selectedRP = ['RP25'];
     $scope.countryName = $location.search()['country'];
-    //console.log($scope.countryName);
+    $scope.countryISO3 = $location.search()['iso'];
     $scope.selectedMonth = null;
     $scope.popFloodedData = null;
     $scope.selectedObject = null;
@@ -101,6 +101,22 @@
                  zoom: 2
       },
       layers: {
+        overlays: {
+          probabilities : {
+            name:'Flood Probabilities',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/flood/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'flood:'+$scope.countryISO3,
+              format: 'image/png',
+              //opacity: 0.25,
+              styles : 'RP25',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          }
+        },
         baselayers:{
           warden: {
             name: 'Warden-MapBox',
@@ -336,15 +352,23 @@
         selectedLayerOverlay.push(value);
       }  
 
-      console.log(selectedLayerOverlay);
-      if ($.inArray('popatrisk_block', selectedLayerOverlay)){
+
+      if ($.inArray('popatrisk_block', selectedLayerOverlay)>=0){        
+        $scope.updateGEOJSON($scope.popFloodedData); 
+      } else {
         $scope.updateGEOJSON({
               type : "FeatureCollection",
               features : []
-          }); 
-      } else {
-        $scope.updateGEOJSON($scope.popFloodedData);     
+          });   
       }
+      //alert($.inArray('raster', selectedLayerOverlay));
+
+      if ($.inArray('raster', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.probabilities.visible = true;
+      } else {
+        $scope.layers.overlays.probabilities.visible = false;  
+      }
+ 
 
     }
 
@@ -508,6 +532,26 @@
       $scope.refreshGEOJSON(); 
       $scope.addChartSeries($scope.selectedRP,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedRP,$scope.popFloodedData);
+     // console.log($scope.selectedRP.length);
+      
+      //$scope.layers.overlays.probabilities.layerOptions.layers = 'flood:CMR,flood:CMR,flood:CMR,flood:CMR,flood:CMR,flood:CMR';  
+      //$scope.layers.overlays.probabilities.layerOptions.styles = 'RP25,RP50,RP100,RP200,RP500,RP1000';
+     // console.log($scope.layers.overlays);
+     var layer = '';
+     var style = '';
+     var sep = '';
+     for (var x=0;x<$scope.selectedRP.length;x++){
+        if (layer!='') sep = ','; 
+        layer += sep+'flood:'+$scope.countryISO3;
+        style += sep+$scope.selectedRP[x];
+     }
+
+     leafletData.getMap().then(function(map) {
+        leafletData.getLayers().then(function (layers) {
+            console.log(layers.overlays.probabilities);
+            layers.overlays.probabilities.setParams({'layers':layer,'styles':style},false);
+        });
+     });
 
     }
 

@@ -20,6 +20,7 @@
     $scope.selectedProbClass = ['0.01-0.1'];
     $scope.selectedCategory = 'cat1_5';
     $scope.countryName = $location.search()['country'];
+    $scope.countryISO3 = $location.search()['iso'];
     $scope.selectedMonth = _shortMonthName[month];
     $scope.popFloodedData = null;
     $scope.selectedObject = null;
