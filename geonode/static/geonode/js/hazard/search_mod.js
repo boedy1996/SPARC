@@ -542,8 +542,8 @@
      var sep = '';
      for (var x=0;x<$scope.selectedRP.length;x++){
         if (layer!='') sep = ','; 
-        layer += sep+'flood:'+$scope.countryISO3;
-        style += sep+$scope.selectedRP[x];
+        layer += sep+'geonode:'+$scope.countryISO3;
+        //style += sep+$scope.selectedRP[x];
      }
 
      leafletData.getMap().then(function(map) {
