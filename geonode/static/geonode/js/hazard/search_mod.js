@@ -108,7 +108,7 @@
             url:'http://10.11.40.84/geoserver/geonode/wms',
             visible : false,
             layerOptions: {
-              layers: 'geonode:'+$scope.countryISO3.toLowerCase(),
+              layers: 'geonode:f_'+$scope.countryISO3.toLowerCase(),
               format: 'image/png',
               //opacity: 0.25,
               //styles : 'geonode:RP25',
