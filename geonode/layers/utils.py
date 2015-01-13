@@ -265,7 +265,6 @@ def get_bbox(filename):
         bbox_x0, bbox_y0, bbox_x1, bbox_y1 = layer.extent.tuple
 
     elif is_raster(filename):
-        print filename
         gtif = gdal.Open(filename)
         gt = gtif.GetGeoTransform()
         cols = gtif.RasterXSize
