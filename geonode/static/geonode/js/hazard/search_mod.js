@@ -110,7 +110,7 @@
             layerOptions: {
               layers: 'geonode:f_'+$scope.countryISO3.toLowerCase(),
               format: 'image/png',
-              //opacity: 0.25,
+              opacity: 0.25,
               //styles : 'geonode:RP25',
               crs: L.CRS.EPSG4326,
               transparent : true
