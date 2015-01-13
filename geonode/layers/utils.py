@@ -265,6 +265,7 @@ def get_bbox(filename):
         bbox_x0, bbox_y0, bbox_x1, bbox_y1 = layer.extent.tuple
 
     elif is_raster(filename):
+        print filename
         gtif = gdal.Open(filename)
         gt = gtif.GetGeoTransform()
         cols = gtif.RasterXSize
@@ -297,7 +298,6 @@ def file_upload(filename, name=None, user=None, title=None, abstract=None,
     """Saves a layer in GeoNode asking as little information as possible.
        Only filename is required, user and title are optional.
     """
-    print filename
     # Get a valid user
     theuser = get_valid_user(user)
 
