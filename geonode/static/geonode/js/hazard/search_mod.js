@@ -13,10 +13,13 @@
   });
 
   module.controller('hazard_map_Controller', function($injector, $scope, $location, $http, leafletData){
+    var date = new Date(),
+        month = date.getMonth();
+    var _shortMonthName = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
     $scope.selectedRP = ['RP25'];
     $scope.countryName = $location.search()['country'];
     $scope.countryISO3 = $location.search()['iso'];
-    $scope.selectedMonth = null;
+    $scope.selectedMonth = _shortMonthName[month];
     $scope.popFloodedData = null;
     $scope.selectedObject = null;
     $scope.geojson = {
@@ -110,8 +113,8 @@
             layerOptions: {
               layers: 'geonode:f_'+$scope.countryISO3.toLowerCase(),
               format: 'image/png',
-              opacity: 0.25,
-              //styles : 'geonode:RP25',
+              //opacity: 0.25,
+              styles : 'RP25',
               crs: L.CRS.EPSG4326,
               transparent : true
             }
@@ -542,8 +545,8 @@
      var sep = '';
      for (var x=0;x<$scope.selectedRP.length;x++){
         if (layer!='') sep = ','; 
-        layer += sep+'geonode:'+$scope.countryISO3;
-        //style += sep+$scope.selectedRP[x];
+        layer += sep+'geonode:f_'+$scope.countryISO3.toLowerCase();
+        style += sep+$scope.selectedRP[x];
      }
 
      leafletData.getMap().then(function(map) {
