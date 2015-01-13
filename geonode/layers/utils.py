@@ -297,6 +297,7 @@ def file_upload(filename, name=None, user=None, title=None, abstract=None,
     """Saves a layer in GeoNode asking as little information as possible.
        Only filename is required, user and title are optional.
     """
+    print filename
     # Get a valid user
     theuser = get_valid_user(user)
 
