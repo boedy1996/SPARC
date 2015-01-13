@@ -108,10 +108,10 @@
             url:'http://10.11.40.84/geoserver/geonode/wms',
             visible : false,
             layerOptions: {
-              layers: 'geonode:'+$scope.countryISO3,
+              layers: 'geonode:'+$scope.countryISO3.toLowerCase(),
               format: 'image/png',
               //opacity: 0.25,
-              styles : 'RP25',
+              //styles : 'geonode:RP25',
               crs: L.CRS.EPSG4326,
               transparent : true
             }
