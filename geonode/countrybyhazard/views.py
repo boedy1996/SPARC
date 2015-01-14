@@ -47,7 +47,7 @@ def getGeoJSON_Cyclone_Data(request):
 	if type(res[0]) is not dict :
 		results = json.loads(res[0])
 	else:
-		results = res[0]
+		results = res[0]	
 
 	query = "select row_to_json(fin) "
 	query += "from (select row_to_json(row) "

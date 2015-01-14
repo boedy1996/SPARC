@@ -190,10 +190,9 @@
     }
 
     NProgress.start();
-    console.log(NProgress);
     $('#screen').css({  "display": "block", opacity: 0.25, "width":$(document).width(),"height":$(document).height(), "z-index":1000000});
     $http.get("../../getCycloneGeoJSON/?iso3="+$location.search()['iso']).success(function(data, status) {
-      //console.log(data);
+      console.log(data);
       $scope.popFloodedData = data;
       $scope.updateGEOJSON(data);
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
@@ -432,15 +431,11 @@
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
       $scope.selectedCategory = value;
-      console.log($scope.popFloodedData);
       for (var x in $scope.popFloodedData.features){
         $scope.popFloodedData.features[x].properties.active_month = 0;
-        //console.log($scope.popFloodedData.features[x].properties);
         for (var y in $scope.popFloodedData.features[x].properties.addinfo){
-          console.log($scope.popFloodedData.features[x].properties.addinfo[y].category);
           if ($.inArray($scope.popFloodedData.features[x].properties.addinfo[y].prob_class, $scope.selectedProbClass) > -1 && $scope.popFloodedData.features[x].properties.addinfo[y].category == value){
             $scope.popFloodedData.features[x].properties.active_month += $scope.popFloodedData.features[x].properties.addinfo[y][$scope.selectedMonth]
-            //console.log($scope.popFloodedData.features[x].properties.active_month);
           }
         }  
       }
