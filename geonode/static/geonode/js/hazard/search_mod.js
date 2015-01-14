@@ -203,11 +203,17 @@
                          '#FFFFFF' ;
     }
 
+    NProgress.start();
+    console.log(NProgress);
+    $('#screen').css({  "display": "block", opacity: 0.25, "width":$(document).width(),"height":$(document).height(), "z-index":1000000});
     $http.get("../getFloodedGeoJSON/?iso3="+$location.search()['iso']).success(function(data, status) {
       $scope.popFloodedData = data;
       $scope.updateGEOJSON(data);
       $scope.addChartSeries(['RP25'],$scope.popFloodedData);
       $scope.addTableSeries(['RP25'],$scope.popFloodedData);
+      NProgress.done(true);
+      NProgress.remove();
+      $('#screen').css({"display":"none"});
     });
 
     $http.get("https://maps.googleapis.com/maps/api/geocode/json?address="+$location.search()['country']).success(function(data, status) {

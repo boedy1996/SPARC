@@ -189,12 +189,18 @@
                          '#FFFFFF' ;
     }
 
+    NProgress.start();
+    console.log(NProgress);
+    $('#screen').css({  "display": "block", opacity: 0.25, "width":$(document).width(),"height":$(document).height(), "z-index":1000000});
     $http.get("../../getCycloneGeoJSON/?iso3="+$location.search()['iso']).success(function(data, status) {
       //console.log(data);
       $scope.popFloodedData = data;
       $scope.updateGEOJSON(data);
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
+      NProgress.done(true);
+      NProgress.remove();
+      $('#screen').css({"display":"none"});
     });
 
     $http.get("https://maps.googleapis.com/maps/api/geocode/json?address="+$location.search()['country']).success(function(data, status) {

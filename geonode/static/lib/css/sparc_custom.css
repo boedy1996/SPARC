@@ -165,3 +165,11 @@ footer {
 nav.filter h4 {
 	background: #004357;
 }
+
+#screen
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: #000;
+}

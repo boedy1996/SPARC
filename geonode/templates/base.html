@@ -19,6 +19,7 @@
       <link href="{{ STATIC_URL }}geonode/css/ext-compatibility.css" rel="stylesheet" />
       <link href="{{ STATIC_URL }}geonode/css/base.css" rel="stylesheet" />
       <link href="{{ STATIC_URL }}lib/css/sparc_custom.css" rel="stylesheet" />
+      <link href="http://ricostacruz.com/nprogress/nprogress.css" rel="stylesheet" />
       {% block extra_head %}
       {% endblock %}
     {% endblock %}
@@ -28,7 +29,8 @@
   </head>
   
   <body class="{% block body_class %}{% endblock %}">
-
+  <div id="screen">
+  </div>
     {% block header %}
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -207,6 +209,7 @@
     {% endif %}
     <script src="{{ STATIC_URL }}geonode/js/utils/utils.js"></script>
     <script src="{{ STATIC_URL }}geonode/js/base/base.js"></script>
+    <script src="http://ricostacruz.com/nprogress/nprogress.js"></script>
     {% include 'autocomplete_light/static.html' %}
     <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
     {% block extra_script %}{% endblock extra_script %}
