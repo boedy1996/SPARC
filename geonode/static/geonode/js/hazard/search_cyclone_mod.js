@@ -19,6 +19,7 @@
 
     $scope.selectedProbClass = ['0.01-0.1'];
     $scope.selectedCategory = 'cat1_5';
+    $scope.selectedStyle = ['cyclone1']
     $scope.countryName = $location.search()['country'];
     $scope.countryISO3 = $location.search()['iso'];
     $scope.selectedMonth = _shortMonthName[month];
@@ -106,6 +107,22 @@
                  zoom: 2
       },
       layers: {
+        overlays: {
+          probabilities : {
+            name:'Cyclone Probabilities',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2',
+              format: 'image/png',
+              styles : 'cyclone1',
+              opacity:0.8,
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          }
+        },
         baselayers:{
           warden: {
             name: 'Warden-MapBox',
@@ -344,14 +361,19 @@
         selectedLayerOverlay.push(value);
       }  
 
-      console.log(selectedLayerOverlay);
-      if ($.inArray('popatrisk_block', selectedLayerOverlay)){
+      if ($.inArray('popatrisk_block', selectedLayerOverlay)>=0){        
+        $scope.updateGEOJSON($scope.popFloodedData); 
+      } else {
         $scope.updateGEOJSON({
               type : "FeatureCollection",
               features : []
-        }); 
+          });   
+      }
+
+      if ($.inArray('raster', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.probabilities.visible = true;
       } else {
-        $scope.updateGEOJSON($scope.popFloodedData);     
+        $scope.layers.overlays.probabilities.visible = false;  
       }
 
     }
@@ -403,7 +425,7 @@
 
       }
       $scope.refreshGEOJSON();
-      
+      $scope.refreshCycloneWMS();
 
       if(!element.hasClass('active')){
         // Add the entry in the correct query
@@ -452,10 +474,12 @@
       $scope.refreshGEOJSON();
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData); 
       $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
+      $scope.refreshCycloneWMS();
     }
 
     $scope.RP_choice_listener = function($event){
       $scope.selectedProbClass = [];
+      $scope.selectedStyle = [];
       var element = $($event.target);
       var query_entry = [];
       var data_filter = element.attr('data-filter');
@@ -470,6 +494,7 @@
           if (temp.attr('data-value')!=value){
             //console.log(temp.attr('data-value'));
             $scope.selectedProbClass.push(temp.attr('data-value'));
+            $scope.selectedStyle.push(temp.attr('data-filter'));
           }  
         }  
       });
@@ -504,7 +529,7 @@
       $scope.refreshGEOJSON(); 
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
-
+      $scope.refreshCycloneWMS();
     }
 
     $scope.$on("leafletDirectiveMap.geojsonMouseover", function(ev, feature, leafletEvent) {
@@ -526,6 +551,25 @@
       layer.bringToFront();
       $scope.selectedObject = layer.feature;
       $scope.addPrivateChartSeries($scope.selectedProbClass, $scope.selectedObject, $scope.selectedCategory);
+    }
+
+
+    $scope.refreshCycloneWMS = function(){
+       var layer = '';
+       var style = '';
+       var sep = '';
+       for (var x=0;x<$scope.selectedStyle.length;x++){
+          if (layer!='') sep = ','; 
+          layer += sep+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2';
+          style += sep+$scope.selectedStyle[x];
+       }
+
+       leafletData.getMap().then(function(map) {
+          leafletData.getLayers().then(function (layers) {
+              console.log(layers.overlays.probabilities);
+              layers.overlays.probabilities.setParams({'layers':layer,'styles':style},false);
+          });
+       });
     }
 
     
