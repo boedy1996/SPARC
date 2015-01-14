@@ -432,13 +432,15 @@
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
       $scope.selectedCategory = value;
-
+      console.log($scope.popFloodedData);
       for (var x in $scope.popFloodedData.features){
         $scope.popFloodedData.features[x].properties.active_month = 0;
         //console.log($scope.popFloodedData.features[x].properties);
         for (var y in $scope.popFloodedData.features[x].properties.addinfo){
+          console.log($scope.popFloodedData.features[x].properties.addinfo[y].category);
           if ($.inArray($scope.popFloodedData.features[x].properties.addinfo[y].prob_class, $scope.selectedProbClass) > -1 && $scope.popFloodedData.features[x].properties.addinfo[y].category == value){
             $scope.popFloodedData.features[x].properties.active_month += $scope.popFloodedData.features[x].properties.addinfo[y][$scope.selectedMonth]
+            //console.log($scope.popFloodedData.features[x].properties.active_month);
           }
         }  
       }
