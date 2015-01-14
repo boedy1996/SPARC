@@ -483,6 +483,7 @@
       var query_entry = [];
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
+      console.log(data_filter);
       //console.log(element);
       var allElement = angular.element(element).parent().parent();
       //console.log(allElement[0].children);
@@ -493,7 +494,7 @@
           if (temp.attr('data-value')!=value){
             $scope.selectedProbClass.push(temp.attr('data-value'));
           }  
-          if (temp.attr('data-value')!=data_filter){
+          if (temp.attr('data-filter')!=data_filter){
             $scope.selectedStyle.push(temp.attr('data-filter'));
           }  
         }  
