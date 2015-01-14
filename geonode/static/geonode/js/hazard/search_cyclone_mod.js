@@ -209,7 +209,6 @@
     NProgress.start();
     $('#screen').css({  "display": "block", opacity: 0.25, "width":$(document).width(),"height":$(document).height(), "z-index":1000000});
     $http.get("../../getCycloneGeoJSON/?iso3="+$location.search()['iso']).success(function(data, status) {
-      console.log(data);
       $scope.popFloodedData = data;
       $scope.updateGEOJSON(data);
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
@@ -492,13 +491,13 @@
         var temp = $(rows.children);
         if (temp.hasClass('active')){
           if (temp.attr('data-value')!=value){
-            //console.log(temp.attr('data-value'));
             $scope.selectedProbClass.push(temp.attr('data-value'));
+          }  
+          if (temp.attr('data-value')!=data_filter){
             $scope.selectedStyle.push(temp.attr('data-filter'));
           }  
         }  
       });
-
 
       // If the element is active active then deactivate it
       if(element.hasClass('active')){
@@ -515,7 +514,11 @@
         }         
         element.addClass('active');
         $scope.selectedProbClass.push(value);
+        $scope.selectedStyle.push(data_filter);
       }  
+
+      console.log($scope.selectedProbClass);
+      console.log($scope.selectedStyle);
 
       for (var x in $scope.popFloodedData.features){
         $scope.popFloodedData.features[x].properties.active_month = 0;
@@ -566,7 +569,6 @@
 
        leafletData.getMap().then(function(map) {
           leafletData.getLayers().then(function (layers) {
-              console.log(layers.overlays.probabilities);
               layers.overlays.probabilities.setParams({'layers':layer,'styles':style},false);
           });
        });
