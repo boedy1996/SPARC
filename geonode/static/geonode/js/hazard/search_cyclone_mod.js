@@ -170,6 +170,13 @@
 
     });
 
+    leafletData.getMap().then(function (map) {
+      var loadingControl = L.Control.loading({
+        separate: true
+      });
+      map.addControl(loadingControl);
+    });
+
     function onEachFeature(feature, layer) {
         
     }

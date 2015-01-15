@@ -101,7 +101,7 @@
       center: {
                 lat: 40.8471,
                 lng: 14.0625,
-                 zoom: 2
+                zoom: 2
       },
       layers: {
         overlays: {
@@ -167,6 +167,13 @@
 
     });
 
+    leafletData.getMap().then(function (map) {
+      var loadingControl = L.Control.loading({
+        separate: true
+      });
+      map.addControl(loadingControl);
+    });
+
     function onEachFeature(feature, layer) {
         
     }
@@ -204,7 +211,6 @@
     }
 
     NProgress.start();
-    console.log(NProgress);
     $('#screen').css({  "display": "block", opacity: 0.25, "width":$(document).width(),"height":$(document).height(), "z-index":1000000});
     $http.get("../getFloodedGeoJSON/?iso3="+$location.search()['iso']).success(function(data, status) {
       $scope.popFloodedData = data;

@@ -173,3 +173,7 @@ nav.filter h4 {
 	top: 0;
 	background: #000;
 }
+
+.leaflet-control-loading {
+	background: url(http://ebrelsford.github.io/Leaflet.loading/loading.gif);
+}
