@@ -32,6 +32,8 @@
       resetStyleOnMouseout: true
     };
 
+    var popup = new L.Popup();
+
     $scope.rowCollection = [];
 
     $scope.privateHighchartsNG = {
@@ -543,16 +545,41 @@
       $scope.refreshCycloneWMS();
     }
 
+    $scope.$on("leafletDirectiveMap.geojsonMouseout", function(ev, feature, leafletEvent) {
+      leafletData.getMap().then(function(map) {
+        map.closePopup();
+      });
+    });
+
     $scope.$on("leafletDirectiveMap.geojsonMouseover", function(ev, feature, leafletEvent) {
-      //$scope.floodMouseOver(feature);
+      $scope.floodMouseOver(feature);
     });
 
     $scope.$on("leafletDirectiveMap.geojsonClick", function(ev, featureSelected, leafletEvent) {
-      $scope.floodMouseOver(leafletEvent);
+      $scope.floodMouseClick(leafletEvent);
       $('#info').show();
     });
 
-    $scope.floodMouseOver = function(feature) {
+    $scope.floodMouseOver = function(feature){
+
+      var layer = feature.target;
+      layer.setStyle({
+          weight: 2,
+          color: '#666',
+          fillColor: 'red'
+      });
+      console.log(layer);
+      layer.bringToFront();
+      var bounds = layer.getBounds();
+      var popupContent = "<h6>"+layer.feature.properties.adm2_name+"</h6>Pop at risk : "+layer.feature.properties.active_month;
+      popup.setLatLng(bounds.getCenter());
+      popup.setContent(popupContent);
+      leafletData.getMap().then(function(map) {
+        map.openPopup(popup);
+      });
+    }
+
+    $scope.floodMouseClick = function(feature) {
       var layer = feature.target;
       layer.setStyle({
           weight: 2,
