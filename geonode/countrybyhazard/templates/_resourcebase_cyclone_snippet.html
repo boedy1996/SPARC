@@ -4,7 +4,7 @@
       <div class="col-md-6">
         <h4><a href="{% endverbatim %}{% url "cyclone_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.extended_name}}
 ">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
-        <p class="abstract"  ng-if="item.tot_pop == 0">No Data</p>
+        <p class="abstract"  ng-if="item.tot_pop == 0">No assessment performed</p>
         <p class="abstract"  ng-if="item.tot_pop > 0">{{ item.exposed_pop/item.tot_pop * 100 | number:0 }}% of the population live in cyclone prone areas and greatest risk is on {{ item.high_risk.month | uppercase }}.</p>
         <p class="abstract"  ng-if="item.tot_pop > 0">Total population (2011) : {{ item.tot_pop | number:0 }} </p>
         <p class="abstract"  ng-if="item.gdp_per_cap > 0">GDP Per Capita (USD) : {{ item.gdp_per_cap | number:2 }} </p>
