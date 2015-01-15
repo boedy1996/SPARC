@@ -29,7 +29,7 @@
       resetStyleOnMouseout: true
     };
 
-    var popup = new L.Popup();
+    var popup = new L.Popup({offset:new L.Point(0,-3)});
 
     $scope.rowCollection = [];
 
