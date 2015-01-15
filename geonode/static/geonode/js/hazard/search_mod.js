@@ -289,6 +289,14 @@
         $scope.highchartsNG.series.pop();
       }
 
+      //console.log(rps);
+      rps.sort(function(a, b){
+        //console.log(a.substring(2, a.length),b.substring(2, b.length))
+        var tempA = parseInt(a.substring(2, a.length));
+        var tempB = parseInt(b.substring(2, b.length));
+        return tempB-tempA;
+      });
+
       angular.forEach(rps, function(rp){
         var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
         angular.forEach(data.features, function(row){
@@ -563,7 +571,6 @@
 
      leafletData.getMap().then(function(map) {
         leafletData.getLayers().then(function (layers) {
-            console.log(layers.overlays.probabilities);
             layers.overlays.probabilities.setParams({'layers':layer,'styles':style},false);
         });
      });
