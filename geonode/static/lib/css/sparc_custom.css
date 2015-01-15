@@ -104,13 +104,23 @@ body {
     width: 100% 
 }
 
+.header-fixed > thead > tr {
+	display: block;
+}
+
+.header-fixed > tbody,
+.header-fixed > tbody > tr {
+    display: block;
+}
+
+/*
 .header-fixed > thead,
 .header-fixed > tbody,
 .header-fixed > thead > tr,
 .header-fixed > tbody > tr {
     display: block;
 }
-
+*/
 .header-fixed > tbody {
     overflow-y: auto;
     height: 350px;
@@ -176,4 +186,12 @@ nav.filter h4 {
 
 .leaflet-control-loading {
 	background: url(http://ebrelsford.github.io/Leaflet.loading/loading.gif);
+}
+
+.table {
+	table-layout: fixed !important;
+}
+
+.table>thead>tr>th {
+	padding: 7.7px !important;
 }
