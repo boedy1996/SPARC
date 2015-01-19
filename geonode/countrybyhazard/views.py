@@ -98,7 +98,7 @@ def getGeoJSON_Flood_Data(request):
 	query += "FROM (SELECT 'Feature' As type "
 	query += ", ST_AsGeoJSON(ST_Simplify(lg.the_geom, 0.01))::json As geometry "
 	#query += ", ST_AsGeoJSON(ST_Centroid(lg.the_geom))::json As geometry_points "
-	query += ", row_to_json((SELECT l FROM (SELECT adm2_code, adm2_name, adm1_name) As l "
+	query += ", row_to_json((SELECT l FROM (SELECT adm2_code, adm2_name, adm1_code, adm1_name, adm0_code) As l "
 	query += "  )) As properties "
 	query += "FROM sparc_gaul_wfp_iso As lg where "
 	query += " lg.iso3='"+request.GET.get('iso3')
@@ -140,6 +140,7 @@ def getGeoJSON_Flood_Data(request):
 				x["properties"]["RP500"]=newY
 			elif newY["rp"]==1000 and str(newY["adm2_code"])==str(x["properties"]["adm2_code"]):	
 				x["properties"]["RP1000"]=newY
+		x["properties"]["FCS"]=0		
 		x["properties"]["active"]=x["properties"]["RP25"]
 		currentDate = datetime.datetime.now()
 		monthNameTemp = currentDate.strftime("%b").lower()
