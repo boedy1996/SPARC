@@ -25,6 +25,7 @@
     $scope.selectedMonth = _shortMonthName[month];
     $scope.popFloodedData = null;
     $scope.selectedObject = null;
+    $scope.FCS = false;
     $scope.geojson = {
       data: [],
       style: style,
@@ -218,8 +219,24 @@
     NProgress.start();
     $('#screen').css({  "display": "block", opacity: 0.25, "width":$(document).width(),"height":$(document).height(), "z-index":1000000});
     $http.get("../../getCycloneGeoJSON/?iso3="+$location.search()['iso']).success(function(data, status) {
+      var last_adm1_code = 0;
       $scope.popFloodedData = data;
-      $scope.updateGEOJSON(data);
+
+      /// add FCS
+      angular.forEach($scope.popFloodedData.features, function(row){
+        last_adm1_code = row.properties.adm1_code;
+        $http.get("http://reporting.vam.wfp.org/JSON/SPARC_GetFCS.aspx?adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=1").success(function(response, status) {
+          var maxMonthYear = new Date(2000, 0, 1, 0, 0, 0, 0);
+          angular.forEach(response, function(item){
+            var currentMonthYear = new Date(item.FCS_year, item.FCS_month-1, 1, 0, 0, 0, 0);
+            if (currentMonthYear>maxMonthYear){
+              row.properties.FCS = item.FCS_poor;
+            }
+          });
+        });
+      });
+
+      $scope.updateGEOJSON($scope.popFloodedData);
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
       NProgress.done(true);
@@ -257,7 +274,7 @@
     }
 
     $scope.addPrivateChartSeries = function(rps, data, cat){
-      console.log(data);
+      //console.log(data);
       var _shortMonthName = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
 
       for (var x=$scope.privateHighchartsNG.series.length;x>0;x--){
@@ -266,10 +283,14 @@
       
       angular.forEach(rps, function(rp){
         var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
+        if ($scope.FCS)
+          var FCS_value = data.properties.FCS/100
+        else 
+          var FCS_value = 1;
         angular.forEach(data.properties.addinfo, function(item){
           if (item.prob_class == rp && item.category == $scope.selectedCategory){
             for (var monthNumber in _shortMonthName){
-             _each.data[monthNumber] += item[_shortMonthName[monthNumber]];
+             _each.data[monthNumber] += item[_shortMonthName[monthNumber]]*FCS_value;
             }
           }  
         });
@@ -287,11 +308,15 @@
       angular.forEach(rps, function(rp){
         var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
         angular.forEach(data.features, function(row){
+          if ($scope.FCS)
+            var FCS_value = $scope.popFloodedData.features[x].properties.FCS/100
+          else 
+            var FCS_value = 1;
           angular.forEach(row.properties.addinfo, function(single){
             for (var monthNumber in _shortMonthName){
               //console.log(single);
               if (single.prob_class == rp && single.category == $scope.selectedCategory){
-                _each.data[monthNumber] += single[_shortMonthName[monthNumber]];
+                _each.data[monthNumber] += single[_shortMonthName[monthNumber]]*FCS_value;
               }  
             }
           });  
@@ -311,20 +336,24 @@
       angular.forEach(data.features, function(row){
         var _each = {adm2_code:'',region:'',jan :0,feb:0,mar:0,apr:0,may:0,jun:0,jul:0,aug:0,sep:0,oct:0,nov:0,dec:0};
         _each.region = row.properties.adm2_name;
+        if ($scope.FCS)
+          var FCS_value = $scope.popFloodedData.features[x].properties.FCS/100
+        else 
+          var FCS_value = 1;
         angular.forEach(row.properties.addinfo, function(item){
           if ($.inArray(item.prob_class, rps) > -1 && item.category == cat){
-            _each.jan += item.jan;
-            _each.feb += item.feb;
-            _each.mar += item.mar;
-            _each.apr += item.apr;
-            _each.may += item.may;
-            _each.jun += item.jun;
-            _each.jul += item.jul;
-            _each.aug += item.aug;
-            _each.sep += item.sep;
-            _each.oct += item.oct;
-            _each.nov += item.nov;
-            _each.dec += item.dec;           
+            _each.jan += item.jan*FCS_value;
+            _each.feb += item.feb*FCS_value;
+            _each.mar += item.mar*FCS_value;
+            _each.apr += item.apr*FCS_value;
+            _each.may += item.may*FCS_value;
+            _each.jun += item.jun*FCS_value;
+            _each.jul += item.jul*FCS_value;
+            _each.aug += item.aug*FCS_value;
+            _each.sep += item.sep*FCS_value;
+            _each.oct += item.oct*FCS_value;
+            _each.nov += item.nov*FCS_value;
+            _each.dec += item.dec*FCS_value;           
           }
         });
         $scope.rowCollection.push(_each);
@@ -386,13 +415,23 @@
 
     }
 
-    $scope.external_choice_listener = function($event){    
+    $scope.external_choice_listener = function($event){   
+      var filtered = [];
       var element = $($event.target);
       var query_entry = [];
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
       //console.log(element);
       var allElement = angular.element(element).parent().parent();
+
+      angular.forEach(allElement[0].children, function(rows){
+        var temp = $(rows.children);
+        if (temp.hasClass('active')){
+          if (temp.attr('data-value')!=value){
+            filtered.push(temp.attr('data-value'));
+          }  
+        }  
+      });
 
       // If the element is active active then deactivate it
       if(element.hasClass('active')){
@@ -408,9 +447,20 @@
           query_entry.push(value);  
         }         
         element.addClass('active');
+        filtered.push(value);
       }  
- 
 
+      if ($.inArray('FCS', filtered)>=0){
+        console.log('FCS-in');
+        $scope.FCS = true;
+      } else {
+        console.log('FCS-out');
+        $scope.FCS = false;
+      }  
+      $scope.manage_featuredata();
+      $scope.refreshGEOJSON(); 
+      $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
+      $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
     }
 
     $scope.single_choice_listener = function($event){
@@ -447,18 +497,8 @@
       var value = element.attr('data-value');
       $scope.selectedMonth = value;
 
-      for (var x in $scope.popFloodedData.features){
-        $scope.popFloodedData.features[x].properties.active_month = 0;
-
-        for (var y in $scope.popFloodedData.features[x].properties.addinfo){
-
-          if ($.inArray($scope.popFloodedData.features[x].properties.addinfo[y].prob_class, $scope.selectedProbClass) > -1 && $scope.popFloodedData.features[x].properties.addinfo[y].category == $scope.selectedCategory){            
-            $scope.popFloodedData.features[x].properties.active_month += $scope.popFloodedData.features[x].properties.addinfo[y][value];
-          }
-          
-        }  
-
-      }
+      $scope.manage_featuredata();
+      
       $scope.refreshGEOJSON();
       $scope.refreshCycloneWMS();
 
@@ -488,14 +528,9 @@
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
       $scope.selectedCategory = value;
-      for (var x in $scope.popFloodedData.features){
-        $scope.popFloodedData.features[x].properties.active_month = 0;
-        for (var y in $scope.popFloodedData.features[x].properties.addinfo){
-          if ($.inArray($scope.popFloodedData.features[x].properties.addinfo[y].prob_class, $scope.selectedProbClass) > -1 && $scope.popFloodedData.features[x].properties.addinfo[y].category == value){
-            $scope.popFloodedData.features[x].properties.active_month += $scope.popFloodedData.features[x].properties.addinfo[y][$scope.selectedMonth]
-          }
-        }  
-      }
+      
+      $scope.manage_featuredata();
+      
 
       var allElement = angular.element(element).parent().parent();
       if(!element.hasClass('active')){
@@ -557,19 +592,28 @@
       console.log($scope.selectedProbClass);
       console.log($scope.selectedStyle);
 
-      for (var x in $scope.popFloodedData.features){
-        $scope.popFloodedData.features[x].properties.active_month = 0;
-        //console.log($scope.popFloodedData.features[x].properties);
-        for (var y in $scope.popFloodedData.features[x].properties.addinfo){
-          if ($.inArray($scope.popFloodedData.features[x].properties.addinfo[y].prob_class, $scope.selectedProbClass) > -1 && $scope.popFloodedData.features[x].properties.addinfo[y].category == $scope.selectedCategory){
-            $scope.popFloodedData.features[x].properties.active_month += $scope.popFloodedData.features[x].properties.addinfo[y][$scope.selectedMonth]
-          }
-        }  
-      }
+      $scope.manage_featuredata();
+      
       $scope.refreshGEOJSON(); 
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
       $scope.refreshCycloneWMS();
+    }
+
+    $scope.manage_featuredata = function(){
+      for (var x in $scope.popFloodedData.features){
+        $scope.popFloodedData.features[x].properties.active_month = 0;
+        console.log($scope.popFloodedData.features[x].properties.FCS);
+        if ($scope.FCS)
+          var FCS_value = $scope.popFloodedData.features[x].properties.FCS/100
+        else 
+          var FCS_value = 1;
+        for (var y in $scope.popFloodedData.features[x].properties.addinfo){
+          if ($.inArray($scope.popFloodedData.features[x].properties.addinfo[y].prob_class, $scope.selectedProbClass) > -1 && $scope.popFloodedData.features[x].properties.addinfo[y].category == $scope.selectedCategory){
+            $scope.popFloodedData.features[x].properties.active_month += $scope.popFloodedData.features[x].properties.addinfo[y][$scope.selectedMonth]*FCS_value;
+          }
+        }  
+      }
     }
 
     $scope.$on("leafletDirectiveMap.geojsonMouseout", function(ev, feature, leafletEvent) {
@@ -595,7 +639,7 @@
           color: '#666',
           fillColor: 'red'
       });
-      console.log(layer);
+      //console.log(layer);
       layer.bringToFront();
       var bounds = layer.getBounds();
       var popupContent = "<h6>"+layer.feature.properties.adm2_name+"</h6>Pop at risk : "+layer.feature.properties.active_month;

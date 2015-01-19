@@ -36,7 +36,7 @@ def getGeoJSON_Cyclone_Data(request):
 	query += "FROM (SELECT 'Feature' As type "
 	query += ", ST_AsGeoJSON(ST_Simplify(lg.the_geom, 0.01))::json As geometry "
 	#query += ", ST_AsGeoJSON(ST_Centroid(lg.the_geom))::json As geometry_points "
-	query += ", row_to_json((SELECT l FROM (SELECT adm2_code, adm2_name, adm1_name, 0 as active_month) As l "
+	query += ", row_to_json((SELECT l FROM (SELECT adm2_code, adm2_name, adm1_code, adm1_name, adm0_code, 0 as active_month) As l "
 	query += "  )) As properties "
 	query += "FROM sparc_gaul_wfp_iso As lg where "
 	query += " lg.iso3='"+request.GET.get('iso3')
@@ -64,6 +64,7 @@ def getGeoJSON_Cyclone_Data(request):
 
 	for x in results["features"]:
 		x["properties"]["addinfo"]=[]
+		x["properties"]["FCS"]=0
 		for row in rows:
 			if type(row[0]) is not dict :
 				newRow = json.loads(row[0])
