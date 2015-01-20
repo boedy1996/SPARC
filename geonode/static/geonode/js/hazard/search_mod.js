@@ -23,6 +23,7 @@
     $scope.popFloodedData = null;
     $scope.selectedObject = null;
     $scope.FCS = false;
+    $scope.Country = [];
     $scope.geojson = {
       data: [],
       style: style,
@@ -251,6 +252,13 @@
         var bounds = L.latLngBounds(southWest, northEast);           
         map.fitBounds(bounds);
       });  
+    });
+
+    $http.get("../getCountry/").success(function(data, status) {
+      angular.forEach(data, function(row){
+        $scope.Country.push(row[0]);
+      });
+      console.log($scope.Country);
     });
 
     $scope.refreshGEOJSON = function(){
@@ -695,6 +703,34 @@
                 '<li><a class=""><i style="background:' + getColor(grades[i] + 1) + '"></i>'+grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1]  : '+')+'</a></li>';
         }
     });
+
+    $scope.quicklinks = function($event){
+      var element = $($event.target);
+      var query_entry = [];
+      var data_filter = element.attr('data-filter');
+      var value = element.attr('data-value');
+      var childElement = angular.element(element).parent().find('#_links');
+
+      // If the element is active active then deactivate it
+      if(element.hasClass('active')){
+        // clear the active class from it
+        element.removeClass('active');
+        childElement.removeClass('openn');
+        childElement.addClass('closed');
+        // Remove the entry from the correct query in scope        
+        query_entry.splice(query_entry.indexOf(value), 1);
+      }
+      // if is not active then activate it
+      else if(!element.hasClass('active')){
+        // Add the entry in the correct query
+        if (query_entry.indexOf(value) == -1){
+          query_entry.push(value);  
+        }     
+        childElement.removeClass('closed');    
+        element.addClass('active');
+        childElement.addClass('open');
+      }     
+    }
 
   });
 })();

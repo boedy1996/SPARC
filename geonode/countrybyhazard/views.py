@@ -26,6 +26,18 @@ def cyclone_detail(request):
 	currentDate = datetime.datetime.now()
 	return render_to_response('cyclone_detail/cyclone_detail.html', {'monthName':currentDate.strftime("%B")}, context_instance=RequestContext(request))	
 
+def getCountry(request):
+	connection = psycopg2.connect(__dbConnect)
+	cursor = connection.cursor()
+	query = "select row_to_json(fin) from (select row_to_json(row) from (select * from countrybyhazard_country) row) fin"
+	cursor.execute(query)
+	rows = cursor.fetchall()
+	cursor.close()
+	del cursor
+	connection.close()
+	data = json.dumps(rows, default=jdefault)
+	return HttpResponse(data, mimetype = 'application/json')
+
 def getGeoJSON_Cyclone_Data(request):
 	print '>>> querying the admin2 level data from database'
 	connection = psycopg2.connect(__dbConnect)

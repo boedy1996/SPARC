@@ -68,5 +68,23 @@
     <li><a data-value="IS" data-filter="" ng-click="external_choice_listener($event)">Income Sources</a></li>
   </ul>
 </nav>  
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Quick Links" %}</a></h4>
+  <ul class="nav closed" id="Country">
+    <li ng-repeat="area in Country | groupBy:'wfp_area_id':'area_id'">
+        {% verbatim %} 
+          <a ng-if="area.wfp_area_id == 1" ng-click="quicklinks($event)">Africa</a>   
+          <a ng-if="area.wfp_area_id == 2" ng-click="quicklinks($event)">America</a>
+          <a ng-if="area.wfp_area_id == 3" ng-click="quicklinks($event)">Asia</a>
+          <a ng-if="area.wfp_area_id == 4" ng-click="quicklinks($event)">Middle East</a>   
+        {% endverbatim %} 
+      <ul class="nav closed" id="_links">
+        <li ng-repeat="detail in area.items">
+          <a href="{% url "cyclone_detail" %}?iso={% verbatim %}{{ detail.iso3 }}&country={{detail.extended_name}}{% endverbatim %}">{% verbatim %}{{ detail.extended_name }}{% endverbatim %} </a>
+        </li>  
+      </ul> 
+    </li>
+  </ul>
+</nav>  
  
 

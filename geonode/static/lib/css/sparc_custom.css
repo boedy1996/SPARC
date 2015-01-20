@@ -195,3 +195,9 @@ nav.filter h4 {
 .table>thead>tr>th {
 	padding: 7.7px !important;
 }
+
+nav.filter li ul {
+	border-bottom: 1px solid #eee;
+	cursor: pointer;
+	padding: 5px 10px 5px 10px;
+}
