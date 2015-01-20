@@ -201,3 +201,69 @@ nav.filter li ul {
 	cursor: pointer;
 	padding: 5px 10px 5px 10px;
 }
+
+
+
+.badge_legend {
+	display: inline-block;
+	min-width: 10px;
+	padding: 3px 7px;
+	font-size: 12px;
+	font-weight: 700;
+	color: #fff;
+	line-height: 1;
+	vertical-align: baseline;
+	white-space: nowrap;
+	text-align: center;
+	border-radius: 10px;
+}
+
+.RP25 {
+	background-color: #082155;
+}
+.RP50 {
+	background-color: #193C84;
+}
+.RP100 {
+	background-color: #2F5BB4;
+}
+.RP200 {
+	background-color: #4F7CD5;
+}
+.RP500 {
+	background-color: #82A3E5;
+}
+.RP1000 {
+	background-color: #B5CAF3;
+}
+
+.cyclone1 {
+	background-color: #fa4f00;
+}
+.cyclone2 {
+	background-color: #fc8200;
+}
+.cyclone3 {
+	background-color: #fcb100;
+}
+.cyclone4 {
+	background-color: #f7df00;
+}
+.cyclone5 {
+	background-color: #e0f500;
+}
+.cyclone6 {
+	background-color: #baf700;
+}
+.cyclone7 {
+	background-color: #8cf700;
+}
+.cyclone8 {
+	background-color: #5bf700;
+}
+.cyclone9 {
+	background-color: #00f500;
+}
+.cyclone10 {
+	background-color: #00f500;
+}
