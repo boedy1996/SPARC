@@ -256,7 +256,7 @@
 
     $http.get("../getCountry/").success(function(data, status) {
       angular.forEach(data, function(row){
-        if $scope.IsJsonString(row[0])
+        if ($scope.IsJsonString(row[0]))
           $scope.Country.push(JSON.parse(row[0])
         else
           $scope.Country.push(row[0]);  
