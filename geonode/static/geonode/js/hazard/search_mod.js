@@ -313,7 +313,8 @@
         var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
 
         for (var monthNumber in _shortMonthName){
-          _each.data[monthNumber] += Math.floor(data.properties[rp][_shortMonthName[monthNumber]]*FCS_value);
+          if (typeof data.properties[rp] != 'undefined')
+            _each.data[monthNumber] += Math.floor(data.properties[rp][_shortMonthName[monthNumber]]*FCS_value);
         }
 
         $scope.privateHighchartsNG.series.push(_each);
@@ -343,9 +344,10 @@
             var FCS_value = row.properties.FCS/100
           else 
             var FCS_value = 1;
-          for (var monthNumber in _shortMonthName){
-            _each.data[monthNumber] += Math.floor(row.properties[rp][_shortMonthName[monthNumber]]*FCS_value);
-          }
+          if (typeof row.properties[rp] != 'undefined')
+            for (var monthNumber in _shortMonthName){
+              _each.data[monthNumber] += Math.floor(row.properties[rp][_shortMonthName[monthNumber]]*FCS_value);
+            }
         });
         $scope.highchartsNG.series.push(_each);
       });
@@ -366,18 +368,20 @@
         else 
           var FCS_value = 1;
         angular.forEach(rps, function(rp){
-          _each.jan += Math.floor(row.properties[rp].jan*FCS_value);
-          _each.feb += Math.floor(row.properties[rp].feb*FCS_value);
-          _each.mar += Math.floor(row.properties[rp].mar*FCS_value);
-          _each.apr += Math.floor(row.properties[rp].apr*FCS_value);
-          _each.may += Math.floor(row.properties[rp].may*FCS_value);
-          _each.jun += Math.floor(row.properties[rp].jun*FCS_value);
-          _each.jul += Math.floor(row.properties[rp].jul*FCS_value);
-          _each.aug += Math.floor(row.properties[rp].aug*FCS_value);
-          _each.sep += Math.floor(row.properties[rp].sep*FCS_value);
-          _each.oct += Math.floor(row.properties[rp].oct*FCS_value);
-          _each.nov += Math.floor(row.properties[rp].nov*FCS_value);
-          _each.dec += Math.floor(row.properties[rp].dec*FCS_value);
+          if (typeof row.properties[rp] != 'undefined'){
+            _each.jan += Math.floor(row.properties[rp].jan*FCS_value);
+            _each.feb += Math.floor(row.properties[rp].feb*FCS_value);
+            _each.mar += Math.floor(row.properties[rp].mar*FCS_value);
+            _each.apr += Math.floor(row.properties[rp].apr*FCS_value);
+            _each.may += Math.floor(row.properties[rp].may*FCS_value);
+            _each.jun += Math.floor(row.properties[rp].jun*FCS_value);
+            _each.jul += Math.floor(row.properties[rp].jul*FCS_value);
+            _each.aug += Math.floor(row.properties[rp].aug*FCS_value);
+            _each.sep += Math.floor(row.properties[rp].sep*FCS_value);
+            _each.oct += Math.floor(row.properties[rp].oct*FCS_value);
+            _each.nov += Math.floor(row.properties[rp].nov*FCS_value);
+            _each.dec += Math.floor(row.properties[rp].dec*FCS_value);
+          }  
         });
         $scope.rowCollection.push(_each);
       });

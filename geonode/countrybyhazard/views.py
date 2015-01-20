@@ -153,11 +153,16 @@ def getGeoJSON_Flood_Data(request):
 				x["properties"]["RP500"]=newY
 			elif newY["rp"]==1000 and str(newY["adm2_code"])==str(x["properties"]["adm2_code"]):	
 				x["properties"]["RP1000"]=newY
-		x["properties"]["FCS"]=0		
-		x["properties"]["active"]=x["properties"]["RP25"]
+		x["properties"]["FCS"]=0
 		currentDate = datetime.datetime.now()
 		monthNameTemp = currentDate.strftime("%b").lower()
-		x["properties"]["active"]["active_month"] = x["properties"]["active"][monthNameTemp]
+		try:
+		  x["properties"]["active"]=x["properties"]["RP25"]		
+		  x["properties"]["active"]["active_month"] = x["properties"]["active"][monthNameTemp]
+		except: 
+		  x["properties"]["active"]={'iso3':'0','adm2_code':x["properties"]["adm2_code"],'adm2_code':x["properties"]["adm2_code"], 'rp': 0, 'jan':0,'feb':0,'mar':0,'apr':0,'may':0,'jun':0,'jul':0,'aug':0,'sep':0,'oct':0,'nov':0,'dec':0,'active_month':0}		
+		
+		
 
 	cursor.close()
 	del cursor
