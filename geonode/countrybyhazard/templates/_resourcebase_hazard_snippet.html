@@ -2,7 +2,7 @@
   <article ng-repeat="item in results" resource_id="{{ item.iso3 }}" ng-cloak>
   	<div class="row items-list">
       <div class="col-md-6">
-        <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.extended_name}}
+        <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.name}}
 ">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
         <p class="abstract"  ng-if="item.extreme.pop == 0">No assessment performed</p>
         <p class="abstract"  ng-if="item.tot_pop > 0">Total Population (2011) : {{ item.tot_pop | number:0 }} </p>

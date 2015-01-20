@@ -247,6 +247,7 @@
 
     $http.get("https://maps.googleapis.com/maps/api/geocode/json?address="+$location.search()['country']).success(function(data, status) {
       leafletData.getMap().then(function (map) {
+        console.log(data);
         var southWest = L.latLng(data.results[0].geometry.bounds.southwest.lat, data.results[0].geometry.bounds.southwest.lng);
         var northEast = L.latLng(data.results[0].geometry.bounds.northeast.lat, data.results[0].geometry.bounds.northeast.lng);
         var bounds = L.latLngBounds(southWest, northEast);           

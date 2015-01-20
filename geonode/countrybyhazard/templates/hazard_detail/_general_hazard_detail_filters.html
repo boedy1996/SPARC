@@ -69,7 +69,7 @@
         {% endverbatim %} 
       <ul class="nav closed" id="_links">
         <li ng-repeat="detail in area.items">
-          <a href="{% url "hazard_detail" %}?iso={% verbatim %}{{ detail.iso3 }}&country={{detail.extended_name}}{% endverbatim %}">{% verbatim %}{{ detail.extended_name }}{% endverbatim %} </a>
+          <a href="{% url "hazard_detail" %}?iso={% verbatim %}{{ detail.iso3 }}&country={{detail.name}}{% endverbatim %}">{% verbatim %}{{ detail.extended_name }}{% endverbatim %} </a>
         </li>  
       </ul> 
     </li>
