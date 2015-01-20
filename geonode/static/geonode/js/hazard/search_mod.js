@@ -227,7 +227,7 @@
       angular.forEach($scope.popFloodedData.features, function(row){
 
           last_adm1_code = row.properties.adm1_code;
-          $http.get("http://reporting.vam.wfp.org/JSON/SPARC_GetFCS.aspx?adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=1").success(function(response, status) {
+          $http.get("http://reporting.vam.wfp.org/JSON/SPARC_GetFCS.aspx?adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=2").success(function(response, status) {
               var maxMonthYear = new Date(2000, 0, 1, 0, 0, 0, 0);
               angular.forEach(response, function(item){
                 var currentMonthYear = new Date(item.FCS_year, item.FCS_month-1, 1, 0, 0, 0, 0);
