@@ -98,4 +98,42 @@
 
   </div>
 
+  <div class="row">
+    <div class="col-md-6 column" style="padding-left:0;">
+      <div class="box blue">
+        <div class="box-header">
+          <h4><i class="fa fa-exchange"></i>Flood History (source : EMDAT)</h4>
+        </div>
+        <div class="box-content">
+          <table st-table="emdatData" class="table table-striped table_font header-fixed2">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Occurences</th>
+                <th>Deaths</th>
+                <th>Injured</th>
+                <th>Affected</th>
+                <th>Homeless</th>
+                <th>Total Affected</th>
+                <th>Total Damage (000 $)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="row in emdatData">
+                <td>{{row.start_year}}</td>
+                <td>{{row.occurrence | number:0 }}</td>
+                <td align="right">{{row.deaths | number:0 }}</td>
+                <td align="right">{{row.injured | number:0 }}</td>
+                <td align="right">{{row.affected | number:0 }}</td>
+                <td align="right">{{row.homeless | number:0 }}</td>
+                <td align="right">{{row.total_affected | number:0 }}</td>
+                <td align="right">{{row.total_damage | number:0 }}</td>
+              </tr>
+            </tbody>
+          </table>  
+        </div>  
+      </div>  
+    </div>  
+  </div>  
+
   {% endverbatim %}

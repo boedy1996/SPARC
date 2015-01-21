@@ -100,6 +100,11 @@ body {
 	font-weight: bolder;
 }
 
+.header-fixed2{
+	width: 100%;
+}
+
+
 .header-fixed {
     width: 100% 
 }

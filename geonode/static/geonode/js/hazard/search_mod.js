@@ -30,6 +30,7 @@
       //onEachFeature: onEachFeature,
       resetStyleOnMouseout: true
     };
+    $scope.emdatData = [];
 
     var popup = new L.Popup({offset:new L.Point(0,-3)});
 
@@ -223,6 +224,11 @@
       $scope.addChartSeries(['RP25'],$scope.popFloodedData);
       $scope.addTableSeries(['RP25'],$scope.popFloodedData);
 
+      $http.get("../getEmdatData/?type=flood&iso3="+$location.search()['iso']).success(function(dataEmdat,status){
+        $scope.emdatData = dataEmdat.data;
+        console.log($scope.emdatData);
+      });
+
       //console.log($scope.popFloodedData);
       angular.forEach($scope.popFloodedData.features, function(row){
 
@@ -247,7 +253,7 @@
 
     $http.get("https://maps.googleapis.com/maps/api/geocode/json?address="+$location.search()['country']).success(function(data, status) {
       leafletData.getMap().then(function (map) {
-        console.log(data);
+        //console.log(data);
         var southWest = L.latLng(data.results[0].geometry.bounds.southwest.lat, data.results[0].geometry.bounds.southwest.lng);
         var northEast = L.latLng(data.results[0].geometry.bounds.northeast.lat, data.results[0].geometry.bounds.northeast.lng);
         var bounds = L.latLngBounds(southWest, northEast);           
@@ -262,7 +268,7 @@
         else
           $scope.Country.push(row[0]);  
       });
-      console.log($scope.Country);
+      //console.log($scope.Country);
     });
 
     $scope.refreshGEOJSON = function(){

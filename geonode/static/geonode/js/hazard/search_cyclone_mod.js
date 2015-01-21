@@ -27,6 +27,7 @@
     $scope.selectedObject = null;
     $scope.FCS = false;
     $scope.Country = [];
+    $scope.emdatData = [];
     $scope.geojson = {
       data: [],
       style: style,
@@ -222,6 +223,10 @@
     $http.get("../../getCycloneGeoJSON/?iso3="+$location.search()['iso']).success(function(data, status) {
       var last_adm1_code = 0;
       $scope.popFloodedData = data;
+
+      $http.get("../../getEmdatData/?type=cyclone&iso3="+$location.search()['iso']).success(function(dataEmdat,status){
+        $scope.emdatData = dataEmdat.data;
+      });
 
       /// add FCS
       angular.forEach($scope.popFloodedData.features, function(row){

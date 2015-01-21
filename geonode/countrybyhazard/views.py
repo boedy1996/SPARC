@@ -1,7 +1,7 @@
 from django.shortcuts import HttpResponse, render,render_to_response
 from django.template import RequestContext, Template
 import psycopg2
-import json
+import json, requests
 import datetime
 
 
@@ -37,6 +37,14 @@ def getCountry(request):
 	connection.close()
 	data = json.dumps(rows, default=jdefault)
 	return HttpResponse(data, mimetype = 'application/json')
+
+def getEmdatData(request):
+	if request.GET.get('type') == 'flood':
+		url = "http://emdat.be/advanced_search/php/search.php?_dc=1421829005944&start_year=1900&end_year=2025&continent=&region=&country_name="+request.GET.get('iso3')+"&dis_group=&dis_subgroup=Hydrological&dis_type=&dis_subtype=&aggreg=start_year&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22occurrence%22%2C%22direction%22%3A%22ASC%22%7D%5D"	
+	elif request.GET.get('type') == 'cyclone':
+		url = "http://emdat.be/advanced_search/php/search.php?_dc=1421836347780&start_year=1900&end_year=2025&continent=&region=&country_name="+request.GET.get('iso3')+"&dis_group=Natural&dis_subgroup=Meteorological&dis_type=Storm&dis_subtype=&aggreg=start_year&page=1&start=0&limit=1000"	
+	resp = requests.get(url=url)
+	return HttpResponse(resp, mimetype = 'application/json')
 
 def getGeoJSON_Cyclone_Data(request):
 	print '>>> querying the admin2 level data from database'
