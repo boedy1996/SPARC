@@ -262,7 +262,11 @@
 
       $http.get("../getHeatMapData/?type=flood&iso3="+$location.search()['iso']).success(function(heatRes,status){
         //console.log(heatRes);
-        angular.forEach(heatRes[0].features, function(item){
+        if ($scope.IsJsonString(heatRes[0]))
+           var finData = JSON.parse(heatRes[0])
+        else
+          var finData = heatRes[0];  
+        angular.forEach(finData.features, function(item){
           console.log(item);
           $scope.floodEvents.data.push({'lat':item.geometry.coordinates[1], 'lng':item.geometry.coordinates[0], 'count':item.properties.count});
         });
