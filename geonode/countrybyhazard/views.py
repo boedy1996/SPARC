@@ -38,6 +38,25 @@ def getCountry(request):
 	data = json.dumps(rows, default=jdefault)
 	return HttpResponse(data, mimetype = 'application/json')
 
+def getHeatMapData(request):
+	connection = psycopg2.connect(__dbConnect)
+	cursor = connection.cursor()
+
+	query = "SELECT row_to_json(fc) "
+	query += "FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features "
+	query += "FROM (SELECT 'Feature' As type "
+	query += ", ST_AsGeoJSON(lg.geom)::json As geometry "
+	#query += ", ST_AsGeoJSON(ST_Centroid(lg.the_geom))::json As geometry_points "
+	query += ", row_to_json((SELECT l FROM (SELECT adm2_name, count) As l "
+	query += "  )) As properties "
+	query += "FROM sparc_flood_events As lg where "
+	query += " lg.iso3='"+request.GET.get('iso3')
+	query += "') As f )  As fc" 	
+	cursor.execute(query)
+	res = cursor.fetchone()
+	geom = json.dumps(res, default=jdefault)
+	return HttpResponse(geom, mimetype = 'application/json')
+
 def getEmdatData(request):
 	if request.GET.get('type') == 'flood':
 		url = "http://emdat.be/advanced_search/php/search.php?_dc=1421829005944&start_year=1900&end_year=2025&continent=&region=&country_name="+request.GET.get('iso3')+"&dis_group=&dis_subgroup=Hydrological&dis_type=&dis_subtype=&aggreg=start_year&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22occurrence%22%2C%22direction%22%3A%22ASC%22%7D%5D"	

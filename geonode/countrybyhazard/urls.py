@@ -11,4 +11,6 @@ urlpatterns = patterns('',
     url(r'^getCycloneGeoJSON/$', views.getGeoJSON_Cyclone_Data, name='getGeoJSON_Cyclone_Data'),
     url(r'^getCountry/$', views.getCountry, name='getCountry'),
     url(r'^getEmdatData/$', views.getEmdatData, name='getEmdatData'),
+    url(r'^getHeatMapData/$', views.getHeatMapData, name='getHeatMapData'),
+    
 )

@@ -24,6 +24,7 @@
     $scope.selectedObject = null;
     $scope.FCS = false;
     $scope.Country = [];
+    $scope.floodEvents = {'max': 8, 'data' : []};
     $scope.geojson = {
       data: [],
       style: style,
@@ -93,6 +94,32 @@
         },
         loading: false
     }
+
+    var radius = 0.5;
+    if ($scope.countryISO3=='IND'){
+      radius = 2;
+    }
+
+    var cfg = {
+      // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+      // if scaleRadius is false it will be the constant radius used in pixels
+      "radius": radius,
+      "maxOpacity": .8, 
+      // scales the radius based on map zoom
+      "scaleRadius": true, 
+      // if set to false the heatmap uses the global maximum for colorization
+      // if activated: uses the data maximum within the current map boundaries 
+      //   (there will always be a red spot with useLocalExtremas true)
+      "useLocalExtrema": true,
+      // which field name in your data represents the latitude - default "lat"
+      latField: 'lat',
+      // which field name in your data represents the longitude - default "lng"
+      lngField: 'lng',
+      // which field name in your data represents the data value - default "value"
+      valueField: 'count'
+    };
+
+    var heatmapLayer = new HeatmapOverlay(cfg);
 
     $scope.defaults = {
        scrollWheelZoom: false
@@ -176,7 +203,12 @@
       var loadingControl = L.Control.loading({
         separate: true
       });
+      
       map.addControl(loadingControl);
+      //map.addLayer(heatmapLayer);
+      //console.log(heatmapLayer)
+      //console.log(map);
+      
     });
 
     function onEachFeature(feature, layer) {
@@ -226,7 +258,16 @@
 
       $http.get("../getEmdatData/?type=flood&iso3="+$location.search()['iso']).success(function(dataEmdat,status){
         $scope.emdatData = dataEmdat.data;
-        console.log($scope.emdatData);
+      });
+
+      $http.get("../getHeatMapData/?type=flood&iso3="+$location.search()['iso']).success(function(heatRes,status){
+        //console.log(heatRes);
+        angular.forEach(heatRes[0].features, function(item){
+          //console.log(item);
+          $scope.floodEvents.data.push({'lat':item.geometry.coordinates[1], 'lng':item.geometry.coordinates[0], 'count':item.properties.count});
+        });
+        console.log($scope.floodEvents);
+        //heatmapLayer.setData($scope.floodEvents);
       });
 
       //console.log($scope.popFloodedData);
@@ -448,6 +489,18 @@
       } else {
         $scope.layers.overlays.probabilities.visible = false;  
       }
+
+      if ($.inArray('popatrisk_heat', selectedLayerOverlay)>=0){
+         leafletData.getMap().then(function (map) {
+            map.addLayer(heatmapLayer);
+            heatmapLayer.setData($scope.floodEvents);
+          });
+      } else {
+        leafletData.getMap().then(function (map) {
+          map.removeLayer(heatmapLayer);
+        });  
+      }
+      
  
 
     }
