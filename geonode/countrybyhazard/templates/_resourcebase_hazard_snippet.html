@@ -9,10 +9,11 @@
         <p class="abstract"  ng-if="item.tot_pop > 0">GDP Percapita (USD) : {{ item.gdp_per_cap | number:0 }} </p>
         <p class="abstract"  ng-if="item.tot_pop > 0">Human Development Index : {{ item.hdi | number:2 }} </p>-->
         <p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop | number:0 }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>
-        <p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>	
+        <!--<p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>-->	
       </div>
       <div class="col-md-6">
-  	    <img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x&cht=lc&chd=t:{{ item.chartvalue }}&chco=AAB4FB,AABBBC,FF0000,00FF00,0000FF,00FFFF&chls=2.0&chs=350x150&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low" />
+  	    <!--<img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x&cht=lc&chd=t:{{ item.chartvalue }}&chco=AAB4FB,AABBBC,FF0000,00FF00,0000FF,00FFFF&chls=2.0&chs=350x150&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low" />-->
+        <img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x,y&cht=bvs&chbh=15,5&chds=a&chd=t:{{ item.chartvalue }}&chco=7E9FD1,72A984,D08C82,A49D8C,E8D5C8,D0DDB9&chls=2.0&chs=350x150&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low&chtt=Monthly Population at Risk&chts=919191,10&chxs=0,919191,9,0,lt|1,919191,9,0,lt&chdls=919191,9" />
   	  </div>
     </div>
   </article>
