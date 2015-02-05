@@ -544,7 +544,6 @@ class CountryResource(HazardModelApi):
         bundle.data['popatrisk'] = transaction
         ttt = bundle.data['popatrisk']
         currentMonth = datetime.now().month
-        print currentMonth
         popCurrentMonth = 0
         for x in ttt :
             popCurrentMonth += x[monthCode[currentMonth-1]+'__sum']
