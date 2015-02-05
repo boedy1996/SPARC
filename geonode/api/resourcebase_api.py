@@ -37,6 +37,8 @@ from django.db.models import Sum
 import operator  
 import copy
 
+from datetime import datetime
+
 LAYER_SUBTYPES = {
     'vector': 'dataStore',
     'raster': 'coverageStore',
@@ -522,14 +524,16 @@ class CountryResource(HazardModelApi):
     def alter_list_data_to_serialize(self, request, data):
         def getKey(item):
             return item.data['max_pop']
+        def getKey1(item):
+            return item.data['popCurrentMonth']    
 
         if "rank_by" in request.GET:
             data_med = copy.copy(data)
             data['objects']=[]
             if request.GET["rank_by"]=='max_pop':      
                 data['objects'] = sorted(data_med['objects'], key=getKey, reverse=True)
-            else:
-                data['objects'] = sorted(data_med['objects'], key=getKey)   
+            elif request.GET["rank_by"]=='max_pop_month':
+                data['objects'] = sorted(data_med['objects'], key=getKey1, reverse=True)   
         return data
 
     def dehydrate(self, bundle):
@@ -539,7 +543,11 @@ class CountryResource(HazardModelApi):
         transaction = FloodedPopAtRisk.objects.filter(iso3_id=bundle.data['iso3']).values('iso3', 'rper').order_by('iso3').annotate(Sum(monthCode[0])).annotate(Sum(monthCode[1])).annotate(Sum(monthCode[2])).annotate(Sum(monthCode[3])).annotate(Sum(monthCode[4])).annotate(Sum(monthCode[5])).annotate(Sum(monthCode[6])).annotate(Sum(monthCode[7])).annotate(Sum(monthCode[8])).annotate(Sum(monthCode[9])).annotate(Sum(monthCode[10])).annotate(Sum(monthCode[11]))
         bundle.data['popatrisk'] = transaction
         ttt = bundle.data['popatrisk']
+        currentMonth = datetime.now().month
+        print currentMonth
+        popCurrentMonth = 0
         for x in ttt :
+            popCurrentMonth += x[monthCode[currentMonth-1]+'__sum']
             for y in x:
                 if x[y]>RPExtreme['RP'+str(x['rper'])]['pop']:
                     if y not in ['rper','iso3']:
@@ -636,6 +644,7 @@ class CountryResource(HazardModelApi):
         bundle.data['extreme'] = extreme
         bundle.data['max_pop'] = extreme['pop']
         bundle.data['RPExtreme'] = RPExtreme
+        bundle.data['popCurrentMonth'] = popCurrentMonth
         return bundle
 
     class Meta:

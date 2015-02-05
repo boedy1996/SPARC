@@ -1,16 +1,16 @@
 {% verbatim %}
 <style>
 table, th , td  {
-  border: 1px solid grey;
+  border: 0px solid grey;
   border-collapse: collapse;
   padding: 5px;
   font-size: 12px;
 }
 table tr:nth-child(odd) {
-  background-color: #f1f1f1;
+  background-color: #ffffff;
 }
 table tr:nth-child(even) {
-  background-color: #ffffff;
+  background-color: #f1f1f1;
 }
 </style>
 
@@ -20,7 +20,8 @@ table tr:nth-child(even) {
         <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.name}}
 ">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
         <p class="abstract"  ng-if="item.extreme.pop == 0">No assessment performed</p>
-        <p class="abstract"  ng-if="item.extreme.pop > 0">Table below representing the extreme population at risk for each probability.</p>
+        <p class="abstract"  ng-if="item.popCurrentMonth > 0">Total Population at Risk for all return period on this month is {{ item.popCurrentMonth | number:0 }}</p>
+        <!--<p class="abstract"  ng-if="item.extreme.pop > 0">Table below representing the extreme population at risk for each probability.</p>-->
         <table class="abstract" ng-if="item.extreme.pop > 0">
           <thead>
             <th>Return Period</th>
@@ -61,7 +62,7 @@ table tr:nth-child(even) {
         <!--<p class="abstract"  ng-if="item.tot_pop > 0">Total Population (2011) : {{ item.tot_pop | number:0 }} </p>
         <p class="abstract"  ng-if="item.tot_pop > 0">GDP Percapita (USD) : {{ item.gdp_per_cap | number:0 }} </p>
         <p class="abstract"  ng-if="item.tot_pop > 0">Human Development Index : {{ item.hdi | number:2 }} </p>-->
-        <!--<p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop | number:0 }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>-->
+        <p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop | number:0 }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>
         <!--<p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>-->	
       </div>
       <div class="col-md-6">
