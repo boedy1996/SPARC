@@ -534,12 +534,41 @@ class CountryResource(HazardModelApi):
 
     def dehydrate(self, bundle):
         extreme = {'pop': 0, 'month' : "No Data", 'RP':'No Data'}
+        RPExtreme = {'RP25':{'month':'','pop':0}, 'RP50':{'month':'','pop':0}, 'RP100':{'month':'','pop':0}, 'RP200':{'month':'','pop':0}, 'RP500':{'month':'','pop':0}, 'RP1000':{'month':'','pop':0}}
         monthCode = ['mjan','mfeb','mmar','mapr','mmay','mjun','mjul','maug','msep','moct','mnov','mdes']
         transaction = FloodedPopAtRisk.objects.filter(iso3_id=bundle.data['iso3']).values('iso3', 'rper').order_by('iso3').annotate(Sum(monthCode[0])).annotate(Sum(monthCode[1])).annotate(Sum(monthCode[2])).annotate(Sum(monthCode[3])).annotate(Sum(monthCode[4])).annotate(Sum(monthCode[5])).annotate(Sum(monthCode[6])).annotate(Sum(monthCode[7])).annotate(Sum(monthCode[8])).annotate(Sum(monthCode[9])).annotate(Sum(monthCode[10])).annotate(Sum(monthCode[11]))
         bundle.data['popatrisk'] = transaction
         ttt = bundle.data['popatrisk']
         for x in ttt :
             for y in x:
+                if x[y]>RPExtreme['RP'+str(x['rper'])]['pop']:
+                    if y not in ['rper','iso3']:
+                        RPExtreme['RP'+str(x['rper'])]['pop']=x[y]
+                        if y=='mjan__sum':
+                            month = 'January'
+                        elif y=='mfeb__sum':
+                            month = 'February' 
+                        elif y=='mmar__sum':
+                            month = 'March'
+                        elif y=='mapr__sum':
+                            month = 'April'  
+                        elif y=='mmay__sum':
+                            month = 'May' 
+                        elif y=='mjun__sum':
+                            month = 'June'   
+                        elif y=='mjul__sum':
+                            month = 'July'
+                        elif y=='maug__sum':
+                            month = 'August'  
+                        elif y=='msep__sum':
+                            month = 'September'   
+                        elif y=='moct__sum':
+                            month = 'October'  
+                        elif y=='mnov__sum':
+                            month = 'November' 
+                        elif y=='mdes__sum':
+                            month = 'December'
+                        RPExtreme['RP'+str(x['rper'])]['month'] = month   
                 if x[y]>extreme['pop']:
                     if y not in ['rper','iso3']:
                         extreme['pop'] = x[y]
@@ -606,6 +635,7 @@ class CountryResource(HazardModelApi):
         bundle.data['chartvalue']=grab['25']+'|'+grab['50']+'|'+grab['100']+'|'+grab['200']+'|'+grab['500']+'|'+grab['1000']
         bundle.data['extreme'] = extreme
         bundle.data['max_pop'] = extreme['pop']
+        bundle.data['RPExtreme'] = RPExtreme
         return bundle
 
     class Meta:
