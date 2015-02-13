@@ -17,7 +17,7 @@
         month = date.getMonth();
     var _shortMonthName = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
     $scope.selectedRP = ['RP25'];
-    $scope.selectedMultipleMonth = [];
+    $scope.selectedMultipleMonth = [_shortMonthName[month]];
     $scope.countryName = $location.search()['country'];
     $scope.countryISO3 = $location.search()['iso'];
     $scope.selectedMonth = _shortMonthName[month];
@@ -669,7 +669,6 @@
 
     $scope.month_multiple_choice_listener = function($event){
       var element = $($event.target);
-      
       var query_entry = [];
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
