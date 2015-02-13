@@ -669,6 +669,7 @@
 
     $scope.month_multiple_choice_listener = function($event){
       var element = $($event.target);
+      
       var query_entry = [];
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
