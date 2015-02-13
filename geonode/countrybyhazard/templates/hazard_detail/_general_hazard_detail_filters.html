@@ -3,7 +3,8 @@
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Legend" %}</a></h4>
   <ul class="nav closed legend" id="legendCustom">
   </ul>
-</nav>  
+</nav> 
+<!-- 
 <nav class="filter">
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Base Layers" %}</a></h4>
   <ul class="nav" id="baselayers">
@@ -12,7 +13,8 @@
     <li><a data-value="outdoors" data-filter="outdoors" ng-click="single_choice_listener($event)">Outdoors</a></li>
     <li><a data-value="osm" data-filter="osm" ng-click="single_choice_listener($event)">OpenStreetMap</a></li>
   </ul>
-</nav>  
+</nav> 
+--> 
 <nav class="filter">
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Layers" %}</a></h4>
   <ul class="nav closed" id="layers">
@@ -24,18 +26,18 @@
 <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Month" %}</a></h4>
   <ul class="nav closed" id="months">   
-    <li><a data-value="jan" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "January" monthName %} class="active" {% endifequal %}>January</a><li>
-    <li><a data-value="feb" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "February" monthName %} class="active" {% endifequal %}>February</a><li>
-    <li><a data-value="mar" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "March" monthName %} class="active" {% endifequal %}>March</a><li>
-    <li><a data-value="apr" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "April" monthName %} class="active" {% endifequal %}>April</a><li>
-    <li><a data-value="may" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "May" monthName %} class="active" {% endifequal %}>May</a><li>
-    <li><a data-value="jun" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "June" monthName %} class="active" {% endifequal %}>June</a><li>
-    <li><a data-value="jul" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "July" monthName %} class="active" {% endifequal %}>July</a><li>
-    <li><a data-value="aug" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "August" monthName %} class="active" {% endifequal %}>August</a><li>
-    <li><a data-value="sep" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "September" monthName %} class="active" {% endifequal %}>September</a><li>
-    <li><a data-value="oct" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "October" monthName %} class="active" {% endifequal %}>October</a><li> 
-    <li><a data-value="nov" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "November" monthName %} class="active" {% endifequal %}>November</a><li>
-    <li><a data-value="dec" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %}>December</a><li>
+    <li><a data-value="jan" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "January" monthName %} class="active" {% endifequal %}>January</a><li>
+    <li><a data-value="feb" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "February" monthName %} class="active" {% endifequal %}>February</a><li>
+    <li><a data-value="mar" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "March" monthName %} class="active" {% endifequal %}>March</a><li>
+    <li><a data-value="apr" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "April" monthName %} class="active" {% endifequal %}>April</a><li>
+    <li><a data-value="may" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "May" monthName %} class="active" {% endifequal %}>May</a><li>
+    <li><a data-value="jun" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "June" monthName %} class="active" {% endifequal %}>June</a><li>
+    <li><a data-value="jul" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "July" monthName %} class="active" {% endifequal %}>July</a><li>
+    <li><a data-value="aug" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "August" monthName %} class="active" {% endifequal %}>August</a><li>
+    <li><a data-value="sep" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "September" monthName %} class="active" {% endifequal %}>September</a><li>
+    <li><a data-value="oct" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "October" monthName %} class="active" {% endifequal %}>October</a><li> 
+    <li><a data-value="nov" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "November" monthName %} class="active" {% endifequal %}>November</a><li>
+    <li><a data-value="dec" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %}>December</a><li>
   </ul>
 </nav>  
 <nav class="filter">  
@@ -50,13 +52,15 @@
   </ul>
 </nav>  
 <nav class="filter">  
-   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "External Sources" %}</a></h4>
+   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Vulnerability" %}</a></h4>
   <ul class="nav closed" id="external">
     <li><a data-value="FCS" data-filter="" ng-click="external_choice_listener($event)">Food Consumption</a></li>
     <li><a data-value="CSI" data-filter="" ng-click="external_choice_listener($event)">CSI</a></li>
     <li><a data-value="IS" data-filter="" ng-click="external_choice_listener($event)">Income Sources</a></li>
   </ul>
 </nav>
+
+<!--
 <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Quick Links" %}</a></h4>
   <ul class="nav closed" id="Country">
@@ -75,5 +79,6 @@
     </li>
   </ul>
 </nav>  
+-->
 
 

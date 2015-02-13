@@ -17,13 +17,18 @@
         month = date.getMonth();
     var _shortMonthName = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
     $scope.selectedRP = ['RP25'];
+    $scope.selectedMultipleMonth = [];
     $scope.countryName = $location.search()['country'];
     $scope.countryISO3 = $location.search()['iso'];
     $scope.selectedMonth = _shortMonthName[month];
+    $scope.legendRangePercentage = [0.5,0.75,1];
     $scope.popFloodedData = null;
     $scope.selectedObject = null;
     $scope.FCS = false;
+    $scope.maxPopAllProbs = 0;
     $scope.Country = [];
+    $scope.hazard = true;
+    $scope.legendRange = [0,100,1000];
     $scope.floodEvents = {'max': 8, 'data' : []};
     $scope.geojson = {
       data: [],
@@ -227,6 +232,7 @@
     }
 
     function getColor(x) {
+      /*
       return x > 10000 ? '#FF0000' :
              x > 7500  ? '#EF000F' :
              x > 5000  ? '#DF001F' :
@@ -244,17 +250,46 @@
              x >    5  ? '#1F00DF' :
              x >    2  ? '#0F00EF' :
              x >    0  ? '#0000FF' :
-                         '#FFFFFF' ;
+                         '#FFFFFF' ;*/
+      return x > $scope.legendRange[4] ? '#FF0000' :
+             x > $scope.legendRange[3] ? '#9933FF' :
+             x > $scope.legendRange[2] ? '#FF9933' :                   
+             x > $scope.legendRange[1] ? '#99CC33' :
+             x > $scope.legendRange[0] ? '#0000FF' :
+                                         '#FFFFFF' ;
+
     }
 
     NProgress.start();
     $('#screen').css({  "display": "block", opacity: 0.25, "width":$(document).width(),"height":$(document).height(), "z-index":1000000});
     $http.get("../getFloodedGeoJSON/?iso3="+$location.search()['iso']).success(function(data, status) {
       var last_adm1_code = 0;
+      var RPs = ['RP25','RP50','RP100','RP200','RP500','RP1000'];
       $scope.popFloodedData = data;
       $scope.updateGEOJSON(data);
       $scope.addChartSeries(['RP25'],$scope.popFloodedData);
       $scope.addTableSeries(['RP25'],$scope.popFloodedData);
+
+      angular.forEach(data.features, function(rowC){
+        angular.forEach(_shortMonthName, function(monthName){
+          var tempValue = 0;
+          angular.forEach(RPs, function(RP){
+            tempValue += rowC.properties[RP][monthName]
+          });
+          if (tempValue > $scope.maxPopAllProbs) $scope.maxPopAllProbs = tempValue;
+        });
+      });
+      console.log($scope.maxPopAllProbs);
+      console.log(Math.ceil($scope.maxPopAllProbs/1000)*1000);
+      $scope.maxPopAllProbs = Math.ceil($scope.maxPopAllProbs/1000)*1000;
+
+      //var eachRange = $scope.maxPopAllProbs/4;
+      for (var tt=0;tt<2;tt++){
+        $scope.legendRange.push($scope.legendRangePercentage[tt]*$scope.maxPopAllProbs);
+      }
+
+      console.log($scope.legendRange);
+      $scope.generateLegend();
 
       $http.get("../getEmdatData/?type=flood&iso3="+$location.search()['iso']).success(function(dataEmdat,status){
         $scope.emdatData = dataEmdat.data;
@@ -267,11 +302,8 @@
         else
           var finData = heatRes[0];  
         angular.forEach(finData.features, function(item){
-          console.log(item);
           $scope.floodEvents.data.push({'lat':item.geometry.coordinates[1], 'lng':item.geometry.coordinates[0], 'count':item.properties.count});
         });
-        console.log($scope.floodEvents);
-        //heatmapLayer.setData($scope.floodEvents);
       });
 
       //console.log($scope.popFloodedData);
@@ -313,7 +345,6 @@
         else
           $scope.Country.push(row[0]);  
       });
-      //console.log($scope.Country);
     });
 
     $scope.refreshGEOJSON = function(){
@@ -625,9 +656,56 @@
             $scope.popFloodedData.features[x].properties.active.nov+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].nov*FCS_value;
             $scope.popFloodedData.features[x].properties.active.dec+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].dec*FCS_value;
           }
-        }   
-        $scope.popFloodedData.features[x].properties.active.active_month=Math.floor($scope.popFloodedData.features[x].properties.active[$scope.selectedMonth]);
+        } 
+        $scope.popFloodedData.features[x].properties.active.active_month=0;
+        for (var key in $scope.selectedMultipleMonth){
+          console.log($scope.selectedMultipleMonth[key]);
+          if ($scope.popFloodedData.features[x].properties.active[$scope.selectedMultipleMonth[key]] > $scope.popFloodedData.features[x].properties.active.active_month)
+            $scope.popFloodedData.features[x].properties.active.active_month=Math.floor($scope.popFloodedData.features[x].properties.active[$scope.selectedMultipleMonth[key]]);
+        }
+        //$scope.popFloodedData.features[x].properties.active.active_month=Math.floor($scope.popFloodedData.features[x].properties.active[$scope.selectedMonth]);
       }
+    }
+
+    $scope.month_multiple_choice_listener = function($event){
+      var element = $($event.target);
+      var query_entry = [];
+      var data_filter = element.attr('data-filter');
+      var value = element.attr('data-value');
+      $scope.selectedMultipleMonth = [];
+
+      var allElement = angular.element(element).parent().parent();
+      //console.log(allElement[0].children);
+
+      angular.forEach(allElement[0].children, function(rows){
+        var temp = $(rows.children);
+        if (temp.hasClass('active')){
+          if (temp.attr('data-value')!=value){
+            //console.log(temp.attr('data-value'));
+            $scope.selectedMultipleMonth.push(temp.attr('data-value'));
+          }  
+        }  
+      });
+
+      // If the element is active active then deactivate it
+      if(element.hasClass('active')){
+        // clear the active class from it
+        element.removeClass('active');
+        // Remove the entry from the correct query in scope        
+        query_entry.splice(query_entry.indexOf(value), 1);
+      }
+      // if is not active then activate it
+      else if(!element.hasClass('active')){
+        // Add the entry in the correct query
+        if (query_entry.indexOf(value) == -1){
+          query_entry.push(value);  
+        }         
+        element.addClass('active');
+        $scope.selectedMultipleMonth.push(value);
+      }
+      
+      $scope.manage_featuredata($scope.FCS);     
+      $scope.refreshGEOJSON(); 
     }
 
     $scope.month_choice_listener = function($event){
@@ -762,18 +840,18 @@
       $scope.addPrivateChartSeries($scope.selectedRP, $scope.selectedObject);
     }
 
-    
-    leafletData.getMap().then(function (map) {
-      //console.log(L);
-        var div = L.DomUtil.get('legendCustom'),
-            grades = [0, 2, 5, 7, 10, 25, 50, 75,100,250,500,750,1000,2500,5000,7500,10000],
-            labels = [];
-        // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-            div.innerHTML +=
-                '<li><a class=""><i style="background:' + getColor(grades[i] + 1) + '"></i>'+grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1]  : '+')+'</a></li>';
-        }
-    });
+    $scope.generateLegend = function(){
+      leafletData.getMap().then(function (map) {
+          var div = L.DomUtil.get('legendCustom'),
+              grades = $scope.legendRange,
+              labels = [];
+          // loop through our density intervals and generate a label with a colored square for each interval
+          for (var i = 0; i < grades.length; i++) {
+              div.innerHTML +=
+                  '<li><a class=""><i style="background:' + getColor(grades[i] + 1) + '"></i>'+grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1]  : '+')+'</a></li>';
+          }
+      });
+    }  
 
     $scope.quicklinks = function($event){
       var element = $($event.target);
