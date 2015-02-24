@@ -770,26 +770,43 @@
     }
 
     $scope.RP_choice_listener = function($event){
+      var tempDownTo = ['RP1000','RP500','RP200','RP100','RP50','RP25'];
+      var tempDownToUse = [];
       $scope.selectedRP = [];
       var element = $($event.target);
       var query_entry = [];
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
-      //console.log(element);
+
+      for (var i=tempDownTo.indexOf(value);i<tempDownTo.length;i++){
+        tempDownToUse.push(tempDownTo[i]);
+      }
+
+      console.log(tempDownToUse);
       var allElement = angular.element(element).parent().parent();
       //console.log(allElement[0].children);
 
+
       angular.forEach(allElement[0].children, function(rows){
         var temp = $(rows.children);
+        temp.removeClass('active');
+        if ($.inArray(temp.attr('data-value'), tempDownToUse)>=0){
+          console.log(temp.attr('data-value'));
+          temp.addClass('active');
+          $scope.selectedRP.push(temp.attr('data-value'));
+        }
+        /*
         if (temp.hasClass('active')){
           if (temp.attr('data-value')!=value){
             //console.log(temp.attr('data-value'));
             $scope.selectedRP.push(temp.attr('data-value'));
           }  
-        }  
+        } 
+        */ 
       });
 
-
+      /*
+      console.log($scope.selectedRP);
       // If the element is active active then deactivate it
       if(element.hasClass('active')){
         // clear the active class from it
@@ -806,7 +823,7 @@
         element.addClass('active');
         $scope.selectedRP.push(value);
       }  
-
+      */
       $scope.manage_featuredata($scope.FCS);
 
       $scope.refreshGEOJSON(); 
