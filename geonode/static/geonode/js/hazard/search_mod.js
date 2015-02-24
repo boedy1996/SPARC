@@ -143,6 +143,20 @@
       },
       layers: {
         overlays: {
+          warehouses : {
+            name:'Population Landscan',
+            type: 'wms',
+            url:'http://geonode.wfp.org/geoserver/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:wld_poi_warehouses_wfp',
+              format: 'image/png',
+              //opacity: 0.5,
+              styles : '',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
           landscan : {
             name:'Population Landscan',
             type: 'wms',
@@ -555,6 +569,12 @@
         $scope.layers.overlays.landscan.visible = true;
       } else {
         $scope.layers.overlays.landscan.visible = false;  
+      }
+
+      if ($.inArray('warehouses', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.warehouses.visible = true;
+      } else {
+        $scope.layers.overlays.warehouses.visible = false;  
       }
  
 
