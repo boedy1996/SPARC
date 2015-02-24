@@ -13,6 +13,7 @@
   });
 
   module.controller('hazard_map_Controller', function($injector, $scope, $location, $http, leafletData){
+    $('#floodQL').removeClass('hide');
     var date = new Date(),
         month = date.getMonth();
     var _shortMonthName = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
