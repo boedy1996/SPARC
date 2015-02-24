@@ -143,6 +143,20 @@
       },
       layers: {
         overlays: {
+          landscan : {
+            name:'Population Landscan',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:lscan13',
+              format: 'image/png',
+              opacity: 0.5,
+              styles : 'lscan',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
           probabilities : {
             name:'Flood Probabilities',
             type: 'wms',
@@ -280,8 +294,8 @@
           if (tempValue > $scope.maxPopAllProbs) $scope.maxPopAllProbs = tempValue;
         });
       });
-      console.log($scope.maxPopAllProbs);
-      console.log(Math.ceil($scope.maxPopAllProbs/1000)*1000);
+      //console.log($scope.maxPopAllProbs);
+      //console.log(Math.ceil($scope.maxPopAllProbs/1000)*1000);
       $scope.maxPopAllProbs = Math.ceil($scope.maxPopAllProbs/1000)*1000;
 
       //var eachRange = $scope.maxPopAllProbs/4;
@@ -289,7 +303,7 @@
         $scope.legendRange.push($scope.legendRangePercentage[tt]*$scope.maxPopAllProbs);
       }
 
-      console.log($scope.legendRange);
+      //console.log($scope.legendRange);
       $scope.generateLegend();
 
       $http.get("../getEmdatData/?type=flood&iso3="+$location.search()['iso']).success(function(dataEmdat,status){
@@ -537,6 +551,11 @@
         });  
       }
       
+      if ($.inArray('landscan', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.landscan.visible = true;
+      } else {
+        $scope.layers.overlays.landscan.visible = false;  
+      }
  
 
     }
@@ -660,7 +679,7 @@
         } 
         $scope.popFloodedData.features[x].properties.active.active_month=0;
         for (var key in $scope.selectedMultipleMonth){
-          console.log($scope.selectedMultipleMonth[key]);
+          //console.log($scope.selectedMultipleMonth[key]);
           if ($scope.popFloodedData.features[x].properties.active[$scope.selectedMultipleMonth[key]] > $scope.popFloodedData.features[x].properties.active.active_month)
             $scope.popFloodedData.features[x].properties.active.active_month=Math.floor($scope.popFloodedData.features[x].properties.active[$scope.selectedMultipleMonth[key]]);
         }
