@@ -13,6 +13,8 @@
   }
 </style> 
 
+
+
   <div id="info" class="panel panel-primary info in" ng-show="selectedObject.properties">
     <div class="panel-heading">
       <button type="button" class="close" onclick="$('#info').hide();">
@@ -31,7 +33,7 @@
         <h4><i class="fa fa-map-marker"></i><span ng-bind="countryName"></span></h4>  
       </div>
       <div class="box-content">
-        <leaflet center="center" events="events" defaults="defaults" layers="layers" geojson="geojson">
+        <leaflet center="center" events="events" markers="markers" defaults="defaults" layers="layers" geojson="geojson">
         </leaflet>  
       </div>  
     </div>
@@ -136,3 +138,4 @@
 
 
   {% endverbatim %}
+

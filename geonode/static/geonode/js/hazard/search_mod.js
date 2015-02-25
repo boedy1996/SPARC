@@ -1,7 +1,7 @@
 'use strict';
 
 (function(){
-
+  console.log();
   var module = angular.module('hazard_main_search', [], function($locationProvider) {
       $locationProvider.html5Mode({
         enabled: true,
@@ -38,6 +38,7 @@
       resetStyleOnMouseout: true
     };
     $scope.emdatData = [];
+    $scope.markers = new Array();
 
     var popup = new L.Popup({offset:new L.Point(0,-3)});
 
