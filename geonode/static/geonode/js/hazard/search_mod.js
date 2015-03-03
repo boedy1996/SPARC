@@ -1,7 +1,7 @@
 'use strict';
 
 (function(){
-  console.log();
+  
   var module = angular.module('hazard_main_search', [], function($locationProvider) {
       $locationProvider.html5Mode({
         enabled: true,
@@ -43,6 +43,28 @@
     var popup = new L.Popup({offset:new L.Point(0,-3)});
 
     $scope.rowCollection = [];
+
+    function bestFitZoom()
+    { 
+
+      leafletData.getMap().then(function (map) {
+        // declaring the group variable  
+        var group = new L.featureGroup;
+        // map._layers gives all the layers of the map including main container
+        // so looping in all those layers filtering those having feature  
+
+        leafletData.getGeoJSON().then(function(geoJSON) { 
+          angular.forEach(geoJSON._layers, function(rows){
+            //console.log(rows.feature);
+             //if(rows.feature){  
+                group.addLayer(rows);
+              //}  
+          });
+          map.fitBounds(group.getBounds());
+        }); 
+        
+      });   
+    }
 
     $scope.privateHighchartsNG = {
         options: {
@@ -357,8 +379,10 @@
       NProgress.done(true);
       NProgress.remove();
       $('#screen').css({"display":"none"});
+      bestFitZoom();
     });
-
+    
+    /*
     $http.get("https://maps.googleapis.com/maps/api/geocode/json?address="+$location.search()['country']).success(function(data, status) {
       leafletData.getMap().then(function (map) {
         //console.log(data);
@@ -367,7 +391,7 @@
         var bounds = L.latLngBounds(southWest, northEast);           
         map.fitBounds(bounds);
       });  
-    });
+    });*/
 
     $http.get("../getCountry/").success(function(data, status) {
       angular.forEach(data, function(row){
