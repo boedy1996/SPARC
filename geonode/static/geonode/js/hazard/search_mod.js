@@ -176,7 +176,7 @@
             name:'Flood Probabilities',
             type: 'wms',
             url:'http://10.11.40.84/geoserver/geonode/wms',
-            visible : false,
+            visible : true,
             layerOptions: {
               layers: 'geonode:f_'+$scope.countryISO3.toLowerCase(),
               format: 'image/png',
@@ -191,10 +191,11 @@
           warden: {
             name: 'Warden-MapBox',
             type: 'xyz',
-            url: 'http://{s}.tiles.mapbox.com/v3/mapbox.mapbox-warden/{z}/{x}/{y}.png',
+            //url: 'http://{s}.tiles.mapbox.com/v3/mapbox.mapbox-warden/{z}/{x}/{y}.png',
+            url: 'http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png',
             layerOptions: {
                 subdomains: ['a', 'b', 'c'],
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                //attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 continuousWorld: true
             }
           },
@@ -715,14 +716,12 @@
       var value = element.attr('data-value');
       $scope.selectedMultipleMonth = [];
 
-      var allElement = angular.element(element).parent().parent();
-      //console.log(allElement[0].children);
+      var allElement = angular.element(element).parent();
 
       angular.forEach(allElement[0].children, function(rows){
-        var temp = $(rows.children);
+        var temp = $(rows);
         if (temp.hasClass('active')){
           if (temp.attr('data-value')!=value){
-            //console.log(temp.attr('data-value'));
             $scope.selectedMultipleMonth.push(temp.attr('data-value'));
           }  
         }  
@@ -746,7 +745,7 @@
       }
       
       $scope.manage_featuredata($scope.FCS);     
-      $scope.refreshGEOJSON(); 
+      $scope.refreshGEOJSON();
     }
 
     $scope.month_choice_listener = function($event){

@@ -733,3 +733,13 @@ class CycloneCountryResource(HazardModelApi):
             queryset = queryset.filter(is_published=True)
         resource_name = 'cyclones'         
 
+class DroughtCountryResource(HazardModelApi):
+    """Country API"""
+    class Meta:
+        filtering = CommonMetaApi.filtering
+        filtering.update({'doc_type': ALL})
+        queryset = Country.objects.all()
+        ordering = ['name','extended_name']
+        if settings.RESOURCE_PUBLISHING:
+            queryset = queryset.filter(is_published=True)
+        resource_name = 'drought'  

@@ -16,37 +16,12 @@
 </style>
 
 
-{% endif %}
+{% endif %}s
 <script src="{{ STATIC_URL }}geonode/js/search/explore.js"></script>
-<script src="{{ STATIC_URL }}geonode/js/hazard/search_mod.js"></script>
-
-
-
+<script src="{{ STATIC_URL }}geonode/js/hazard/search_cyclone_mod.js"></script>
 <script type="text/javascript">
   $("body").attr('ng-controller', 'hazard_map_Controller');
   var module = angular.module('search', ['hazard_main_search']);
   var deps = ['search','leaflet-directive','highcharts-ng','smart-table','ng.group'];
   angular.bootstrap(document, deps);
 </script>
-
-<script>
-var floodWarning=[];
-function pdcShowAlerts(load, append){	
-  var appElement = document.querySelector('[ng-controller=hazard_map_Controller]');
-  var $scope = angular.element(appElement).scope();	
-  load.forEach(function(entry) {
-    //console.log(entry);
-    if (entry.type_title == 'FLOOD'){
-      $scope.markers.push({
-          lat: parseFloat(entry.latitude),
-          lng: parseFloat(entry.longitude),
-          icon: { iconUrl: entry.severity_icon},
-          message: entry.severity_title + "<br/>" + entry.title + "<br/> Last Update : " + entry.last_update2 + "<br/> <a target='_blank' href='"+entry.snc_url+"'>More info</a>"
-       });
-    }
-  });
-
-}
-</script>
-<script type="text/javascript" src="http://www.pdc.org/alerts.js"></script> 
-

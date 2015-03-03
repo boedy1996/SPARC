@@ -334,3 +334,109 @@ nav.filter li ul {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+
+nav.filter li a {
+	padding: 3px 3px;
+}
+
+.leaflet-top, .leaflet-bottom {
+	pointer-events: auto !important;
+}
+
+.leaflet-bar-hor {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+}
+
+.leaflet-bar-hor .active {
+	color: #f05a24;
+}
+
+.leaflet-bar-hor a,
+.leaflet-bar-hor a:hover {
+	cursor : pointer;
+	float: left;
+	border-right: 1px solid #ccc;
+	border-bottom-width: 0px;
+	background-color: #fff;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	font-size: 9px;
+}
+
+.leaflet-bar-hor a:hover {
+	background-color: #f4f4f4;
+}
+.leaflet-bar-hor a:first-child {
+	border-top-left-radius: 4px;
+  	border-bottom-left-radius: 4px;
+  	border-top-right-radius: 0px;
+}
+.leaflet-bar-hor a:last-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 0px;
+  border-right-width: 0px;
+}
+
+.open>.dropdown-menu-custom {
+	display: block;
+}
+
+.dropdown-menu-custom {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 160px;
+	padding: 0px 0 0 0;
+	margin: 0px 0 0 0;
+	list-style: none;
+	font-size: 9px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: 0px;
+	-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	background-clip: padding-box;
+}
+
+.dropdown-menu-custom li { }
+
+.dropdown-menu-custom li a {
+	border-radius: 0px !important;
+	border-bottom-style:solid !important; 
+	border-bottom-width:1px  !important; 
+	border-bottom-color:#CCCCCC  !important;
+}	 
+.dropdown-menu-custom li a,  
+.dropdown-menu-custom li a:hover{ 
+	min-width: 160px !important;
+	text-align: left;
+	cursor: pointer;
+	padding-left: 5px;
+	
+}
+
+.dropdown-menu-custom .active {
+	color: #f05a24;
+}
+
+.dropdown-menu-custom li a:last-child {
+
+	border-bottom-color:#CCCCCC  !important;
+}
+
+@media (min-width: 1600px)
+	.container {
+	width: 1570px;
+}
+

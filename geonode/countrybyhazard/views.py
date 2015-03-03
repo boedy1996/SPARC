@@ -18,9 +18,17 @@ def index(request):
 def cyclone_country_list(request):
 	return render_to_response('cyclone_country_list.html', context_instance=RequestContext(request))
 
+def drought_country_list(request):
+	return render_to_response('drought_country_list.html', context_instance=RequestContext(request))	
+
 def hazard_detail(request):
 	currentDate = datetime.datetime.now()
 	return render_to_response('hazard_detail/hazard_detail.html', {'monthName':currentDate.strftime("%B")}, context_instance=RequestContext(request))
+
+# belon siap, segera siapkan detail dan country list untuk type hazard drought
+def drought_detail(request):
+	currentDate = datetime.datetime.now()
+	return render_to_response('drought_detail/drought_detail.html', {'monthName':currentDate.strftime("%B")}, context_instance=RequestContext(request))	
 
 def cyclone_detail(request):
 	currentDate = datetime.datetime.now()

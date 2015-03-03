@@ -3,7 +3,7 @@
 {% load staticfiles %}
 {% load base_tags %}
 
-{% block title %} {% trans "Welcome!" %} - {{ block.super }} {% endblock %}
+{% block title %} {% trans "SPARC" %}  {% endblock %}
 
 {% block body_class %}home{% endblock %}
 
@@ -42,10 +42,10 @@
 
        <div class="col-md-4">
             <div class="question_icon text-center"></div>
-          <h2 class="text-center">{% trans "Draught Hazard" %}</h2>
+          <h2 class="text-center">{% trans "Drought Hazard" %}</h2>
 
           <p class="text-center">{% trans "Click to search the country to explore the other Hazard." %}</p> 
-          <p class="text-center"><a class="btn btn-default disabled" href="{% url "country_browse" %}" role="button">{% trans "Explore Drought" %} &raquo;</a></p>
+          <p class="text-center"><a class="btn btn-default" href="{% url "drought_country_list" %}" role="button">{% trans "Explore Drought" %} &raquo;</a></p>
       </div>
     </div>
 

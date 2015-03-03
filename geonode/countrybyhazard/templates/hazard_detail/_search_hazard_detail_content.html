@@ -1,17 +1,12 @@
 {% load i18n %}
-  <div class="col-md-12 filter">      
-    
-  </div>
-  <div class="col-md-12">
-    <div class="row" id="contain-slider">
-      <div class="col-md-3 visible" id="left-slide-pane">
-        <a href="#" class="btn btn-xs btn-primary" id="opener"><i class="fa fa-angle-double-left fa-2x"></i></a>
-        <div id="slide-pane">
+
+    <div class="row">
+      <div class="col-md-3" id="left-slide-pane">
+        <!-- <a href="#" class="btn btn-xs btn-primary" id="opener"><i class="fa fa-angle-double-left fa-2x"></i></a> -->
           {% include "hazard_detail/_general_hazard_detail_filters.html" %}
-        </div>
       </div>
       <div id="main_slide_pane" class="col-md-9">
         {% include 'hazard_detail/_detail_hazard_map_main.html' %}
       </div>
     </div>
-  </div>
+

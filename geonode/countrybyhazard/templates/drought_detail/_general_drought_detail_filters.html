@@ -1,0 +1,90 @@
+{% load i18n %}
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Legend" %}</a></h4>
+  <ul class="nav closed legend" id="legendCustom">
+  </ul>
+</nav> 
+<nav class="filter">
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Base Layers" %}</a></h4>
+  <ul class="nav" id="baselayers">
+    <li><a data-value="warden" data-filter="warden" ng-click="single_choice_listener($event)" class="active">MapBox Warden</a></li>
+    <li><a data-value="opencyclemap" data-filter="opencyclemap" ng-click="single_choice_listener($event)">OpenCycleMap</a></li>
+    <li><a data-value="outdoors" data-filter="outdoors" ng-click="single_choice_listener($event)">Outdoors</a></li>
+    <li><a data-value="osm" data-filter="osm" ng-click="single_choice_listener($event)">OpenStreetMap</a></li>
+  </ul>
+</nav>  
+<nav class="filter">
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Layers" %}</a></h4>
+  <ul class="nav closed" id="layers">
+    <li><a data-value="raster" data-filter="" ng-click="multiple_choice_listener($event)" class="">Cyclone Hazard</a></li>
+    <li><a data-value="popatrisk_block" data-filter="" ng-click="multiple_choice_listener($event)" class="active">Pop On Prone Area (block map)</a></li>
+  </ul>
+</nav>  
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Month" %}</a></h4>
+  <ul class="nav closed" id="months">   
+    <li><a data-value="jan" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "January" monthName %} class="active" {% endifequal %}>January</a><li>
+    <li><a data-value="feb" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "February" monthName %} class="active" {% endifequal %}>February</a><li>
+    <li><a data-value="mar" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "March" monthName %} class="active" {% endifequal %}>March</a><li>
+    <li><a data-value="apr" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "April" monthName %} class="active" {% endifequal %}>April</a><li>
+    <li><a data-value="may" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "May" monthName %} class="active" {% endifequal %}>May</a><li>
+    <li><a data-value="jun" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "June" monthName %} class="active" {% endifequal %}>June</a><li>
+    <li><a data-value="jul" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "July" monthName %} class="active" {% endifequal %}>July</a><li>
+    <li><a data-value="aug" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "August" monthName %} class="active" {% endifequal %}>August</a><li>
+    <li><a data-value="sep" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "September" monthName %} class="active" {% endifequal %}>September</a><li>
+    <li><a data-value="oct" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "October" monthName %} class="active" {% endifequal %}>October</a><li> 
+    <li><a data-value="nov" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "November" monthName %} class="active" {% endifequal %}>November</a><li>
+    <li><a data-value="dec" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %}>December</a><li>
+  </ul>
+</nav>  
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Cyclone Category" %}</a></h4>
+  <ul class="nav closed" id="rps">
+    <li><a data-value="cat1_5" data-filter="" ng-click="cat_choice_listener($event)" class="active">1 - 5</a><li>
+    <li><a data-value="cat1_3" data-filter="" ng-click="cat_choice_listener($event)">1 - 3</a><li>
+    <li><a data-value="cat4_5" data-filter="" ng-click="cat_choice_listener($event)">4 - 5</a><li>
+  </ul>
+</nav>
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Cyclone Probability" %}</a></h4>
+  <ul class="nav closed" id="rps">
+    <li><a data-value="0.01-0.1" data-filter="cyclone1" ng-click="RP_choice_listener($event)" class="active">1 - 10%<span class="badge_legend cyclone1 pull-right">&nbsp</span></a><li>
+    <li><a data-value="0.1-0.2" data-filter="cyclone2" ng-click="RP_choice_listener($event)">11 - 20%<span class="badge_legend cyclone2 pull-right">&nbsp</span></a><li>
+    <li><a data-value="0.2-0.3" data-filter="cyclone3" ng-click="RP_choice_listener($event)">21 - 30%<span class="badge_legend cyclone3 pull-right">&nbsp</span></a><li>
+    <li><a data-value="0.3-0.4" data-filter="cyclone4" ng-click="RP_choice_listener($event)">31 - 40%<span class="badge_legend cyclone4 pull-right">&nbsp</span></a><li>
+    <li><a data-value="0.4-0.5" data-filter="cyclone5" ng-click="RP_choice_listener($event)">41 - 50%<span class="badge_legend cyclone5 pull-right">&nbsp</span></a><li>
+    <li><a data-value="0.5-0.6" data-filter="cyclone6" ng-click="RP_choice_listener($event)">51 - 60%<span class="badge_legend cyclone6 pull-right">&nbsp</span></a><li>
+    <li><a data-value="0.6-0.7" data-filter="cyclone7" ng-click="RP_choice_listener($event)">61 - 70%<span class="badge_legend cyclone7 pull-right">&nbsp</span></a><li>
+    <li><a data-value="0.7-0.8" data-filter="cyclone8" ng-click="RP_choice_listener($event)">71 - 80%<span class="badge_legend cyclone8 pull-right">&nbsp</span></a><li>
+    <li><a data-value="0.8-0.9" data-filter="cyclone9" ng-click="RP_choice_listener($event)">81 - 90%<span class="badge_legend cyclone9 pull-right">&nbsp</span></a><li>
+    <li><a data-value="0.9-1.0" data-filter="cyclone10" ng-click="RP_choice_listener($event)">91 - 100%<span class="badge_legend cyclone10 pull-right">&nbsp</span></a><li>
+  </ul>
+</nav>  
+<nav class="filter">  
+   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "External Sources" %}</a></h4>
+  <ul class="nav closed" id="external">
+    <li><a data-value="FCS" data-filter="" ng-click="external_choice_listener($event)">Food Consumption</a></li>
+    <li><a data-value="CSI" data-filter="" ng-click="external_choice_listener($event)">CSI</a></li>
+    <li><a data-value="IS" data-filter="" ng-click="external_choice_listener($event)">Income Sources</a></li>
+  </ul>
+</nav>  
+<nav class="filter">  
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Quick Links" %}</a></h4>
+  <ul class="nav closed" id="Country">
+    <li ng-repeat="area in Country | groupBy:'wfp_area_id':'area_id'">
+        {% verbatim %} 
+          <a ng-if="area.wfp_area_id == 1" ng-click="quicklinks($event)">Africa</a>   
+          <a ng-if="area.wfp_area_id == 2" ng-click="quicklinks($event)">America</a>
+          <a ng-if="area.wfp_area_id == 3" ng-click="quicklinks($event)">Asia</a>
+          <a ng-if="area.wfp_area_id == 4" ng-click="quicklinks($event)">Middle East</a>   
+        {% endverbatim %} 
+      <ul class="nav closed" id="_links">
+        <li ng-repeat="detail in area.items">
+          <a href="{% url "cyclone_detail" %}?iso={% verbatim %}{{ detail.iso3 }}&country={{detail.name}}{% endverbatim %}">{% verbatim %}{{ detail.name }}{% endverbatim %} </a>
+        </li>  
+      </ul> 
+    </li>
+  </ul>
+</nav>  
+ 
+

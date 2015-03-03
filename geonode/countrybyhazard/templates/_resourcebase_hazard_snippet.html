@@ -16,58 +16,58 @@ table tr:nth-child(even) {
 
   <article ng-repeat="item in results" resource_id="{{ item.iso3 }}" ng-cloak>
   	<div class="row items-list">
-      <div class="col-md-6">
+      <div class="col-md-5">
         <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.name}}
 ">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
         <p class="abstract"  ng-if="item.extreme.pop == 0">No assessment performed</p>
-        <p class="abstract"  ng-if="item.popCurrentMonth > 0">Total Population at Risk for all return period on this month is {{ item.popCurrentMonth | number:0 }}</p>
+        <!--<p class="abstract"  ng-if="item.popCurrentMonth > 0">Total Population at Risk for all return period on this month is {{ item.popCurrentMonth | number:0 }}</p>-->
         <!--<p class="abstract"  ng-if="item.extreme.pop > 0">Table below representing the extreme population at risk for each probability.</p>-->
         <table class="abstract" ng-if="item.extreme.pop > 0">
           <thead>
             <th>Return Period</th>
-            <th>Highest Pop At Risk</th>
-            <th>Month</th>
+            <th>Est. Pop At Risk</th>
+            <!--<th>Month</th>-->
           </thead>
           <tr ng-if="item.RPExtreme.RP25.pop > 0">
             <td>25 Years</td>
             <td align='right'>{{ item.RPExtreme.RP25.pop | number:0 }}</td>
-            <td>{{ item.RPExtreme.RP25.month }}</td>
+            <!-- <td>{{ item.RPExtreme.RP25.month }}</td> -->
           </tr>
           <tr ng-if="item.RPExtreme.RP50.pop > 0">
             <td>50 Years</td>
-            <td align='right'>{{ item.RPExtreme.RP50.pop | number:0 }}</td>
-            <td>{{ item.RPExtreme.RP50.month }}</td>
+            <td align='right'>{{  item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop | number:0 }}</td>
+            <!-- <td>{{ item.RPExtreme.RP50.month }}</td> -->
           </tr>
           <tr ng-if="item.RPExtreme.RP100.pop > 0">
             <td>100 Years</td>
-            <td align='right'>{{ item.RPExtreme.RP100.pop | number:0 }}</td>
-            <td>{{ item.RPExtreme.RP100.month }}</td>
+            <td align='right'>{{ item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop | number:0 }}</td>
+            <!-- <td>{{ item.RPExtreme.RP100.month }}</td> -->
           </tr>
           <tr ng-if="item.RPExtreme.RP200.pop > 0">
             <td>200 Years</td>
-            <td align='right'>{{ item.RPExtreme.RP200.pop | number:0 }}</td>
-            <td>{{ item.RPExtreme.RP200.month }}</td>
+            <td align='right'>{{ item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop + item.RPExtreme.RP200.pop | number:0 }}</td>
+            <!-- <td>{{ item.RPExtreme.RP200.month }}</td> -->
           </tr>
           <tr ng-if="item.RPExtreme.RP500.pop > 0">
             <td>500 Years</td>
-            <td align='right'>{{ item.RPExtreme.RP500.pop | number:0 }}</td>
-            <td>{{ item.RPExtreme.RP500.month }}</td>
+            <td align='right'>{{ item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop + item.RPExtreme.RP200.pop + item.RPExtreme.RP500.pop | number:0 }}</td>
+            <!-- <td>{{ item.RPExtreme.RP500.month }}</td> -->
           </tr>
           <tr ng-if="item.RPExtreme.RP1000.pop > 0">
             <td>1000 Years</td>
-            <td align='right'>{{ item.RPExtreme.RP1000.pop | number:0 }}</td>
-            <td>{{ item.RPExtreme.RP1000.month }}</td>
+            <td align='right'>{{ item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop + item.RPExtreme.RP200.pop + item.RPExtreme.RP500.pop + item.RPExtreme.RP1000.pop | number:0 }}</td>
+            <!-- <td>{{ item.RPExtreme.RP1000.month }}</td> -->
           </tr>
         </table>
         <!--<p class="abstract"  ng-if="item.tot_pop > 0">Total Population (2011) : {{ item.tot_pop | number:0 }} </p>
         <p class="abstract"  ng-if="item.tot_pop > 0">GDP Percapita (USD) : {{ item.gdp_per_cap | number:0 }} </p>
         <p class="abstract"  ng-if="item.tot_pop > 0">Human Development Index : {{ item.hdi | number:2 }} </p>-->
-        <p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop | number:0 }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>
+        <!--<p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop | number:0 }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>-->
         <!--<p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>-->	
       </div>
-      <div class="col-md-6">
+      <div class="col-md-7">
   	    <!--<img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x&cht=lc&chd=t:{{ item.chartvalue }}&chco=AAB4FB,AABBBC,FF0000,00FF00,0000FF,00FFFF&chls=2.0&chs=350x150&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low" />-->
-        <img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x,y&cht=bvs&chbh=15,5&chds=a&chd=t:{{ item.chartvalue }}&chco=7E9FD1,72A984,D08C82,A49D8C,E8D5C8,D0DDB9&chls=2.0&chs=350x300&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low&chtt=Monthly Population at Risk&chts=919191,10&chxs=0,919191,9,0,lt|1,919191,9,0,lt&chdls=919191,9" />
+        <img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x,y&cht=bvs&chbh=15,5&chds=a&chd=t:{{ item.chartvalue }}&chco=7E9FD1,72A984,D08C82,A49D8C,E8D5C8,D0DDB9&chls=2.0&chs=400x300&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low&chtt=Monthly Expected impact values&chts=919191,10&chxs=0,919191,9,0,lt|1,919191,9,0,lt&chdls=919191,9" />
   	  </div>
     </div>
   </article>

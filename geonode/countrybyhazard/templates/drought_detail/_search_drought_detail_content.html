@@ -1,0 +1,16 @@
+{% load i18n %}
+  <div class="col-md-12 filter">      
+    
+  </div>
+  <div class="col-md-12">
+    <div class="row" id="contain-slider">
+      <div class="col-md-3">
+        <div id="slide-pane">
+          {% include "drought_detail/_general_drought_detail_filters.html" %}
+        </div>
+      </div>
+      <div class="col-md-9">
+        {% include 'drought_detail/_detail_drought_map_main.html' %}
+      </div>
+    </div>
+  </div>

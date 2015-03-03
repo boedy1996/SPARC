@@ -6,7 +6,7 @@
 
 <style>
   .angular-leaflet-map{
-    height: 425px;
+    height: 550px;
     position : relative;
     border: 4px #fff solid;
     box-shadow: 0 0 5px -1px rgba(0, 0, 0, 1);
@@ -27,21 +27,46 @@
     </div>  
   </div>
 
-  <div class="row">
     <div class="leaflet_map box blue"> 
       <div class="box-header">
         <h4><i class="fa fa-map-marker"></i><span ng-bind="countryName"></span></h4>  
       </div>
       <div class="box-content">
         <leaflet center="center" events="events" markers="markers" defaults="defaults" layers="layers" geojson="geojson">
+          <div class="leaflet-top leaflet-right">
+            <div class="leaflet-bar-hor leaflet-control">
+              {% endverbatim %}
+              <a data-value="jan" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "January" monthName %} class="active" {% endifequal %} title="January">Jan</a>
+              <a data-value="feb" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "February" monthName %} class="active" {% endifequal %} title="February">Feb</a>
+              <a data-value="mar" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "March" monthName %} class="active" {% endifequal %} title="March">Mar</a>
+              <a data-value="apr" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "April" monthName %} class="active" {% endifequal %} title="April">Apr</a>
+              <a data-value="may" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "May" monthName %} class="active" {% endifequal %} title="May">May</a>
+              <a data-value="jun" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "June" monthName %} class="active" {% endifequal %} title="June">Jun</a>
+              <a data-value="jul" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "July" monthName %} class="active" {% endifequal %} title="July">Jul</a>
+              <a data-value="aug" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "August" monthName %} class="active" {% endifequal %} title="August">Aug</a>
+              <a data-value="sep" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "September" monthName %} class="active" {% endifequal %} title="September">Sep</a>
+              <a data-value="oct" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "October" monthName %} class="active" {% endifequal %} title="October">Oct</a>
+              <a data-value="nov" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "November" monthName %} class="active" {% endifequal %} title="November">Nov</a>
+              <a data-value="dec" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %} title="December">Dec</a>
+              {% verbatim %}
+            </div>
+            <div class="leaflet-control leaflet-bar">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-align-justify" style="margin-right: 0px !important;"></i></a>  
+              <ul class="dropdown-menu-custom" role="menu">
+                  <li><a data-value="raster" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i></i>Flood Probability</a></li>
+                  <li><a data-value="popatrisk_block" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i>Population at Risk (block map)</a></li>
+                  <li><a data-value="popatrisk_heat" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Flood Events</a></li>
+                  <li><a data-value="landscan" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Population Landscan</a></li>
+                  <li><a data-value="warehouses" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>WFP Warehouses</a></li>
+              </ul>
+            </div>  
+          </div>  
         </leaflet>  
       </div>  
     </div>
-  </div>
 
-  <div class="row">
 
-    <div class="col-md-6 column" style="padding-left:0;">
+    <div class="col-md-6">
       <div class="box blue">
         <div class="box-header">
           <h4><i class="fa fa-bar-chart-o"></i>Estimated population at risk on monthly bases</h4>
@@ -99,7 +124,7 @@
       </div>  
     </div>
   -->
-    <div class="col-md-6 column" style="padding-right:0;">
+    <div class="col-md-6">
       <div class="box blue">
         <div class="box-header">
           <h4><i class="fa fa-th-list"></i>Flood History (source : EMDAT)</h4>
@@ -134,7 +159,7 @@
         </div>  
       </div>  
     </div>
-  </div>
+
 
 
   {% endverbatim %}
