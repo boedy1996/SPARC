@@ -280,7 +280,7 @@
             opacity: 1,
             color: 'white',
             dashArray: '1',
-            fillOpacity: 0.4
+            fillOpacity: 0.75
         };
     }
 
@@ -305,10 +305,10 @@
              x >    0  ? '#0000FF' :
                          '#FFFFFF' ;*/
       return x > $scope.legendRange[4] ? '#FF0000' :
-             x > $scope.legendRange[3] ? '#9933FF' :
-             x > $scope.legendRange[2] ? '#FF9933' :                   
-             x > $scope.legendRange[1] ? '#99CC33' :
-             x > $scope.legendRange[0] ? '#0000FF' :
+             x > $scope.legendRange[3] ? '#770000' :
+             x > $scope.legendRange[2] ? '#eff76a' :                   
+             x > $scope.legendRange[1] ? '#76f579' :
+             x > $scope.legendRange[0] ? '#e1d3d3' :
                                          '#FFFFFF' ;
 
     }
@@ -447,7 +447,21 @@
         var FCS_value = 1;
 
       angular.forEach(rps, function(rp){
-        var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
+        var color='';
+        if (rp=="RP25"){
+          color='#082155';
+        } else if (rp=="RP50"){
+          color='#193C84';
+        } else if (rp=="RP100"){
+          color='#2F5BB4';
+        } else if (rp=="RP200"){
+          color='#4F7CD5';
+        }else if (rp=="RP500"){
+          color='#82A3E5';
+        }else if (rp=="RP1000"){
+          color='#B5CAF3';
+        }
+        var _each = {'name':rp, color:color, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
 
         for (var monthNumber in _shortMonthName){
           if (typeof data.properties[rp] != 'undefined')
@@ -475,7 +489,21 @@
       });
 
       angular.forEach(rps, function(rp){
-        var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
+        var color='';
+        if (rp=="RP25"){
+          color='#082155';
+        } else if (rp=="RP50"){
+          color='#193C84';
+        } else if (rp=="RP100"){
+          color='#2F5BB4';
+        } else if (rp=="RP200"){
+          color='#4F7CD5';
+        }else if (rp=="RP500"){
+          color='#82A3E5';
+        }else if (rp=="RP1000"){
+          color='#B5CAF3';
+        }
+        var _each = {'name':rp, color:color,data : [0,0,0,0,0,0,0,0,0,0,0,0]};
         angular.forEach(data.features, function(row){
           if ($scope.FCS)
             var FCS_value = row.properties.FCS/100
