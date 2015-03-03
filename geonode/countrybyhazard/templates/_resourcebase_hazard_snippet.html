@@ -25,45 +25,52 @@ table tr:nth-child(even) {
         <table class="abstract" ng-if="item.extreme.pop > 0">
           <thead>
             <th>Return Period</th>
-            <th>Est. Pop At Risk</th>
-            <!--<th>Month</th>-->
+            <th>Probability</th>
+            <th># Pop at Risk</th>
+            <th>EIV</th>
           </thead>
           <tr ng-if="item.RPExtreme.RP25.pop > 0">
             <td>25 Years</td>
+            <td>4%</td>
             <td align='right'>{{ item.RPExtreme.RP25.pop | number:0 }}</td>
-            <!-- <td>{{ item.RPExtreme.RP25.month }}</td> -->
+            <td align='right'>{{ item.RPExtreme.RP25.pop * 0.4| number:0 }}</td>
           </tr>
           <tr ng-if="item.RPExtreme.RP50.pop > 0">
             <td>50 Years</td>
+            <td>2%</td>
             <td align='right'>{{  item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop | number:0 }}</td>
-            <!-- <td>{{ item.RPExtreme.RP50.month }}</td> -->
+            <td align='right'>{{ (item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop) * 0.2| number:0 }}</td>
           </tr>
           <tr ng-if="item.RPExtreme.RP100.pop > 0">
             <td>100 Years</td>
+            <td>1%</td>
             <td align='right'>{{ item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop | number:0 }}</td>
-            <!-- <td>{{ item.RPExtreme.RP100.month }}</td> -->
+            <td align='right'>{{ (item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop) * 0.1| number:0 }}</td>
           </tr>
           <tr ng-if="item.RPExtreme.RP200.pop > 0">
             <td>200 Years</td>
+            <td>0.5%</td>
             <td align='right'>{{ item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop + item.RPExtreme.RP200.pop | number:0 }}</td>
-            <!-- <td>{{ item.RPExtreme.RP200.month }}</td> -->
+            <td align='right'>{{ (item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop + item.RPExtreme.RP200.pop) * 0.05| number:0 }}</td>
           </tr>
           <tr ng-if="item.RPExtreme.RP500.pop > 0">
             <td>500 Years</td>
+            <td>0.2%</td>
             <td align='right'>{{ item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop + item.RPExtreme.RP200.pop + item.RPExtreme.RP500.pop | number:0 }}</td>
-            <!-- <td>{{ item.RPExtreme.RP500.month }}</td> -->
+            <td align='right'>{{ (item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop + item.RPExtreme.RP200.pop + item.RPExtreme.RP500.pop) * 0.02| number:0 }}</td>
           </tr>
           <tr ng-if="item.RPExtreme.RP1000.pop > 0">
             <td>1000 Years</td>
+            <td>0.1%</td>
             <td align='right'>{{ item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop + item.RPExtreme.RP200.pop + item.RPExtreme.RP500.pop + item.RPExtreme.RP1000.pop | number:0 }}</td>
-            <!-- <td>{{ item.RPExtreme.RP1000.month }}</td> -->
+            <td align='right'>{{ (item.RPExtreme.RP25.pop + item.RPExtreme.RP50.pop + item.RPExtreme.RP100.pop + item.RPExtreme.RP200.pop + item.RPExtreme.RP500.pop + item.RPExtreme.RP1000.pop) * 0.01| number:0 }}</td>
           </tr>
         </table>
         <!--<p class="abstract"  ng-if="item.tot_pop > 0">Total Population (2011) : {{ item.tot_pop | number:0 }} </p>
         <p class="abstract"  ng-if="item.tot_pop > 0">GDP Percapita (USD) : {{ item.gdp_per_cap | number:0 }} </p>
         <p class="abstract"  ng-if="item.tot_pop > 0">Human Development Index : {{ item.hdi | number:2 }} </p>-->
         <!--<p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop | number:0 }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>-->
-        <!--<p class="abstract"  ng-if="item.extreme.pop > 0">Chart representing the annual probability.</p>-->	
+        <p class="abstract">Expected Impact Value (EIV) : Probability of hazard occurence in an area times the number of population at risk</p>
       </div>
       <div class="col-md-7">
   	    <!--<img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x&cht=lc&chd=t:{{ item.chartvalue }}&chco=AAB4FB,AABBBC,FF0000,00FF00,0000FF,00FFFF&chls=2.0&chs=350x150&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low" />-->
