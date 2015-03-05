@@ -525,7 +525,33 @@ class CountryResource(HazardModelApi):
         def getKey(item):
             return item.data['max_pop']
         def getKey1(item):
-            return item.data['popCurrentMonth']    
+            return item.data['popCurrentMonth']  
+        def getKey2(item):
+            return item.data['totEIV']
+        def getJan(item):
+            return item.data['popMonth']['mjan__sum'] 
+        def getFeb(item):
+            return item.data['popMonth']['mfeb__sum'] 
+        def getMar(item):
+            return item.data['popMonth']['mmar__sum'] 
+        def getApr(item):
+            return item.data['popMonth']['mapr__sum']
+        def getMay(item):
+            return item.data['popMonth']['mmay__sum'] 
+        def getJun(item):
+            return item.data['popMonth']['mjun__sum'] 
+        def getJul(item):
+            return item.data['popMonth']['mjul__sum']   
+        def getAug(item):
+            return item.data['popMonth']['maug__sum']  
+        def getSep(item):
+            return item.data['popMonth']['msep__sum'] 
+        def getOct(item):
+            return item.data['popMonth']['moct__sum'] 
+        def getNov(item):
+            return item.data['popMonth']['mnov__sum']   
+        def getDec(item):
+            return item.data['popMonth']['mdes__sum']                                        
 
         if "rank_by" in request.GET:
             data_med = copy.copy(data)
@@ -533,11 +559,42 @@ class CountryResource(HazardModelApi):
             if request.GET["rank_by"]=='max_pop':      
                 data['objects'] = sorted(data_med['objects'], key=getKey, reverse=True)
             elif request.GET["rank_by"]=='max_pop_month':
-                data['objects'] = sorted(data_med['objects'], key=getKey1, reverse=True)   
+                data['objects'] = sorted(data_med['objects'], key=getKey1, reverse=True)
+            elif request.GET["rank_by"]=='max_eiv':
+                data['objects'] = sorted(data_med['objects'], key=getKey2, reverse=True) 
+
+            elif request.GET["rank_by"]=='max_jan':
+                data['objects'] = sorted(data_med['objects'], key=getJan, reverse=True)
+            elif request.GET["rank_by"]=='max_feb':
+                data['objects'] = sorted(data_med['objects'], key=getFeb, reverse=True)
+            elif request.GET["rank_by"]=='max_mar':
+                data['objects'] = sorted(data_med['objects'], key=getMar, reverse=True) 
+            elif request.GET["rank_by"]=='max_apr':
+                data['objects'] = sorted(data_med['objects'], key=getApr, reverse=True)  
+            elif request.GET["rank_by"]=='max_may':
+                data['objects'] = sorted(data_med['objects'], key=getMay, reverse=True) 
+            elif request.GET["rank_by"]=='max_jun':
+                data['objects'] = sorted(data_med['objects'], key=getJun, reverse=True)
+            elif request.GET["rank_by"]=='max_jul':
+                data['objects'] = sorted(data_med['objects'], key=getJul, reverse=True) 
+            elif request.GET["rank_by"]=='max_aug':
+                data['objects'] = sorted(data_med['objects'], key=getAug, reverse=True) 
+            elif request.GET["rank_by"]=='max_sep':
+                data['objects'] = sorted(data_med['objects'], key=getSep, reverse=True)  
+            elif request.GET["rank_by"]=='max_oct':
+                data['objects'] = sorted(data_med['objects'], key=getOct, reverse=True) 
+            elif request.GET["rank_by"]=='max_nov':
+                data['objects'] = sorted(data_med['objects'], key=getNov, reverse=True) 
+            elif request.GET["rank_by"]=='max_dec':
+                data['objects'] = sorted(data_med['objects'], key=getDec, reverse=True)                                              
         return data
 
     def dehydrate(self, bundle):
         extreme = {'pop': 0, 'month' : "No Data", 'RP':'No Data'}
+        totFinEIV = 0
+        totEIV = 0
+        totAbs = 0
+        popMonth = {'mjan__sum':0,'mfeb__sum':0,'mmar__sum':0,'mapr__sum':0,'mmay__sum':0,'mjun__sum':0,'mjul__sum':0,'maug__sum':0,'msep__sum':0,'moct__sum':0,'mnov__sum':0,'mdes__sum':0}
         RPExtreme = {'RP25':{'month':'','pop':0}, 'RP50':{'month':'','pop':0}, 'RP100':{'month':'','pop':0}, 'RP200':{'month':'','pop':0}, 'RP500':{'month':'','pop':0}, 'RP1000':{'month':'','pop':0}}
         monthCode = ['mjan','mfeb','mmar','mapr','mmay','mjun','mjul','maug','msep','moct','mnov','mdes']
         transaction = FloodedPopAtRisk.objects.filter(iso3_id=bundle.data['iso3']).values('iso3', 'rper').order_by('iso3').annotate(Sum(monthCode[0])).annotate(Sum(monthCode[1])).annotate(Sum(monthCode[2])).annotate(Sum(monthCode[3])).annotate(Sum(monthCode[4])).annotate(Sum(monthCode[5])).annotate(Sum(monthCode[6])).annotate(Sum(monthCode[7])).annotate(Sum(monthCode[8])).annotate(Sum(monthCode[9])).annotate(Sum(monthCode[10])).annotate(Sum(monthCode[11]))
@@ -550,6 +607,7 @@ class CountryResource(HazardModelApi):
             for y in x:
                 if x[y]>RPExtreme['RP'+str(x['rper'])]['pop']:
                     if y not in ['rper','iso3']:
+                        popMonth[y] += x[y]
                         RPExtreme['RP'+str(x['rper'])]['pop']=x[y]
                         if y=='mjan__sum':
                             month = 'January'
@@ -643,7 +701,24 @@ class CountryResource(HazardModelApi):
         bundle.data['extreme'] = extreme
         bundle.data['max_pop'] = extreme['pop']
         bundle.data['RPExtreme'] = RPExtreme
+        
+        for item in RPExtreme :
+            if item=='RP25':
+                totEIV += (0.04*RPExtreme[item]['pop'])
+            elif item=='RP50':
+                totEIV += (0.02*RPExtreme[item]['pop'])  
+            elif item=='RP100':
+                totEIV += (0.01*RPExtreme[item]['pop']) 
+            elif item=='RP200':
+                totEIV += (0.005*RPExtreme[item]['pop'])
+            elif item=='RP500':
+                totEIV += (0.002*RPExtreme[item]['pop']) 
+            elif item=='RP1000':
+                totEIV += (0.001*RPExtreme[item]['pop'])                
+        
         bundle.data['popCurrentMonth'] = popCurrentMonth
+        bundle.data['totEIV'] = totEIV
+        bundle.data['popMonth'] = popMonth
         return bundle
 
     class Meta:

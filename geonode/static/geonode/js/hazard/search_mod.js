@@ -31,6 +31,7 @@
     $scope.hazard = true;
     $scope.legendRange = [0,100,1000];
     $scope.floodEvents = {'max': 8, 'data' : []};
+    $scope.EIV = [];
     $scope.geojson = {
       data: [],
       style: style,
@@ -305,7 +306,7 @@
              x >    0  ? '#0000FF' :
                          '#FFFFFF' ;*/
       return x > $scope.legendRange[4] ? '#FF0000' :
-             x > $scope.legendRange[3] ? '#770000' :
+             x > $scope.legendRange[3] ? '#FFA500' :
              x > $scope.legendRange[2] ? '#eff76a' :                   
              x > $scope.legendRange[1] ? '#76f579' :
              x > $scope.legendRange[0] ? '#e1d3d3' :
@@ -319,6 +320,7 @@
       var last_adm1_code = 0;
       var RPs = ['RP25','RP50','RP100','RP200','RP500','RP1000'];
       $scope.popFloodedData = data;
+      $scope.manage_featuredata($scope.FCS);
       $scope.updateGEOJSON(data);
       $scope.addChartSeries(['RP25'],$scope.popFloodedData);
       $scope.addTableSeries(['RP25'],$scope.popFloodedData);
@@ -474,6 +476,7 @@
     }
 
     $scope.addChartSeries = function(rps, data){
+      $scope.EIV = []
       var _shortMonthName = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
 
       for (var x=$scope.highchartsNG.series.length;x>0;x--){
@@ -504,6 +507,7 @@
           color='#B5CAF3';
         }
         var _each = {'name':rp, color:color,data : [0,0,0,0,0,0,0,0,0,0,0,0]};
+        $scope.EIV[rp]=0;
         angular.forEach(data.features, function(row){
           if ($scope.FCS)
             var FCS_value = row.properties.FCS/100
@@ -514,8 +518,12 @@
               _each.data[monthNumber] += Math.floor(row.properties[rp][_shortMonthName[monthNumber]]*FCS_value);
             }
         });
+        //console.log(Math.max.apply( Math, _each.data ));
+        $scope.EIV[rp] = Math.max.apply( Math, _each.data );
         $scope.highchartsNG.series.push(_each);
       });
+      //console.log($scope.highchartsNG.series);
+      console.log($scope.EIV);
     }
 
     $scope.addTableSeries = function(rps, data){
@@ -714,14 +722,28 @@
     }
 
     $scope.manage_featuredata = function(selFCS){
+      //console.log($scope.selectedRP);
+      // $scope.EIV["RP25"] = 0;  
+      // $scope.EIV["RP50"] = 0;
+      // $scope.EIV["RP100"] = 0;
+      // $scope.EIV["RP200"] = 0;
+      // $scope.EIV["RP500"] = 0;
+      // $scope.EIV["RP1000"] = 0;
       for (var x in $scope.popFloodedData.features){
+        
         var pertama = true;
         if (selFCS)
           var FCS_value = $scope.popFloodedData.features[x].properties.FCS/100
         else 
           var FCS_value = 1;
 
-        for (var key in $scope.selectedRP){
+        for (var key in $scope.selectedRP){  
+          //console.log($scope.selectedRP[key]);
+          //console.log($scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jan,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].feb,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].mar,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].apr,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].may,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jun,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jul,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].aug,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].sep,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].oct,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].nov,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].dec);
+          //var temp = [$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jan,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].feb,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].mar,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].apr,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].may,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jun,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jul,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].aug,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].sep,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].oct,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].nov,$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].dec];
+          //console.log(temp);
+          //console.log(Math.max.apply(Math, temp));
+          //$scope.EIV[$scope.selectedRP[key]] += Math.max.apply(Math, temp)*FCS_value;
           if (pertama){
             $scope.popFloodedData.features[x].properties.active.jan=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jan*FCS_value;
             $scope.popFloodedData.features[x].properties.active.feb=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].feb*FCS_value;
@@ -750,15 +772,20 @@
             $scope.popFloodedData.features[x].properties.active.nov+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].nov*FCS_value;
             $scope.popFloodedData.features[x].properties.active.dec+=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].dec*FCS_value;
           }
+          
         } 
         $scope.popFloodedData.features[x].properties.active.active_month=0;
+
         for (var key in $scope.selectedMultipleMonth){
           //console.log($scope.selectedMultipleMonth[key]);
           if ($scope.popFloodedData.features[x].properties.active[$scope.selectedMultipleMonth[key]] > $scope.popFloodedData.features[x].properties.active.active_month)
             $scope.popFloodedData.features[x].properties.active.active_month=Math.floor($scope.popFloodedData.features[x].properties.active[$scope.selectedMultipleMonth[key]]);
         }
-        //$scope.popFloodedData.features[x].properties.active.active_month=Math.floor($scope.popFloodedData.features[x].properties.active[$scope.selectedMonth]);
+       
+        
       }
+
+      //console.log($scope.EIV);
     }
 
     $scope.month_multiple_choice_listener = function($event){
@@ -834,7 +861,7 @@
         tempDownToUse.push(tempDownTo[i]);
       }
 
-      console.log(tempDownToUse);
+      //console.log(tempDownToUse);
       var allElement = angular.element(element).parent().parent();
       //console.log(allElement[0].children);
 
@@ -843,7 +870,7 @@
         var temp = $(rows.children);
         temp.removeClass('active');
         if ($.inArray(temp.attr('data-value'), tempDownToUse)>=0){
-          console.log(temp.attr('data-value'));
+          //console.log(temp.attr('data-value'));
           temp.addClass('active');
           $scope.selectedRP.push(temp.attr('data-value'));
         }

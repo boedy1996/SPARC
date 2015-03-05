@@ -70,7 +70,7 @@ table tr:nth-child(even) {
         <p class="abstract"  ng-if="item.tot_pop > 0">GDP Percapita (USD) : {{ item.gdp_per_cap | number:0 }} </p>
         <p class="abstract"  ng-if="item.tot_pop > 0">Human Development Index : {{ item.hdi | number:2 }} </p>-->
         <!--<p class="abstract"  ng-if="item.extreme.pop > 0">The highest population at risk is {{ item.extreme.pop | number:0 }} on {{ item.extreme.month }} for {{ item.extreme.RP }} years return period.</p>-->
-        <p class="abstract">Expected Impact Value (EIV) : Probability of hazard occurence in an area times the number of population at risk</p>
+        <p class="abstract">Total Expected Impact Value (EIV) : {{ item.totEIV | number:0 }}</p>
       </div>
       <div class="col-md-7">
   	    <!--<img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x&cht=lc&chd=t:{{ item.chartvalue }}&chco=AAB4FB,AABBBC,FF0000,00FF00,0000FF,00FFFF&chls=2.0&chs=350x150&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low" />-->
