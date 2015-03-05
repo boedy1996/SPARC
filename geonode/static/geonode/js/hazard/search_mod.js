@@ -22,14 +22,15 @@
     $scope.countryName = $location.search()['country'];
     $scope.countryISO3 = $location.search()['iso'];
     $scope.selectedMonth = _shortMonthName[month];
-    $scope.legendRangePercentage = [0.5,0.75,1];
+    $scope.legendRangePercentage = [0.25,0.50,0.75];
     $scope.popFloodedData = null;
     $scope.selectedObject = null;
     $scope.FCS = false;
     $scope.maxPopAllProbs = 0;
     $scope.Country = [];
     $scope.hazard = true;
-    $scope.legendRange = [0,100,1000];
+    //$scope.legendRange = [0,100,1000];
+    $scope.legendRange = [0,100];
     $scope.floodEvents = {'max': 8, 'data' : []};
     $scope.EIV = [];
     $scope.geojson = {
@@ -335,11 +336,26 @@
         });
       });
       //console.log($scope.maxPopAllProbs);
+      //console.log($scope.legendRangePercentage);
+      //console.log($scope.legendRange);
       //console.log(Math.ceil($scope.maxPopAllProbs/1000)*1000);
-      $scope.maxPopAllProbs = Math.ceil($scope.maxPopAllProbs/1000)*1000;
+      var threshold = 100000;
+      //console.log($scope.maxPopAllProbs.toString().length);
+      if ($scope.maxPopAllProbs.toString().length == 5){
+        threshold = 10000;
+      } else if ($scope.maxPopAllProbs.toString().length == 4){
+        threshold = 1000;
+      } else if ($scope.maxPopAllProbs.toString().length == 3){
+        threshold = 100;
+      } else if ($scope.maxPopAllProbs.toString().length == 2){
+        threshold = 10;
+      }
 
+      $scope.maxPopAllProbs = Math.ceil($scope.maxPopAllProbs/(-threshold))*(-threshold);
+      //console.log($scope.maxPopAllProbs);
       //var eachRange = $scope.maxPopAllProbs/4;
-      for (var tt=0;tt<2;tt++){
+      for (var tt=0;tt<3;tt++){
+        //console.log($scope.legendRangePercentage[tt]*$scope.maxPopAllProbs);
         $scope.legendRange.push($scope.legendRangePercentage[tt]*$scope.maxPopAllProbs);
       }
 
@@ -523,7 +539,7 @@
         $scope.highchartsNG.series.push(_each);
       });
       //console.log($scope.highchartsNG.series);
-      console.log($scope.EIV);
+      //console.log($scope.EIV);
     }
 
     $scope.addTableSeries = function(rps, data){
@@ -983,6 +999,10 @@
               labels = [];
           // loop through our density intervals and generate a label with a colored square for each interval
           for (var i = 0; i < grades.length; i++) {
+            if (i==0)
+              div.innerHTML +=
+                  '<li><a class=""><i style="background:' + getColor(grades[i] + 1) + '"></i>'+ (grades[i + 1] ? ' < ' + grades[i + 1]  : '+')+'</a></li>'
+            else  
               div.innerHTML +=
                   '<li><a class=""><i style="background:' + getColor(grades[i] + 1) + '"></i>'+grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1]  : '+')+'</a></li>';
           }
