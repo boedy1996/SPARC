@@ -209,6 +209,20 @@
               crs: L.CRS.EPSG4326,
               transparent : true
             }
+          },
+          EIVLayer : {
+            name:'EIV',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:eiv_cmr_real',
+              format: 'image/png',
+              //opacity: 0.25,
+              styles : '',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
           }
         },
         baselayers:{
@@ -653,6 +667,12 @@
         $scope.layers.overlays.warehouses.visible = true;
       } else {
         $scope.layers.overlays.warehouses.visible = false;  
+      }
+
+      if ($.inArray('EIVLayer', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.EIVLayer.visible = true;
+      } else {
+        $scope.layers.overlays.EIVLayer.visible = false;  
       }
  
 
