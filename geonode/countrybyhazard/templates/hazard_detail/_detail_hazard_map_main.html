@@ -29,7 +29,7 @@
 
     <div class="leaflet_map box blue"> 
       <div class="box-header">
-        <h4><i class="fa fa-map-marker"></i><span ng-bind="countryName"></span></h4>  
+        <h4><i class="fa fa-map-marker"></i><span ng-bind="countryName"></span> - flood risk assessment</h4>  
       </div>
       <div class="box-content">
         <leaflet center="center" events="events" markers="markers" defaults="defaults" layers="layers" geojson="geojson">
@@ -48,6 +48,9 @@
               <a data-value="oct" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "October" monthName %} class="active" {% endifequal %} title="October">Oct</a>
               <a data-value="nov" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "November" monthName %} class="active" {% endifequal %} title="November">Nov</a>
               <a data-value="dec" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %} title="December">Dec</a>
+              
+              <a data-value="all" data-filter="" ng-click="month_multiple_choice_listener($event)" title="All Month">All</i></a>
+              <a data-value="clear" data-filter="" ng-click="month_multiple_choice_listener($event)" title="Clear Selection">Clear</a>
               {% verbatim %}
             </div>
             <div class="leaflet-control leaflet-bar">

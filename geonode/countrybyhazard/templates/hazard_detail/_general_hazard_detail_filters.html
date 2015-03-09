@@ -45,14 +45,36 @@
   </ul>
 </nav>  --> 
 <nav class="filter">  
-  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Flood Probability" %}</a></h4>
+  <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Annual Prob" %}</a></h4>
   <ul class="nav open" id="rps">
-    <li><a data-value="RP25" data-filter="" ng-click="RP_choice_listener($event)" class="active">4% change on any year<span class="badge_legend RP25 pull-right">&nbsp</span></a><li>
-    <li><a data-value="RP50" data-filter="" ng-click="RP_choice_listener($event)">2% change on any year<span class="badge_legend RP50 pull-right">&nbsp</span></a><li>
-    <li><a data-value="RP100" data-filter="" ng-click="RP_choice_listener($event)">1% change on any year<span class="badge_legend RP100 pull-right">&nbsp</span></a><li>
-    <li><a data-value="RP200" data-filter="" ng-click="RP_choice_listener($event)">0.5% change on any year<span class="badge_legend RP200 pull-right">&nbsp</span></a><li>
-    <li><a data-value="RP500" data-filter="" ng-click="RP_choice_listener($event)">0.2% change on any year<span class="badge_legend RP500 pull-right">&nbsp</span></a><li>
-    <li><a data-value="RP1000" data-filter="" ng-click="RP_choice_listener($event)">0.1% change on any year<span class="badge_legend RP1000 pull-right">&nbsp</span></a><li>
+    <li><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur.
+The theoretical return period is the inverse of the probability that the event will
+be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year).
+In this case, a 25 year flood has a 0.04 or 4% chance of being exceeded in any one year." data-tooltip-position="right" data-value="RP25" data-filter="" ng-click="RP_choice_listener($event)" class="active">4%<span class="badge_legend RP25 pull-right">&nbsp</span></a><li>
+    <li><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur.
+The theoretical return period is the inverse of the probability that the event will
+be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year).
+In this case, a 50 year flood has a 0.02 or 2% chance of being exceeded in any one year." data-value="RP50" data-filter="" ng-click="RP_choice_listener($event)" class="active">2%<span class="badge_legend RP50 pull-right">&nbsp</span></a><li>
+    <li><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur.
+The theoretical return period is the inverse of the probability that the event will
+be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year).
+In this case, a 100 year flood has a 0.01 or 1% chance of being exceeded in any one year." data-value="RP100" data-filter="" ng-click="RP_choice_listener($event)" class="active">1%<span class="badge_legend RP100 pull-right">&nbsp</span></a><li>
+    <li><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur.
+The theoretical return period is the inverse of the probability that the event will
+be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year).
+In this case, a 200 year flood has a 0.005 or 0.5% chance of being exceeded in any one year." data-value="RP200" data-filter="" ng-click="RP_choice_listener($event)" class="active">0.5%<span class="badge_legend RP200 pull-right">&nbsp</span></a><li>
+    <li><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur.
+The theoretical return period is the inverse of the probability that the event will
+be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year).
+In this case, a 500 year flood has a 0.002 or 0.2% chance of being exceeded in any one year." data-value="RP500" data-filter="" ng-click="RP_choice_listener($event)" class="active">0.2%<span class="badge_legend RP500 pull-right">&nbsp</span></a><li>
+    <li><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur.
+The theoretical return period is the inverse of the probability that the event will
+be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year).
+In this case, a 1000 year flood has a 0.001 or 0.1% chance of being exceeded in any one year." data-value="RP1000" data-filter="" ng-click="RP_choice_listener($event)" class="active">0.1%<span class="badge_legend RP1000 pull-right">&nbsp</span></a><li>
+    <!--<li style="text-align:end" title="A return period is an estimate of the likelihood of an event, such as a flood, to occur.
+The theoretical return period is the inverse of the probability that the event will
+be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year).
+For example, a 50 year flood has a 0.02 or 2% chance of being exceeded in any one year."><a>more info</a><li>-->
   </ul>
 </nav>  
 <nav class="filter">  

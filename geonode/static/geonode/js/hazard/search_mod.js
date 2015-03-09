@@ -17,7 +17,7 @@
     var date = new Date(),
         month = date.getMonth();
     var _shortMonthName = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-    $scope.selectedRP = ['RP25'];
+    $scope.selectedRP = ['RP25','RP50','RP100','RP200','RP500','RP1000'];
     $scope.selectedMultipleMonth = [_shortMonthName[month]];
     $scope.countryName = $location.search()['country'];
     $scope.countryISO3 = $location.search()['iso'];
@@ -337,8 +337,8 @@
       $scope.popFloodedData = data;
       $scope.manage_featuredata($scope.FCS);
       $scope.updateGEOJSON(data);
-      $scope.addChartSeries(['RP25'],$scope.popFloodedData);
-      $scope.addTableSeries(['RP25'],$scope.popFloodedData);
+      $scope.addChartSeries($scope.selectedRP,$scope.popFloodedData);
+      $scope.addTableSeries($scope.selectedRP,$scope.popFloodedData);
 
       angular.forEach(data.features, function(rowC){
         angular.forEach(_shortMonthName, function(monthName){
@@ -842,22 +842,39 @@
         }  
       });
 
-      // If the element is active active then deactivate it
-      if(element.hasClass('active')){
-        // clear the active class from it
-        element.removeClass('active');
-        // Remove the entry from the correct query in scope        
-        query_entry.splice(query_entry.indexOf(value), 1);
-      }
-      // if is not active then activate it
-      else if(!element.hasClass('active')){
-        // Add the entry in the correct query
-        if (query_entry.indexOf(value) == -1){
-          query_entry.push(value);  
-        }         
-        element.addClass('active');
-        $scope.selectedMultipleMonth.push(value);
-      }
+      if (value!='clear' && value !='all'){
+        // If the element is active active then deactivate it
+        if(element.hasClass('active')){
+          // clear the active class from it
+          element.removeClass('active');
+          // Remove the entry from the correct query in scope        
+          query_entry.splice(query_entry.indexOf(value), 1);
+        }
+        // if is not active then activate it
+        else if(!element.hasClass('active')){
+          // Add the entry in the correct query
+          if (query_entry.indexOf(value) == -1){
+            query_entry.push(value);  
+          }         
+          element.addClass('active');
+          $scope.selectedMultipleMonth.push(value);
+        }
+      } else {
+        if (value == 'clear'){
+          angular.forEach(allElement[0].children, function(rows){
+            var temp = $(rows);
+            temp.removeClass('active');  
+          });
+          $scope.selectedMultipleMonth = [];
+        } else if (value == 'all'){
+          angular.forEach(allElement[0].children, function(rows){
+            var temp = $(rows);
+            if (temp.attr('data-value') != 'all' && temp.attr('data-value') != 'clear')
+              temp.addClass('active');  
+          });
+          $scope.selectedMultipleMonth = _shortMonthName;
+        }
+      }  
       
       $scope.manage_featuredata($scope.FCS);     
       $scope.refreshGEOJSON();
@@ -949,21 +966,24 @@
       //$scope.layers.overlays.probabilities.layerOptions.layers = 'flood:CMR,flood:CMR,flood:CMR,flood:CMR,flood:CMR,flood:CMR';  
       //$scope.layers.overlays.probabilities.layerOptions.styles = 'RP25,RP50,RP100,RP200,RP500,RP1000';
      // console.log($scope.layers.overlays);
-     var layer = '';
-     var style = '';
-     var sep = '';
-     for (var x=0;x<$scope.selectedRP.length;x++){
-        if (layer!='') sep = ','; 
-        layer += sep+'geonode:f_'+$scope.countryISO3.toLowerCase();
-        style += sep+$scope.selectedRP[x];
-     }
 
      leafletData.getMap().then(function(map) {
         leafletData.getLayers().then(function (layers) {
-            layers.overlays.probabilities.setParams({'layers':layer,'styles':style},false);
+            layers.overlays.probabilities.setParams({'layers':$scope.prepLayerNameAndStyle().layer,'styles':$scope.prepLayerNameAndStyle().style},false);
         });
      });
 
+    }
+
+    $scope.prepLayerNameAndStyle = function(){
+      var obj={'layer':'','style':''};
+      var sep = '';
+      for (var x=0;x<$scope.selectedRP.length;x++){
+         if (obj.layer!='') sep = ','; 
+         obj.layer += sep+'geonode:f_'+$scope.countryISO3.toLowerCase();
+         obj.style += sep+$scope.selectedRP[x];
+      }
+      return obj;
     }
 
     $scope.$on("leafletDirectiveMap.geojsonMouseout", function(ev, feature, leafletEvent) {
@@ -1056,6 +1076,12 @@
         childElement.addClass('open');
       }     
     }
+
+    leafletData.getMap().then(function(map) {
+        leafletData.getLayers().then(function (layers) {
+            layers.overlays.probabilities.setParams({'layers':$scope.prepLayerNameAndStyle().layer,'styles':$scope.prepLayerNameAndStyle().style},false);
+        });
+     });
 
     $scope.IsJsonString = function(str) {
         try {
