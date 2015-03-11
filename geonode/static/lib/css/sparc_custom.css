@@ -59,7 +59,7 @@ body {
 }
 
 .box .box-header {
-	background: #004357;
+	background: #0088FF;
 	color: white;
 	font-size: 16px;
 	overflow: hidden;
@@ -163,23 +163,8 @@ body {
     opacity: 0.7;
 }
 
-.navbar-inverse {
-	background-color: #004357 !important;
-	border-color: #836C6C !important;
-}
-
-.navbar-inverse .navbar-nav>li>a {
-	color: #028baf;
-}
-
-footer {
-	border-top: 1px solid #999;
-	padding: 20px;
-	background-color: #004357;
-}
-
 nav.filter h4 {
-	background: #004357;
+	background: #0088FF;
 }
 
 #screen
@@ -440,3 +425,144 @@ nav.filter li a {
 	width: 1570px;
 }
 
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+/* Carousel base class */
+.carousel {
+  height: 400px;
+  margin-bottom: 60px;
+  top: -10px;
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  height: 400px;
+  background-color: #777;
+}
+.carousel-inner > .item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 400px;
+}
+
+.image-credit {
+  /*float: right;*/
+  font-size: .75em;
+  /*margin-right: -80px;*/
+  margin-top: 60px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+}
+
+.navbar-inverse {
+  background-color: #0088FF;
+  background-image: none;
+  background-image: -o-linear-gradient(top, #2a93fc, #0088FF);
+  border-bottom: 3px solid #4fb1eb;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff2A93FC', endColorstr='#ff2A93FC', GradientType=0);
+  height: 77px;
+}
+
+/*.navbar-inverse {
+	background-color: #004357 !important;
+	border-color: #836C6C !important;
+}*/
+
+.navbar-inverse .navbar-nav>li>a {
+  color: #fff;
+  font-family: "futura-pt-condensed","Arial Narrow",sans-serif;
+  /*font-size: 20px;*/
+  /*font-weight: 600;*/
+  margin-bottom: 0;
+  padding: 10px 25px;
+  text-shadow: none;
+  text-transform: uppercase;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+	color: #fff;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover{
+	color: #000;
+}
+
+.navbar .nav.pull-right {
+  float: right;
+  margin-right: 0;
+}
+
+footer {
+	border-top: 1px solid #ccc;
+	padding: 20px;
+	background: #3a4d67;
+	color: #ccc;
+	width: 100%;
+}
+
+#wrap {
+	padding-top: 35px;
+}
+
+.menuHeight25 {
+	height: 34px;
+}
+
+.navbar-inverse .brand {
+  background: url(/static/lib/img/wfp_logo_72_white.png) 0 2px no-repeat;
+  color: #fff;
+  /*font-family: 'Open Sans','Arial',sans-serif;*/
+  font-size: 2em;
+  font-weight: 400;
+  height: 60px;
+  line-height: 1.8em;
+  text-indent: 56px;
+  text-shadow: none;
+  text-transform: none;
+}
+
+.brand:hover{
+	text-decoration: none !important;
+}
+
+.navbar .brand {
+  display: block;
+  float: left;
+  padding: 10px 20px 10px;
+  margin-left: -20px;
+  font-size: 20px;
+  font-weight: 200;
+  /*color: #777;*/
+  text-shadow: 0 1px 0 #fff;
+}
+
+.navbar .pageFlag {
+  display: block;
+  padding: 10px 20px 10px;
+  margin-left: -20px;
+  font-size: 18px;
+  font-weight: 200;
+}
+
+.pageFlag {
+  color: #fff;
+  font-family: "futura-pt-condensed","Arial Narrow",sans-serif;
+  font-size: 2em;
+  font-weight: 400;
+  height: 25px;
+  line-height: 1.8em;
+  text-indent: 56px;
+  text-shadow: none;
+  text-transform: none;
+  top: -10px;
+}

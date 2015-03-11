@@ -27,6 +27,7 @@
     {% include "_permissions_form_js.html" %}
   {% endif %}
   <script type="text/javascript">
+      $('#pageFlag').html('Cyclone Hazard');
       {% if HAYSTACK_SEARCH %}
           SEARCH_URL = '{% url 'api_get_search' api_name='api' resource_name='base' %}?type__in=hazard'
       {% else %}

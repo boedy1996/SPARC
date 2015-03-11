@@ -42,8 +42,8 @@
     {% block header %}
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
-        <div class="navbar-header col-md-2">
-          <a class="navbar-brand" href="{% url "home" %}">GeoNode</a>
+        <div class="navbar-header span3">
+          <a class="brand" href="{% url "home" %}">SPARC - Spatial Risk Calendar</a>
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
@@ -51,167 +51,138 @@
               <span class="icon-bar"></span>
           </button>
         </div>
-        <div class="navbar-collapse collapse" id="main-nav">
-          <!--
-          <ul class="nav navbar-nav">
-            {% block tabs %}
-            <li id="nav_layers">
-              <a href="{% url "country_browse" %}">{% trans "Flood" %}</a>
-            </li>
-            <li id="nav_maps">
-              <a href="{% url "cyclone_country_list" %}">{% trans "Cyclone" %}</a>
-            </li>
-            <li id="nav_documents">
-              <a>{% trans "Drought" %}</a>
-            </li>
-            {% endblock %}
-          </ul>
-          -->
-          <ul class="nav navbar-nav navbar-left">
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Hazard<b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url "country_browse" %}"><i class="fa fa-pinterest"></i>{% trans "Floods" %}</a></li>
-                <li><a href="{% url "cyclone_country_list" %}"><i class="fa fa-pinterest"></i>{% trans "Cyclones" %}</a></li>
-                <li><a><i class="fa fa-pinterest"></i>{% trans "Drought" %}</a></li>
-              </ul>  
-            </li>
-          </ul>
-          <!--  
-          <div ng-switch="hazard">
-            <ul ng-switch-when="true" class="nav navbar-nav navbar-left">
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Base Layer</a>
-                <ul class="dropdown-menu">
-                  <li><a data-value="warden" data-filter="warden" ng-click="single_choice_listener($event)"><i class="fa fa-pinterest"></i>Mapbox Warden</a></li>
-                  <li><a data-value="outdoors" data-filter="outdoors" ng-click="single_choice_listener($event)"><i class="fa fa-pinterest"></i>Outdoors</a></li>
-                  <li><a><i class="fa fa-pinterest"></i>{% trans "Drought" %}</a></li>
-                </ul>  
-              </li>
-            </ul>
-          </div>  
-          -->
-          <ul id="floodQL" class="nav navbar-nav navbar-left hide">
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick links<b class="caret"></b></a>
-              <ul class="dropdown-menu multi-level">
-                <li  class="dropdown-submenu" ng-repeat="area in Country | groupBy:'wfp_area_id':'area_id'">
-                  {% verbatim %} 
-                    <a href="#" ng-if="area.wfp_area_id == 1" ng-click="quicklinks($event)">OMC, Cairo</a>   
-                    <a href="#" ng-if="area.wfp_area_id == 2" ng-click="quicklinks($event)">OMB, Bangkok</a>
-                    <a href="#" ng-if="area.wfp_area_id == 3" ng-click="quicklinks($event)">OMD, Dakar</a>
-                    <a href="#" ng-if="area.wfp_area_id == 4" ng-click="quicklinks($event)">OMJ, Johannesburg</a>  
-                    <a href="#" ng-if="area.wfp_area_id == 5" ng-click="quicklinks($event)">OMN, Nairobi</a>  
-                    <a href="#" ng-if="area.wfp_area_id == 6" ng-click="quicklinks($event)">OMP, Panama</a>   
-                  {% endverbatim %}
-                  <ul class="dropdown-menu multi-level">
-                    <li class="dropdown" ng-repeat="detail in area.items">
-                      <a href="{% url "hazard_detail" %}?iso={% verbatim %}{{ detail.iso3 }}&country={{detail.name}}{% endverbatim %}">{% verbatim %}{{ detail.name }}{% endverbatim %} </a>
-                    </li>  
-                  </ul> 
-                </li>
-              </ul>  
-            </li>  
-          </ul>  
-
-          <ul id="cycloneQL" class="nav navbar-nav navbar-left hide">
-            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick links<b class="caret"></b></a>
-              <ul class="dropdown-menu multi-level">
-                <li  class="dropdown-submenu" ng-repeat="area in Country | groupBy:'wfp_area_id':'area_id'">
-                  {% verbatim %} 
-                    <a href="#" ng-if="area.wfp_area_id == 1" ng-click="quicklinks($event)">OMC, Cairo</a>   
-                    <a href="#" ng-if="area.wfp_area_id == 2" ng-click="quicklinks($event)">OMB, Bangkok</a>
-                    <a href="#" ng-if="area.wfp_area_id == 3" ng-click="quicklinks($event)">OMD, Dakar</a>
-                    <a href="#" ng-if="area.wfp_area_id == 4" ng-click="quicklinks($event)">OMJ, Johannesburg</a>  
-                    <a href="#" ng-if="area.wfp_area_id == 5" ng-click="quicklinks($event)">OMN, Nairobi</a>  
-                    <a href="#" ng-if="area.wfp_area_id == 6" ng-click="quicklinks($event)">OMP, Panama</a>   
-                  {% endverbatim %}
-                  <ul class="dropdown-menu multi-level">
-                    <li class="dropdown" ng-repeat="detail in area.items">
-                      <a href="{% url "cyclone_detail" %}?iso={% verbatim %}{{ detail.iso3 }}&country={{detail.name}}{% endverbatim %}">{% verbatim %}{{ detail.name }}{% endverbatim %} </a>
-                    </li>  
-                  </ul> 
-                </li>
-              </ul>  
-            </li>  
-          </ul> 
-          <!--<form class="col-md-3" id="search" action="{% url "search" %}">
-            <div class="input-group">
-              {% if HAYSTACK_SEARCH %}
-              <input id="search_input" type="text" placeholder="Search" class="form-control" name="q">
-              {% else %}
-              <input id="search_input" type="text" placeholder="Search" class="form-control" name="title__contains">
-              {% endif %}
-              <span class="input-group-btn">
-                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-              </span>
+        <div class="navbar-collapse collapse span8 pull-right" id="main-nav">
+          <div class="row">
+            <div class="nav-collapse menuHeight25">
+              <span id="pageFlag" class="pageFlag pull-right"></span>
             </div>
-          </form>-->
-          <ul class="nav navbar-nav navbar-right">
-            {% if not user.is_authenticated and REGISTRATION_OPEN %}
-                <li><a href="{% url "account_signup" %}">{% trans "Register" %}</a></li>
-            {% endif %}
-            <li class="dropdown">
-              {% if user.is_authenticated %}
-              <li class="user-avatar">
-                {% avatar user 30 %}
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  {{ user.username }}
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url "layer_upload" %}"><i class="fa fa-cloud-upload"></i> {% trans "Upload Layers" %}</a></li>
-                  <li class="divider"></li>
-                  <li><a href="{{ user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "Profile" %}</a></li>
-                  <li><a href="{% url "recent-activity" %}"><i class="fa fa-fire"></i> {% trans "Recent Activity" %}</a></li>
-                  <li><a href="{% url "messages_inbox" %}"><i class="fa fa-inbox"></i> {% trans "Inbox" %}</a></li>
-                  {% if perms.announcements.can_manage %}
-                  <li><a href="{% url "announcements_list" %}"><i class="fa fa-bullhorn"></i> {% trans "Announcements" %}</a></li>
-                  {% endif %}
-                  {% if user.is_superuser %}
-                  <li><a href="{% url "services" %}"><i class="fa fa-globe"></i> {% trans "Remote Services" %}</a></li>
-                  <li><a href="{% url "account_invite_user" %}"><i class="fa fa-edit"></i> {% trans "Invite User" %}</a></li>
-                  <li class="divider"></li>
-                  <li><a href="{{ GEOSERVER_BASE_URL }}"><i class="fa fa-gears"></i> {% trans "GeoServer" %}</a></li>
-                  {% endif %}
-                  {% if user.is_staff %}
-                  <li><a href="{% url "admin:index" %}"><i class="fa fa-cog"></i> {% trans "Admin" %}</a></li>
-                  {% endif %}
-                  <li class="divider"></li>
-                  <li><a title="Help" rel="tooltip" href="/help/"><i class="fa fa-question-circle"></i> {% trans "Help" %}</a></li>
-                  <li class="divider"></li>
-                  <li>
-                    <form action="{% url "account_logout" %}" id="logout_form" method="post">
-                      {% csrf_token %}
-                      <a class="navbar-logout" href="javascript:{}" onclick="document.getElementById('logout_form').submit();"><i class="fa fa-sign-out"></i> {% trans "Log out" %}</a>
-                    </form>
-                  </li>
-                </ul>
-              </li>
-              {% else %}
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Sign in" %} <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li>
-                  <form role="form" action="{% url "account_login" %}?next={{ request.path }}" method="post">
-                  {% csrf_token %}
-                    <div class="form-group">
-                      <label for="id_username">{% trans "Username" %}:</label>
-                      <input id="id_username" name="username" type="text" />
-                    </div>
-                    <div class="form-group">
-                      <label for="id_password">{% trans "Password" %}:</label>
-                      <input id="id_password" name="password" type="password" />
-                    </div>
-                    <label class="checkbox">
-                      <input type="checkbox" />
-                      {% trans "Remember Me" %}
-                    </label>
-                    <button type="submit" class="btn btn-warning pull-right">{% trans "Sign in" %}</button>
-                  </form>
+          </div> 
+
+          <div class="row"> 
+              <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Hazard<b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url "country_browse" %}"><i class="fa fa-pinterest"></i>{% trans "Floods" %}</a></li>
+                    <li><a href="{% url "cyclone_country_list" %}"><i class="fa fa-pinterest"></i>{% trans "Cyclones" %}</a></li>
+                    <li><a><i class="fa fa-pinterest"></i>{% trans "Drought" %}</a></li>
+                  </ul>  
                 </li>
               </ul>
-              {% endif %}
-            </li>
-          </ul>
+    
+              <ul id="floodQL" class="nav navbar-nav navbar-left hide">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick links<b class="caret"></b></a>
+                  <ul class="dropdown-menu multi-level">
+                    <li  class="dropdown-submenu" ng-repeat="area in Country | groupBy:'wfp_area_id':'area_id'">
+                      {% verbatim %} 
+                        <a href="#" ng-if="area.wfp_area_id == 1" ng-click="quicklinks($event)">OMC, Cairo</a>   
+                        <a href="#" ng-if="area.wfp_area_id == 2" ng-click="quicklinks($event)">OMB, Bangkok</a>
+                        <a href="#" ng-if="area.wfp_area_id == 3" ng-click="quicklinks($event)">OMD, Dakar</a>
+                        <a href="#" ng-if="area.wfp_area_id == 4" ng-click="quicklinks($event)">OMJ, Johannesburg</a>  
+                        <a href="#" ng-if="area.wfp_area_id == 5" ng-click="quicklinks($event)">OMN, Nairobi</a>  
+                        <a href="#" ng-if="area.wfp_area_id == 6" ng-click="quicklinks($event)">OMP, Panama</a>   
+                      {% endverbatim %}
+                      <ul class="dropdown-menu multi-level">
+                        <li class="dropdown" ng-repeat="detail in area.items">
+                          <a href="{% url "hazard_detail" %}?iso={% verbatim %}{{ detail.iso3 }}&country={{detail.name}}{% endverbatim %}">{% verbatim %}{{ detail.name }}{% endverbatim %} </a>
+                        </li>  
+                      </ul> 
+                    </li>
+                  </ul>  
+                </li>  
+              </ul>  
+
+              <ul id="cycloneQL" class="nav navbar-nav navbar-left hide">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick links<b class="caret"></b></a>
+                  <ul class="dropdown-menu multi-level">
+                    <li  class="dropdown-submenu" ng-repeat="area in Country | groupBy:'wfp_area_id':'area_id'">
+                      {% verbatim %} 
+                        <a href="#" ng-if="area.wfp_area_id == 1" ng-click="quicklinks($event)">OMC, Cairo</a>   
+                        <a href="#" ng-if="area.wfp_area_id == 2" ng-click="quicklinks($event)">OMB, Bangkok</a>
+                        <a href="#" ng-if="area.wfp_area_id == 3" ng-click="quicklinks($event)">OMD, Dakar</a>
+                        <a href="#" ng-if="area.wfp_area_id == 4" ng-click="quicklinks($event)">OMJ, Johannesburg</a>  
+                        <a href="#" ng-if="area.wfp_area_id == 5" ng-click="quicklinks($event)">OMN, Nairobi</a>  
+                        <a href="#" ng-if="area.wfp_area_id == 6" ng-click="quicklinks($event)">OMP, Panama</a>   
+                      {% endverbatim %}
+                      <ul class="dropdown-menu multi-level">
+                        <li class="dropdown" ng-repeat="detail in area.items">
+                          <a href="{% url "cyclone_detail" %}?iso={% verbatim %}{{ detail.iso3 }}&country={{detail.name}}{% endverbatim %}">{% verbatim %}{{ detail.name }}{% endverbatim %} </a>
+                        </li>  
+                      </ul> 
+                    </li>
+                  </ul>  
+                </li>  
+              </ul> 
+              
+              <ul class="nav navbar-nav navbar-right">
+                {% if not user.is_authenticated and REGISTRATION_OPEN %}
+                    <li><a href="{% url "account_signup" %}">{% trans "Register" %}</a></li>
+                {% endif %}
+                <li class="dropdown">
+                  {% if user.is_authenticated %}
+                  <li class="user-avatar">
+                    {% avatar user 30 %}
+                  </li>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      {{ user.username }}
+                      <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url "layer_upload" %}"><i class="fa fa-cloud-upload"></i> {% trans "Upload Layers" %}</a></li>
+                      <li class="divider"></li>
+                      <li><a href="{{ user.get_absolute_url }}"><i class="fa fa-user"></i> {% trans "Profile" %}</a></li>
+                      <li><a href="{% url "recent-activity" %}"><i class="fa fa-fire"></i> {% trans "Recent Activity" %}</a></li>
+                      <li><a href="{% url "messages_inbox" %}"><i class="fa fa-inbox"></i> {% trans "Inbox" %}</a></li>
+                      {% if perms.announcements.can_manage %}
+                      <li><a href="{% url "announcements_list" %}"><i class="fa fa-bullhorn"></i> {% trans "Announcements" %}</a></li>
+                      {% endif %}
+                      {% if user.is_superuser %}
+                      <li><a href="{% url "services" %}"><i class="fa fa-globe"></i> {% trans "Remote Services" %}</a></li>
+                      <li><a href="{% url "account_invite_user" %}"><i class="fa fa-edit"></i> {% trans "Invite User" %}</a></li>
+                      <li class="divider"></li>
+                      <li><a href="{{ GEOSERVER_BASE_URL }}"><i class="fa fa-gears"></i> {% trans "GeoServer" %}</a></li>
+                      {% endif %}
+                      {% if user.is_staff %}
+                      <li><a href="{% url "admin:index" %}"><i class="fa fa-cog"></i> {% trans "Admin" %}</a></li>
+                      {% endif %}
+                      <li class="divider"></li>
+                      <li><a title="Help" rel="tooltip" href="/help/"><i class="fa fa-question-circle"></i> {% trans "Help" %}</a></li>
+                      <li class="divider"></li>
+                      <li>
+                        <form action="{% url "account_logout" %}" id="logout_form" method="post">
+                          {% csrf_token %}
+                          <a class="navbar-logout" href="javascript:{}" onclick="document.getElementById('logout_form').submit();"><i class="fa fa-sign-out"></i> {% trans "Log out" %}</a>
+                        </form>
+                      </li>
+                    </ul>
+                  </li>
+                  {% else %}
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Sign in" %} <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <form role="form" action="{% url "account_login" %}?next={{ request.path }}" method="post">
+                      {% csrf_token %}
+                        <div class="form-group">
+                          <label for="id_username">{% trans "Username" %}:</label>
+                          <input id="id_username" name="username" type="text" />
+                        </div>
+                        <div class="form-group">
+                          <label for="id_password">{% trans "Password" %}:</label>
+                          <input id="id_password" name="password" type="password" />
+                        </div>
+                        <label class="checkbox">
+                          <input type="checkbox" />
+                          {% trans "Remember Me" %}
+                        </label>
+                        <button type="submit" class="btn btn-warning pull-right">{% trans "Sign in" %}</button>
+                      </form>
+                    </li>
+                  </ul>
+                  {% endif %}
+                </li>
+              </ul>
+          </div>
+
         </div><!--/.nav-collapse -->
       </div>
     </div>

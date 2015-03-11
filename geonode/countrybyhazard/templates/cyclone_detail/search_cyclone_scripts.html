@@ -20,6 +20,7 @@
 <script src="{{ STATIC_URL }}geonode/js/search/explore.js"></script>
 <script src="{{ STATIC_URL }}geonode/js/hazard/search_cyclone_mod.js"></script>
 <script type="text/javascript">
+  $('#pageFlag').html('Cyclone Hazard');
   $("body").attr('ng-controller', 'hazard_map_Controller');
   var module = angular.module('search', ['hazard_main_search']);
   var deps = ['search','leaflet-directive','highcharts-ng','smart-table','ng.group'];
