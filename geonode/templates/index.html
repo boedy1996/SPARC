@@ -66,7 +66,9 @@
 
   {% block mainbody %}
   <div class="container">
+
     <div class="row">
+
       <div class="col-md-4">
           <div class="flood_icon text-center"></div>
           <h2 class="text-center">{% trans "Flood Hazard" %}</h2>
@@ -91,9 +93,17 @@
           <p class="text-center"><a class="btn btn-default" href="{% url "drought_country_list" %}" role="button">{% trans "Explore Drought" %} &raquo;</a></p>
       </div>
     </div>
-
-
+    <!-- <div class="col-md-2 col-sm-3">
+      <div id="toc"></div>
+    </div>
+    <div class="col-md-10 col-sm-9">
+      <h1>Overview</h1>
+      <h1>First year</h1> <h2>Computing and Engineering</h2> <p> <ul> <li>Robert Tables Jr.</li> <li>John Doe</li> <li>Cynthia Mendez</li> </ul> </p>
+    </div> -->
   </div>
+
+  
+
   {% verbatim %}
   <div ng-app="featured">
     <div ng-repeat="item in featured">
@@ -110,6 +120,13 @@
 <script src="{{ STATIC_URL }}lib/js/angular.js"></script>
 {% endif %}
   <script type="text/javascript">
+
+    $(function() {
+      //Calls the tocify method on your HTML div.
+      $("#toc").tocify();
+    });
+
+
     FEATURED_URL = '{% url 'api_dispatch_list' api_name='api' resource_name='featured' %}'
     'use strict';
     (function(){  

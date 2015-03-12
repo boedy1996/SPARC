@@ -566,3 +566,15 @@ footer {
   text-transform: none;
   top: -10px;
 }
+
+.tocify {
+  width: 20%;
+  max-height: 90%;
+  overflow: auto;
+  margin-left: 2%;
+  position: absolute;
+  border: 1px solid #ccc;
+  webkit-border-radius: 6px;
+  moz-border-radius: 6px;
+  border-radius: 6px;
+}

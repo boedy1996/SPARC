@@ -114,11 +114,39 @@
       },
       layers: {
         overlays: {
+          warehouses : {
+            name:'Population Landscan',
+            type: 'wms',
+            url:'http://geonode.wfp.org/geoserver/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:wld_poi_warehouses_wfp',
+              format: 'image/png',
+              //opacity: 0.5,
+              styles : '',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          landscan : {
+            name:'Population Landscan',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:lscan13',
+              format: 'image/png',
+              opacity: 0.5,
+              styles : 'lscan',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
           probabilities : {
             name:'Cyclone Probabilities',
             type: 'wms',
             url:'http://10.11.40.84/geoserver/geonode/wms',
-            visible : false,
+            visible : true,
             layerOptions: {
               layers: 'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2',
               format: 'image/png',
@@ -133,10 +161,11 @@
           warden: {
             name: 'Warden-MapBox',
             type: 'xyz',
-            url: 'http://{s}.tiles.mapbox.com/v3/mapbox.mapbox-warden/{z}/{x}/{y}.png',
+            //url: 'http://{s}.tiles.mapbox.com/v3/mapbox.mapbox-warden/{z}/{x}/{y}.png',
+            url: 'http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png',
             layerOptions: {
                 subdomains: ['a', 'b', 'c'],
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                //attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 continuousWorld: true
             }
           },
@@ -258,7 +287,7 @@
         else
           $scope.Country.push(row[0]);  
       });
-      console.log($scope.Country);
+      ///console.log($scope.Country);
     });
 
     $http.get("https://maps.googleapis.com/maps/api/geocode/json?address="+$location.search()['country']).success(function(data, status) {
@@ -430,6 +459,19 @@
         $scope.layers.overlays.probabilities.visible = false;  
       }
 
+      if ($.inArray('landscan', selectedLayerOverlay)>=0){
+        console.log($scope.layers.overlays);
+        $scope.layers.overlays.landscan.visible = true;
+      } else {
+        $scope.layers.overlays.landscan.visible = false;  
+      }
+
+      if ($.inArray('warehouses', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.warehouses.visible = true;
+      } else {
+        $scope.layers.overlays.warehouses.visible = false;  
+      }
+
     }
 
     $scope.external_choice_listener = function($event){   
@@ -523,7 +565,7 @@
         // Add the entry in the correct query
         query_entry = value;
         // clear the active class from it
-        element.parents('ul').find('a').removeClass('active');
+        element.parents('div').find('a').removeClass('active');
         element.addClass('active');
       }     
     }
@@ -620,7 +662,7 @@
     $scope.manage_featuredata = function(){
       for (var x in $scope.popFloodedData.features){
         $scope.popFloodedData.features[x].properties.active_month = 0;
-        console.log($scope.popFloodedData.features[x].properties.FCS);
+        //console.log($scope.popFloodedData.features[x].properties.FCS);
         if ($scope.FCS)
           var FCS_value = $scope.popFloodedData.features[x].properties.FCS/100
         else 
