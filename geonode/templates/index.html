@@ -23,7 +23,7 @@
           <img src="{{ STATIC_URL }}lib/foto/flood-cover-2.jpg" alt="Flood Cover, Credit for Google Crisis">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Flood Hazard Assessment</h1>
+              <h1 class="tocify-hide">Flood Hazard Assessment</h1>
               <p>Here perhaps we could put some statement explaining how the flood hazard analysis done, some short description on the methodology, source of data, etc</p>
               <p><a class="btn btn-lg btn-primary" href="{% url "country_browse" %}" role="button">Browse Flood Assestment</a></p>
               <p class="image-credit">Photo: Google Crisis</p>
@@ -34,7 +34,7 @@
           <img src="{{ STATIC_URL }}lib/foto/cyclone1.jpg" alt="Cyclone, Credit for NOAA">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Cyclone Hazard Assessment</h1>
+              <h1 class="tocify-hide">Cyclone Hazard Assessment</h1>
               <p>Here perhaps we could put some statement explaining how the Cyclone hazard analysis done, some short description on the methodology, source of data, etc</p>
               <p><a class="btn btn-lg btn-primary" href="{% url "cyclone_country_list" %}" role="button">Browse Cyclone Assestment</a></p>
               <p class="image-credit">Photo: NOAA</p>
@@ -45,7 +45,7 @@
           <img src="{{ STATIC_URL }}lib/foto/drought.jpg" alt="Drought, Credit for telegraph.co.uk">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Drought Hazard Assessment</h1>
+              <h1 class="tocify-hide">Drought Hazard Assessment</h1>
               <p>Here perhaps we could put some statement explaining how the drought hazard analysis done, some short description on the methodology, source of data, etc</p>
               <p><a class="btn btn-lg btn-primary" href="{% url "drought_country_list" %}" role="button">Browse Drought Assestment</a></p>
               <p class="image-credit">Photo: telegraph.co.uk</p>
@@ -67,7 +67,7 @@
   {% block mainbody %}
   <div class="container">
 
-    <div class="row">
+    <!-- <div class="row">
 
       <div class="col-md-4">
           <div class="flood_icon text-center"></div>
@@ -92,14 +92,19 @@
           <p class="text-center">{% trans "Click to search the country to explore the other Hazard." %}</p> 
           <p class="text-center"><a class="btn btn-default" href="{% url "drought_country_list" %}" role="button">{% trans "Explore Drought" %} &raquo;</a></p>
       </div>
-    </div>
-    <!-- <div class="col-md-2 col-sm-3">
+    </div> -->
+    <div class="col-md-3 col-sm-4">
       <div id="toc"></div>
     </div>
-    <div class="col-md-10 col-sm-9">
-      <h1>Overview</h1>
-      <h1>First year</h1> <h2>Computing and Engineering</h2> <p> <ul> <li>Robert Tables Jr.</li> <li>John Doe</li> <li>Cynthia Mendez</li> </ul> </p>
-    </div> -->
+    <div class="col-md-9 col-sm-8 home-intro text-center">
+      <h2 class="tagLine">Get Started</h2>
+        <p class="lead">The Spatial Risk Calendar (SPARC) is an online tool that uses maps and charts to show where, when and how many people are at risk of being affected by <a href="{% url "country_browse" %}">floods</a>, <a href="{% url "drought_country_list" %}">droughts</a> and <a href="{% url "cyclone_country_list" %}">storms</a>. It does this by combining GIS datasets showing how prone areas are to hazards each month, how many people live in these areas, and profiles of how vulnerable these people are.</p>
+        <hr class="small">
+      <h2 class="tagLine">How it work</h2>  
+      <p class="lead">SPARC shows risk in terms of numbers of people with different chances of being affected by <a href="{% url "country_browse" %}">floods</a>, <a href="{% url "drought_country_list" %}">droughts</a> or <a href="{% url "cyclone_country_list" %}">storms</a>. SPARC defines “affected” as living in a place that is flooded, in drought conditions, or in a storm track.</p>
+      <p class="lead">Each dataset is made up of small squares; for example, each square in the global flood dataset is one square kilometre. Each square has a probability of flooding each month. If a square has a 1% chance of flooding, and 100 people living in the square meet a vulnerability threshold, SPARC says that there is a 1% chance of 100 people being affected. SPARC adds up all the people from each square and the chances of them being affected. <img src="{{ STATIC_URL }}lib/img/image001.jpg" class="img-responsive"></p>
+        <hr class="small">
+    </div>
   </div>
 
   
@@ -120,6 +125,16 @@
 <script src="{{ STATIC_URL }}lib/js/angular.js"></script>
 {% endif %}
   <script type="text/javascript">
+    $(window).scroll(function(){
+        console.log($(window).scrollTop());
+        if ($(window).scrollTop()>$('#myCarousel').height()){
+          $('#toc').css("position","fixed");
+          $('#toc').css("top","100px");
+        } else {
+          $('#toc').css("position","relative");
+          $('#toc').css("top","0");
+        }
+    });
 
     $(function() {
       //Calls the tocify method on your HTML div.
