@@ -61,16 +61,7 @@
           </div> 
 
           <div class="row"> 
-              <ul class="nav navbar-nav navbar-left">
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Hazard<b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="{% url "country_browse" %}"><i class="fa fa-pinterest"></i>{% trans "Floods" %}</a></li>
-                    <li><a href="{% url "cyclone_country_list" %}"><i class="fa fa-pinterest"></i>{% trans "Cyclones" %}</a></li>
-                    <li><a><i class="fa fa-pinterest"></i>{% trans "Drought" %}</a></li>
-                  </ul>  
-                </li>
-              </ul>
-    
+
               <ul id="floodQL" class="nav navbar-nav navbar-left hide">
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick links<b class="caret"></b></a>
                   <ul class="dropdown-menu multi-level">
@@ -113,7 +104,19 @@
                     </li>
                   </ul>  
                 </li>  
-              </ul> 
+              </ul>
+
+              <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Hazard<b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url "country_browse" %}"><i class="fa fa-pinterest"></i>{% trans "Floods" %}</a></li>
+                    <li><a href="{% url "cyclone_country_list" %}"><i class="fa fa-pinterest"></i>{% trans "Cyclones" %}</a></li>
+                    <li><a><i class="fa fa-pinterest"></i>{% trans "Drought" %}</a></li>
+                  </ul>  
+                </li>
+              </ul>
+    
+               
               
               <ul class="nav navbar-nav navbar-right">
                 {% if not user.is_authenticated and REGISTRATION_OPEN %}
