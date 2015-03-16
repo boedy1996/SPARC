@@ -511,7 +511,7 @@ footer {
 }
 
 #wrap {
-	padding-top: 35px;
+	border-top: 30px solid rgba(33,33,33,0.8);
 }
 
 .menuHeight25 {
