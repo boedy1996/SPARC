@@ -53,18 +53,42 @@
               <a data-value="clear" data-filter="" ng-click="month_multiple_choice_listener($event)" title="Clear Selection">Clear</a>
               {% verbatim %}
             </div>
-            <div class="leaflet-control leaflet-bar">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-align-justify" style="margin-right: 0px !important;"></i></a>  
-              <ul class="dropdown-menu-custom" role="menu">
-                  <li><a data-value="raster" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i></i>Flood Probability</a></li>
-                  <li><a data-value="popatrisk_block" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i>Population at Risk (block map)</a></li>
-                  <li><a data-value="popatrisk_heat" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Flood Events</a></li>
-                  <li><a data-value="landscan" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Population Landscan</a></li>
-                  <li><a data-value="warehouses" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>WFP Warehouses</a></li>
-                  <li><a data-value="EIVLayer" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>EIV</a></li>
-                  
+            <div class="leaflet-bar-hor leaflet-control btn-group">
+              <!-- <button type="button" class="btn btn-default">
+                <i class="glyphicon glyphicon-flash"></i>
+              </button> -->
+              
+              <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="padding: 5px;">
+                <i class="glyphicon glyphicon-list-alt small"></i>
+              </button>
+              <ul class="dropdown-menu-custom scroll-menu" role="menu">
+                <li><h6>Population</h6></li>
+                <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=lscan13"></li>
               </ul>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"  style="padding: 5px;">
+                  <i class="glyphicon glyphicon-map-marker small"></i> 
+                </button>
+                <ul class="dropdown-menu-custom scroll-menu" role="menu">
+                    <li><a data-value="raster" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i>Flood Probability</a></li>
+                    <li><a data-value="popatrisk_block" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i>Population at Risk (block map)</a></li>
+                    <li><a data-value="popatrisk_heat" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Flood Events</a></li>
+                    <li><a data-value="landscan" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Population Landscan</a></li>
+                    <li><a data-value="warehouses" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>WFP Warehouses</a></li>
+                    <li><a data-value="EIVLayer" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>EIV</a></li>            
+                </ul>
+              </div>
+
+
             </div>  
+            <!-- <div class="leaflet-bar leaflet-control">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-align-justify" style="margin-right: 0px !important;"></i></a>  
+               
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-align-justify" style="margin-right: 0px !important;"></i></a>  
+            </div>   -->
           </div>  
         </leaflet>  
       </div>  
