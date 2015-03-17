@@ -189,6 +189,7 @@ def getGeoJSON_Flood_Data(request):
 			elif newY["rp"]==1000 and str(newY["adm2_code"])==str(x["properties"]["adm2_code"]):	
 				x["properties"]["RP1000"]=newY
 		x["properties"]["FCS"]=0
+		x["properties"]["FCS_border"]=0
 		currentDate = datetime.datetime.now()
 		monthNameTemp = currentDate.strftime("%b").lower()
 		try:

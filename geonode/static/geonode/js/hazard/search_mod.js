@@ -320,11 +320,16 @@
              x >    2  ? '#0F00EF' :
              x >    0  ? '#0000FF' :
                          '#FFFFFF' ;*/
-      return x > $scope.legendRange[4] ? '#FF0000' :
-             x > $scope.legendRange[3] ? '#FFA500' :
-             x > $scope.legendRange[2] ? '#eff76a' :                   
-             x > $scope.legendRange[1] ? '#76f579' :
-             x > $scope.legendRange[0] ? '#e1d3d3' :
+      console.log($scope.FCS);
+      var multiply = 1;
+      if ($scope.FCS){
+        multiply = 0.1;
+      }                   
+      return x > ($scope.legendRange[4]*multiply) ? '#FF0000' :
+             x > ($scope.legendRange[3]*multiply) ? '#FFA500' :
+             x > ($scope.legendRange[2]*multiply) ? '#eff76a' :                   
+             x > ($scope.legendRange[1]*multiply) ? '#76f579' :
+             x > ($scope.legendRange[0]*multiply) ? '#e1d3d3' :
                                          '#FFFFFF' ;
 
     }
@@ -401,6 +406,7 @@
                 var currentMonthYear = new Date(item.FCS_year, item.FCS_month-1, 1, 0, 0, 0, 0);
                 if (currentMonthYear>maxMonthYear){
                   row.properties.FCS = item.FCS_poor;
+                  row.properties.FCS_border = item.FCS_borderline;
                 }
               });
           });
@@ -724,6 +730,7 @@
       $scope.refreshGEOJSON(); 
       $scope.addChartSeries($scope.selectedRP,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedRP,$scope.popFloodedData);
+      $scope.generateLegend();
     }
 
     $scope.resetGeoJSONLayer = function(layer){
@@ -768,10 +775,11 @@
       for (var x in $scope.popFloodedData.features){
         
         var pertama = true;
-        if (selFCS)
-          var FCS_value = $scope.popFloodedData.features[x].properties.FCS/100
-        else 
+        if (selFCS){
+          var FCS_value = ($scope.popFloodedData.features[x].properties.FCS+$scope.popFloodedData.features[x].properties.FCS_border)/100;
+        } else{ 
           var FCS_value = 1;
+        }  
 
         for (var key in $scope.selectedRP){  
           //console.log($scope.selectedRP[key]);
@@ -1034,17 +1042,22 @@
 
     $scope.generateLegend = function(){
       leafletData.getMap().then(function (map) {
+          var multiply=1;
+          if ($scope.FCS){
+            multiply = 0.1;
+          }  
           var div = L.DomUtil.get('legendCustom'),
               grades = $scope.legendRange,
               labels = [];
+          div.innerHTML = '';    
           // loop through our density intervals and generate a label with a colored square for each interval
           for (var i = 0; i < grades.length; i++) {
             if (i==0)
               div.innerHTML +=
-                  '<li><a class=""><i style="background:' + getColor(grades[i] + 1) + '"></i>'+ (grades[i + 1] ? ' < ' + grades[i + 1]  : '+')+'</a></li>'
+                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+ (grades[i + 1]*multiply ? ' < ' + grades[i + 1]*multiply  : '+')+'</a></li>'
             else  
               div.innerHTML +=
-                  '<li><a class=""><i style="background:' + getColor(grades[i] + 1) + '"></i>'+grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1]  : '+')+'</a></li>';
+                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+grades[i]*multiply + (grades[i + 1]*multiply ? '&ndash;' + grades[i + 1]*multiply  : '+')+'</a></li>';
           }
       });
     }  
