@@ -226,6 +226,34 @@
               crs: L.CRS.EPSG4326,
               transparent : true
             }
+          },
+          FCSLayer : {
+            name:'FCS',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:vam',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'fcs',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          CSILayer : {
+            name:'FCS',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:vam',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'csi',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
           }
         },
         baselayers:{
@@ -697,7 +725,18 @@
       } else {
         $scope.layers.overlays.EIVLayer.visible = false;  
       }
- 
+      
+      if ($.inArray('FCS', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.FCSLayer.visible = true;
+      } else {
+        $scope.layers.overlays.FCSLayer.visible = false;  
+      }
+
+      if ($.inArray('CSI', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.CSILayer.visible = true;
+      } else {
+        $scope.layers.overlays.CSILayer.visible = false;  
+      }
 
     }
 
