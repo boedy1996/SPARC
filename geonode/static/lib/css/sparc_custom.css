@@ -628,3 +628,31 @@ small, .small {
   font-size: 75%;
 }
 
+input[type="checkbox"].checkbox {
+    display: none;
+}
+input[type="checkbox"].checkbox + label {
+    display: inline;
+    position: relative;
+    background-color: #b94a48;
+    
+    /*label styling*/
+    padding: 2px 4px;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 14px;
+    color: #ffffff;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+input[type="checkbox"].checkbox:checked + label {
+    background-color: #468847;
+}
+
+input[type="checkbox"].checkbox:disabled + label {
+    opacity: 0.5;
+}

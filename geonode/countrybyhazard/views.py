@@ -190,6 +190,11 @@ def getGeoJSON_Flood_Data(request):
 				x["properties"]["RP1000"]=newY
 		x["properties"]["FCS"]=0
 		x["properties"]["FCS_border"]=0
+		x["properties"]["FCS_acceptable"]=0
+		x["properties"]["CSI_no"]=0
+		x["properties"]["CSI_low"]=0
+		x["properties"]["CSI_med"]=0
+		x["properties"]["CSI_high"]=0
 		currentDate = datetime.datetime.now()
 		monthNameTemp = currentDate.strftime("%b").lower()
 		try:
