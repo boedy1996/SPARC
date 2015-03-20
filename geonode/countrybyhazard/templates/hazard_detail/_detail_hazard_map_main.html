@@ -65,10 +65,20 @@
               <ul class="dropdown-menu-custom scroll-menu" role="menu">
                 <li><h6>Population</h6></li>
                 <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=lscan13"></li>
+                
                 <li><h6>FCS</h6></li>
                 <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=vam&style=fcs"></li>
                 <li><h6>CSI</h6></li>
                 <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=vam&style=csi"></li>
+
+                <li><h6>Negative Change</h6></li>
+                <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-nch2"></li>
+                <li><h6>Positive Change</h6></li>
+                <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-pch2"></li>
+                <li><h6>Forest Lev</h6></li>
+                <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-forest-lev"></li>
+                <li><h6>Crop Lev</h6></li>
+                <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-crop-lev"></li>
               </ul>
             </div>
 
@@ -84,7 +94,11 @@
                     <li><a data-value="warehouses" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>WFP Warehouses</a></li>
                     <li><a data-value="EIVLayer" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>EIV</a></li>
                     <li><a data-value="FCS" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>VAM - FCS</a></li> 
-                    <li><a data-value="CSI" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>VAM - CSI</a></li>           
+                    <li><a data-value="CSI" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>VAM - CSI</a></li> 
+                    <li><a data-value="negativechange" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Negative Change</a></li>
+                    <li><a data-value="positivechange" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Positive Change</a></li>
+                    <li><a data-value="forestlev" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Forest Lev</a></li>
+                    <li><a data-value="croplev" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Crop Lev</a></li>          
                 </ul>
               </div>
 

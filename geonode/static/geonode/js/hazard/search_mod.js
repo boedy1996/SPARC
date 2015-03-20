@@ -254,7 +254,65 @@
               crs: L.CRS.EPSG4326,
               transparent : true
             }
+          },
+          NegativeChange : {
+            name:'NegativeChange',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:context_layer',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'context-nch2',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          PositiveChange : {
+            name:'PositiveChange',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:context_layer',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'context-pch2',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          ForestLev : {
+            name:'ForestLev',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:context_layer',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'context-forest-lev',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          CropLev : {
+            name:'ForestLev',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:context_layer',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'context-crop-lev',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
           }
+
+
         },
         baselayers:{
           warden: {
@@ -737,6 +795,30 @@
       } else {
         $scope.layers.overlays.CSILayer.visible = false;  
       }
+
+      if ($.inArray('negativechange', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.NegativeChange.visible = true;
+      } else {
+        $scope.layers.overlays.NegativeChange.visible = false;  
+      }
+
+      if ($.inArray('positivechange', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.PositiveChange.visible = true;
+      } else {
+        $scope.layers.overlays.PositiveChange.visible = false;  
+      }
+      
+      if ($.inArray('forestlev', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.ForestLev.visible = true;
+      } else {
+        $scope.layers.overlays.ForestLev.visible = false;  
+      }
+
+      if ($.inArray('croplev', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.CropLev.visible = true;
+      } else {
+        $scope.layers.overlays.CropLev.visible = false;  
+      }      
 
     }
 
