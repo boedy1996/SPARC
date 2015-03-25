@@ -1,9 +1,74 @@
+<style>
+table, th , td  {
+  border: 0px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+  font-size: 12px;
+}
+table tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+table tr:nth-child(even) {
+  background-color: #f1f1f1;
+}
+</style>
+
 {% verbatim %}
   <article ng-repeat="item in results" resource_id="{{ item.iso3 }}" ng-cloak>
   	<div class="row items-list">
-      <div class="col-md-6">
+       <div class="col-md-5">
         <h4><a href="{% endverbatim %}{% url "drought_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.name}}
 ">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
+		<p class="abstract" ng-if="item.popatrisk.total == 0">No assessment performed</p>
+		<table class="abstract" ng-if="item.popatrisk.total > 0">
+          <thead>
+            <th>Probability</th>
+            <th># Pop at Risk</th>
+          </thead>
+          <tr ng-if="item.popatrisk.R10.total > 0">
+            <td>1% - 10% </td>
+            <td align='right'>{{ item.popatrisk.R10.total | number:0 }}</td>
+          </tr>
+          <tr ng-if="item.popatrisk.R20.total > 0">
+            <td>11% - 20% </td>
+            <td align='right'>{{ item.popatrisk.R20.total | number:0 }}</td>
+          </tr>
+          <tr ng-if="item.popatrisk.R30.total > 0">
+            <td>21% - 30% </td>
+            <td align='right'>{{ item.popatrisk.R30.total | number:0 }}</td>
+          </tr>
+          <tr ng-if="item.popatrisk.R40.total > 0">
+            <td>31% - 40% </td>
+            <td align='right'>{{ item.popatrisk.R40.total | number:0 }}</td>
+          </tr>
+          <tr ng-if="item.popatrisk.R50.total > 0">
+            <td>41% - 50% </td>
+            <td align='right'>{{ item.popatrisk.R50.total | number:0 }}</td>
+          </tr>
+          <tr ng-if="item.popatrisk.R60.total > 0">
+            <td>51% - 60% </td>
+            <td align='right'>{{ item.popatrisk.R60.total | number:0 }}</td>
+          </tr>
+          <tr ng-if="item.popatrisk.R70.total > 0">
+            <td>61% - 70% </td>
+            <td align='right'>{{ item.popatrisk.R70.total | number:0 }}</td>
+          </tr>
+          <tr ng-if="item.popatrisk.R80.total > 0">
+            <td>71% - 80% </td>
+            <td align='right'>{{ item.popatrisk.R80.total | number:0 }}</td>
+          </tr>
+          <tr ng-if="item.popatrisk.R90.total > 0">
+            <td>81% - 90% </td>
+            <td align='right'>{{ item.popatrisk.R90.total | number:0 }}</td>
+          </tr>
+          <tr ng-if="item.popatrisk.R100.total > 0">
+            <td>91% - 100% </td>
+            <td align='right'>{{ item.popatrisk.R100.total | number:0 }}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-7">
+        <img  ng-if="item.popatrisk.total > 0" class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x,y&cht=bvs&chbh=15,5&chds=a&chd=t:{{ item.chartvalue }}&chco=CBAD6D,CCA06C,CD946C,CE886B,CF7C6B,D0706B,D1636A,D2576A,D34B69,D43F69&chls=2.0&chs=400x300&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=1%-10%|11%-20%|21%-30%|31%-40%|41%-50%|51%-60%|61%-70%|71%-80%|81%-90%|91%-100%&chtt=Monthly Expected impact values&chts=919191,10&chxs=0,919191,9,0,lt|1,919191,9,0,lt&chdls=919191,9" />
       </div>
     </div>
   </article>

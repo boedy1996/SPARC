@@ -72,3 +72,23 @@ class CountryMonthlyCyclonesInfo(models.Model):
 	storm_serial = models.TextField()
 	def __unicode__(self):
 		return self.country.category
+
+class DroughtInfo(models.Model):
+	iso3 = models.ForeignKey(Country)
+	adm2code = models.CharField(max_length=8)
+	adm2name = models.CharField(max_length=255)
+	#month = models.CharField(max_length=3)
+	freq= models.IntegerField(null=True, blank=True)
+	mjan = models.IntegerField(null=True, blank=True)
+	mfeb = models.IntegerField(null=True, blank=True)
+	mmar = models.IntegerField(null=True, blank=True)
+	mapr = models.IntegerField(null=True, blank=True)
+	mmay = models.IntegerField(null=True, blank=True)
+	mjun = models.IntegerField(null=True, blank=True)
+	mjul = models.IntegerField(null=True, blank=True)
+	maug = models.IntegerField(null=True, blank=True)
+	msep = models.IntegerField(null=True, blank=True)
+	moct = models.IntegerField(null=True, blank=True)
+	mnov = models.IntegerField(null=True, blank=True)
+	mdes = models.IntegerField(null=True, blank=True)
+

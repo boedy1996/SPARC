@@ -24,7 +24,7 @@ from geonode.documents.models import Document
 from geonode.base.models import ResourceBase
 
 #added for hazard
-from geonode.countrybyhazard.models import Country, FloodedPopAtRisk, CountryGeneralInfo, CountryMonthlyCyclonesInfo
+from geonode.countrybyhazard.models import Country, FloodedPopAtRisk, CountryGeneralInfo, CountryMonthlyCyclonesInfo, DroughtInfo
 from geonode.countrybyhazard.custom import HazardModelApi
 
 from .authorization import GeoNodeAuthorization
@@ -809,7 +809,166 @@ class CycloneCountryResource(HazardModelApi):
         resource_name = 'cyclones'         
 
 class DroughtCountryResource(HazardModelApi):
+
     """Country API"""
+    def dehydrate(self, bundle):
+        monthCode = ['mjan','mfeb','mmar','mapr','mmay','mjun','mjul','maug','msep','moct','mnov','mdes']
+        transaction = DroughtInfo.objects.filter(iso3_id=bundle.data['iso3']).values('iso3', 'freq').order_by('iso3').annotate(Sum(monthCode[0])).annotate(Sum(monthCode[1])).annotate(Sum(monthCode[2])).annotate(Sum(monthCode[3])).annotate(Sum(monthCode[4])).annotate(Sum(monthCode[5])).annotate(Sum(monthCode[6])).annotate(Sum(monthCode[7])).annotate(Sum(monthCode[8])).annotate(Sum(monthCode[9])).annotate(Sum(monthCode[10])).annotate(Sum(monthCode[11]))
+        
+        RP = {
+            'R10':{},
+            'R20':{},
+            'R20':{},
+            'R30':{},
+            'R40':{},
+            'R50':{},
+            'R60':{},
+            'R70':{},
+            'R80':{},
+            'R90':{},
+            'R100':{},
+            'total':0
+        }
+
+        for temp in monthCode :
+            RP['R10'][temp] = 0
+            RP['R20'][temp] = 0
+            RP['R30'][temp] = 0
+            RP['R40'][temp] = 0
+            RP['R50'][temp] = 0
+            RP['R60'][temp] = 0
+            RP['R70'][temp] = 0
+            RP['R80'][temp] = 0
+            RP['R90'][temp] = 0
+            RP['R100'][temp] = 0
+
+        for x in transaction :
+            wheel = 0
+            if x["freq"] <= 10:
+                for temp in monthCode :
+                    RP['R10'][temp] += x[temp+'__sum']
+                    if wheel < RP['R10'][temp]:
+                        wheel = RP['R10'][temp]
+                    RP['R10']["total"]=wheel   
+                if RP["total"] < RP['R10']["total"]: 
+                   RP["total"] = RP['R10']["total"]  
+
+            if x["freq"] > 10 and x["freq"] <=20:
+                for temp in monthCode :
+                    RP['R20'][temp] += x[temp+'__sum']
+                    if wheel < RP['R20'][temp]:
+                        wheel = RP['R20'][temp]
+                    RP['R20']["total"]=wheel   
+                if RP["total"] < RP['R20']["total"]: 
+                   RP["total"] = RP['R20']["total"]  
+
+            if x["freq"] > 20 and x["freq"] <=30:
+                for temp in monthCode :
+                    RP['R30'][temp] += x[temp+'__sum']
+                    if wheel < RP['R30'][temp]:
+                        wheel = RP['R30'][temp]
+                    RP['R30']["total"]=wheel   
+                if RP["total"] < RP['R30']["total"]: 
+                   RP["total"] = RP['R30']["total"]
+            
+            if x["freq"] > 30 and x["freq"] <=40:
+                for temp in monthCode :
+                    RP['R40'][temp] += x[temp+'__sum']
+                    if wheel < RP['R40'][temp]:
+                        wheel = RP['R40'][temp]
+                    RP['R40']["total"]=wheel   
+                if RP["total"] < RP['R40']["total"]: 
+                   RP["total"] = RP['R40']["total"] 
+
+            if x["freq"] > 40 and x["freq"] <=50:
+                for temp in monthCode :
+                    RP['R50'][temp] += x[temp+'__sum']
+                    if wheel < RP['R50'][temp]:
+                        wheel = RP['R50'][temp]
+                    RP['R50']["total"]=wheel   
+                if RP["total"] < RP['R50']["total"]: 
+                   RP["total"] = RP['R50']["total"]  
+
+            if x["freq"] > 50 and x["freq"] <=60:
+                for temp in monthCode :
+                    RP['R60'][temp] += x[temp+'__sum']
+                    if wheel < RP['R60'][temp]:
+                        wheel = RP['R60'][temp]
+                    RP['R60']["total"]=wheel   
+                if RP["total"] < RP['R60']["total"]: 
+                   RP["total"] = RP['R60']["total"]  
+
+            if x["freq"] > 60 and x["freq"] <=70:
+                for temp in monthCode :
+                    RP['R70'][temp] += x[temp+'__sum']
+                    if wheel < RP['R70'][temp]:
+                        wheel = RP['R70'][temp]
+                    RP['R70']["total"]=wheel   
+                if RP["total"] < RP['R70']["total"]: 
+                   RP["total"] = RP['R70']["total"] 
+
+            if x["freq"] > 70 and x["freq"] <=80:
+                for temp in monthCode :
+                    RP['R80'][temp] += x[temp+'__sum']
+                    if wheel < RP['R80'][temp]:
+                        wheel = RP['R80'][temp]
+                    RP['R80']["total"]=wheel   
+                if RP["total"] < RP['R80']["total"]: 
+                   RP["total"] = RP['R80']["total"]
+
+            if x["freq"] > 80 and x["freq"] <=90:
+                for temp in monthCode :
+                    RP['R90'][temp] += x[temp+'__sum']
+                    if wheel < RP['R90'][temp]:
+                        wheel = RP['R90'][temp]
+                    RP['R90']["total"]=wheel   
+                if RP["total"] < RP['R90']["total"]: 
+                   RP["total"] = RP['R90']["total"] 
+
+            if x["freq"] > 90 :
+                for temp in monthCode :
+                    RP['R100'][temp] += x[temp+'__sum']
+                    if wheel < RP['R100'][temp]:
+                        wheel = RP['R100'][temp]
+                    RP['R100']["total"]=wheel   
+                if RP["total"] < RP['R100']["total"]: 
+                   RP["total"] = RP['R100']["total"]  
+        grab={}
+        
+        tempX = 'R10'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        tempX = 'R20'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        tempX = 'R30'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        tempX = 'R40'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        tempX = 'R50'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        tempX = 'R60'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        tempX = 'R70'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        tempX = 'R80'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        tempX = 'R90'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        tempX = 'R100'
+        grab[tempX]=str(float(RP[tempX]['mjan']))+','+str(float(RP[tempX]['mfeb']))+','+str(float(RP[tempX]['mmar']))+','+str(float(RP[tempX]['mapr']))+','+str(float(RP[tempX]['mmay']))+','+str(float(RP[tempX]['mjun']))+','+str(float(RP[tempX]['mjul']))+','+str(float(RP[tempX]['maug']))+','+str(float(RP[tempX]['msep']))+','+str(float(RP[tempX]['moct']))+','+str(float(RP[tempX]['mnov']))+','+str(float(RP[tempX]['mdes']))
+        
+        bundle.data["popatrisk"] = RP 
+        bundle.data["chartvalue"] = grab['R10']+'|'+grab['R20']+'|'+grab['R30']+'|'+grab['R40']+'|'+grab['R50']+'|'+grab['R60']+'|'+grab['R70']+'|'+grab['R80']+'|'+grab['R90']+'|'+grab['R100']                               
+        return bundle
+
     class Meta:
         filtering = CommonMetaApi.filtering
         filtering.update({'doc_type': ALL})
