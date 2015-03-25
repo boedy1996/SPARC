@@ -70,8 +70,67 @@ def getEmdatData(request):
 		url = "http://emdat.be/advanced_search/php/search.php?_dc=1421829005944&start_year=1900&end_year=2025&continent=&region=&country_name="+request.GET.get('iso3')+"&dis_group=&dis_subgroup=Hydrological&dis_type=&dis_subtype=&aggreg=start_year&page=1&start=0&limit=1000&sort=%5B%7B%22property%22%3A%22occurrence%22%2C%22direction%22%3A%22ASC%22%7D%5D"	
 	elif request.GET.get('type') == 'cyclone':
 		url = "http://emdat.be/advanced_search/php/search.php?_dc=1421836347780&start_year=1900&end_year=2025&continent=&region=&country_name="+request.GET.get('iso3')+"&dis_group=Natural&dis_subgroup=Meteorological&dis_type=Storm&dis_subtype=&aggreg=start_year&page=1&start=0&limit=1000"	
+	elif request.GET.get('type') == 'drought':
+		url = "http://emdat.be/advanced_search/php/search.php?_dc=1421836347780&start_year=1900&end_year=2025&continent=&region=&country_name="+request.GET.get('iso3')+"&dis_group=Natural&dis_subgroup=Climatological&dis_type=Drought&dis_subtype=&aggreg=start_year&page=1&start=0&limit=1000"
 	resp = requests.get(url=url)
 	return HttpResponse(resp, mimetype = 'application/json')
+
+def getGeoJSON_Drought_Data(request):
+	print '>>> querying the admin2 level data from database'
+	connection = psycopg2.connect(__dbConnect)
+	cursor = connection.cursor()
+	query = "SELECT row_to_json(fc) "
+	query += "FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features "
+	query += "FROM (SELECT 'Feature' As type "
+	query += ", ST_AsGeoJSON(ST_Simplify(lg.geom, 0.01))::json As geometry "
+	#query += ", ST_AsGeoJSON(ST_Centroid(lg.the_geom))::json As geometry_points "
+	query += ", row_to_json((SELECT l FROM (SELECT adm2_code, adm2_name, adm1_code, adm1_name, adm0_code, 0 as active_month) As l "
+	query += "  )) As properties "
+	query += "FROM sparc_gaul_wfp_iso As lg where "
+	query += " lg.iso3='"+request.GET.get('iso3')
+	query += "') As f )  As fc" 	
+	cursor.execute(query)
+	res = cursor.fetchone()
+	#print type(res[0])
+	if type(res[0]) is not dict :
+		results = json.loads(res[0])
+	else:
+		results = res[0]
+
+	query = "select row_to_json(fin) "
+	query += "from (select row_to_json(row) "
+	query += "from ("
+	query += "select iso3_id, trim(adm2code) as adm2code, freq as category, mjan, mfeb, mmar, mapr, mmay, mjun, mjul, maug, msep, moct, mnov, mdes from countrybyhazard_droughtinfo where iso3_id='"+request.GET.get('iso3')+"'"
+	query += ") row) fin;"
+	cursor.execute(query)
+	rows = cursor.fetchall()	
+
+	currentDate = datetime.datetime.now()
+	monthNameTemp = currentDate.strftime("%b").lower()
+
+
+
+	for x in results["features"]:
+		print x
+		x["properties"]["addinfo"]=[]
+		x["properties"]["FCS"]=0
+		for row in rows:
+			if type(row[0]) is not dict :
+				newRow = json.loads(row[0])
+			else:
+				newRow = row[0]	
+			if newRow["adm2code"] == str(x["properties"]["adm2_code"]):
+				x["properties"]["addinfo"].append(newRow)	
+				if newRow["category"]>0 and newRow["category"]<=10:
+					x["properties"]["active_month"] += newRow['m'+monthNameTemp]
+
+	cursor.close()
+	del cursor
+	connection.close()	
+
+	geom = json.dumps(results, default=jdefault)
+	return HttpResponse(geom, mimetype = 'application/json')	
+
 
 def getGeoJSON_Cyclone_Data(request):
 	print '>>> querying the admin2 level data from database'

@@ -15,5 +15,7 @@ urlpatterns = patterns('',
     url(r'^drought/$', views.drought_country_list, name='drought_country_list'),
     url(r'^drought/detail/$', views.drought_detail, name='drought_detail'),
 
+    url(r'^getDroughtGeoJSON/$', views.getGeoJSON_Drought_Data, name='getGeoJSON_Drought_Data'),
+
     
 )
