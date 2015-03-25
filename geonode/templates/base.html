@@ -106,6 +106,28 @@
                 </li>  
               </ul>
 
+              <ul id="droughtQL" class="nav navbar-nav navbar-left hide">
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Quick links<b class="caret"></b></a>
+                  <ul class="dropdown-menu multi-level">
+                    <li  class="dropdown-submenu" ng-repeat="area in Country | groupBy:'wfp_area_id':'area_id'">
+                      {% verbatim %} 
+                        <a href="#" ng-if="area.wfp_area_id == 1" ng-click="quicklinks($event)">OMC, Cairo</a>   
+                        <a href="#" ng-if="area.wfp_area_id == 2" ng-click="quicklinks($event)">OMB, Bangkok</a>
+                        <a href="#" ng-if="area.wfp_area_id == 3" ng-click="quicklinks($event)">OMD, Dakar</a>
+                        <a href="#" ng-if="area.wfp_area_id == 4" ng-click="quicklinks($event)">OMJ, Johannesburg</a>  
+                        <a href="#" ng-if="area.wfp_area_id == 5" ng-click="quicklinks($event)">OMN, Nairobi</a>  
+                        <a href="#" ng-if="area.wfp_area_id == 6" ng-click="quicklinks($event)">OMP, Panama</a>   
+                      {% endverbatim %}
+                      <ul class="dropdown-menu multi-level">
+                        <li class="dropdown" ng-repeat="detail in area.items">
+                          <a href="{% url "drought_detail" %}?iso={% verbatim %}{{ detail.iso3 }}&country={{detail.name}}{% endverbatim %}">{% verbatim %}{{ detail.name }}{% endverbatim %} </a>
+                        </li>  
+                      </ul> 
+                    </li>
+                  </ul>  
+                </li>  
+              </ul>
+
               <ul class="nav navbar-nav navbar-left">
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Hazard<b class="caret"></b></a>
                   <ul class="dropdown-menu">
