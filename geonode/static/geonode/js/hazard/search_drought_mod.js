@@ -340,9 +340,9 @@
         else 
           var FCS_value = 1;
         angular.forEach(data.properties.addinfo, function(item){
-          if (item.prob_class == rp && item.category == $scope.selectedCategory){
+          if ($.inArray(item.category, $scope.getProbArrayShortRange(rp)) > -1){
             for (var monthNumber in _shortMonthName){
-             _each.data[monthNumber] += item[_shortMonthName[monthNumber]]*FCS_value;
+             _each.data[monthNumber] += item['m'+_shortMonthName[monthNumber]]*FCS_value;
             }
           }  
         });
