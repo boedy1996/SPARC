@@ -351,6 +351,17 @@
       
     }
 
+    $scope.getProbArrayShortRange = function(rp){
+      var probRangeArray = [];
+      
+        var temp = rp.split("-");
+        for (var i=temp[0];i<=temp[1];i++){
+          probRangeArray.push(parseInt(i));
+        }
+
+      return probRangeArray;
+    }
+
     $scope.addChartSeries = function(rps, data){
       var _shortMonthName = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
       for (var x=$scope.highchartsNG.series.length;x>0;x--){
@@ -358,6 +369,7 @@
       }
 
       angular.forEach(rps, function(rp){
+        //console.log($scope.getProbArrayShortRange(rp));
         var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
         angular.forEach(data.features, function(row){
           if ($scope.FCS)
@@ -365,10 +377,11 @@
           else 
             var FCS_value = 1;
           angular.forEach(row.properties.addinfo, function(single){
+            //console.log(single);
             for (var monthNumber in _shortMonthName){
               //console.log(single);
-              if (single.prob_class == rp && single.category == $scope.selectedCategory){
-                _each.data[monthNumber] += single[_shortMonthName[monthNumber]]*FCS_value;
+              if ($.inArray(single.category, $scope.getProbArrayShortRange(rp)) > -1){
+                _each.data[monthNumber] += single['m'+_shortMonthName[monthNumber]]*FCS_value;
               }  
             }
           });  

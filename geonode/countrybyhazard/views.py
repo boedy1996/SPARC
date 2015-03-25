@@ -111,7 +111,6 @@ def getGeoJSON_Drought_Data(request):
 
 
 	for x in results["features"]:
-		print x
 		x["properties"]["addinfo"]=[]
 		x["properties"]["FCS"]=0
 		for row in rows:
