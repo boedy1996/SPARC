@@ -52,13 +52,31 @@
   </ul>
 </nav>  
 <nav class="filter">  
-   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Vulnerability" %}</a></h4>
+   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Vulnerability" %}</a></h4>
   <ul class="nav open" id="external">
-    <li><a data-value="FCS" data-filter="" ng-click="external_choice_listener($event)">Food Consumption</a></li>
-    <li><a data-value="CSI" data-filter="" ng-click="external_choice_listener($event)">CSI</a></li>
-    <li><a data-value="IS" data-filter="" ng-click="external_choice_listener($event)">Income Sources</a></li>
+    <li><a data-value="FCS" data-filter="" ng-click="external_choice_listener($event)">Food Consumption</a>
+      <input type="checkbox" id="c_poor" class="checkbox" disabled checked />
+      <label for="c_poor">Poor</label>
+      <input type="checkbox" id="c_borderline" class="checkbox" disabled checked/>
+      <label for="c_borderline">borderline</label>
+      <input type="checkbox" id="c_accepptable" class="checkbox" disabled/>
+      <label for="c_accepptable">Acceptable</label>
+    </li>
+    <li><a data-value="CSI" data-filter="" ng-click="external_choice_listener($event)">CSI</a>
+      <input type="checkbox" id="c_no" class="checkbox" disabled/>
+      <label for="c_no">No</label>
+      <input type="checkbox" id="c_low" class="checkbox" disabled checked/>
+      <label for="c_low">Low</label>
+      <input type="checkbox" id="c_med" class="checkbox" disabled/>
+      <label for="c_med">Med</label>
+      <input type="checkbox" id="c_high" class="checkbox" disabled/>
+      <label for="c_high">High</label>
+
+    </li>
+    <!-- <li><a data-value="CSI" data-filter="" ng-click="external_choice_listener($event)">CSI</a></li>
+    <li><a data-value="IS" data-filter="" ng-click="external_choice_listener($event)">Income Sources</a></li> -->
   </ul>
-</nav>  
+</nav> 
 <!-- <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Quick Links" %}</a></h4>
   <ul class="nav closed" id="Country">
