@@ -44,7 +44,7 @@
       resetStyleOnMouseout: true
     };
     $scope.legendRangePercentage = [0.25,0.50,0.75];
-    $scope.legendRange = [0,100000];
+    $scope.legendRange = [0,1000];
 
     var popup = new L.Popup({offset:new L.Point(0,-3)});
 
@@ -818,7 +818,7 @@
         } else{ 
           var FCS_value = 1;
         }
-        
+
         $scope.popFloodedData.features[x].properties.active_month = 0;
         //console.log($scope.popFloodedData.features[x].properties.FCS);
         /*if ($scope.FCS)
