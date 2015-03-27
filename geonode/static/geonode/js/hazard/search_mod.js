@@ -648,10 +648,41 @@
         var _each = {'name':rp, color:color,data : [0,0,0,0,0,0,0,0,0,0,0,0]};
         $scope.EIV[rp]=0;
         angular.forEach(data.features, function(row){
-          if ($scope.FCS)
+
+          var tempValue = 0;
+          if ($scope.FCS){
+            if ($.inArray('c_poor', $scope.FlagFCS)>=0){
+              tempValue += row.properties.FCS;
+            }
+            if ($.inArray('c_borderline', $scope.FlagFCS)>=0){
+              tempValue += row.properties.FCS_border;
+            }
+            if ($.inArray('c_accepptable', $scope.FlagFCS)>=0){
+              tempValue += row.properties.FCS_acceptable;
+            }
+            var FCS_value = (tempValue)/100;
+          } else if ($scope.CSI){
+            if ($.inArray('c_no', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_no;
+            }
+            if ($.inArray('c_low', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_low;
+            }
+            if ($.inArray('c_med', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_med;
+            }
+             if ($.inArray('c_high', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_high;
+            }
+            var FCS_value = (tempValue)/100;
+          } else{ 
+            var FCS_value = 1;
+          } 
+
+          /*if ($scope.FCS)
             var FCS_value = row.properties.FCS/100
           else 
-            var FCS_value = 1;
+            var FCS_value = 1;*/
           if (typeof row.properties[rp] != 'undefined')
             for (var monthNumber in _shortMonthName){
               _each.data[monthNumber] += Math.floor(row.properties[rp][_shortMonthName[monthNumber]]*FCS_value);

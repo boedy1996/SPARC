@@ -424,10 +424,43 @@
         //console.log($scope.getProbArrayShortRange(rp));
         var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
         angular.forEach(data.features, function(row){
-          if ($scope.FCS)
+          
+          var tempValue = 0;
+          if ($scope.FCS){
+            if ($.inArray('c_poor', $scope.FlagFCS)>=0){
+              tempValue += row.properties.FCS;
+            }
+            if ($.inArray('c_borderline', $scope.FlagFCS)>=0){
+              tempValue += row.properties.FCS_border;
+            }
+            if ($.inArray('c_accepptable', $scope.FlagFCS)>=0){
+              tempValue += row.properties.FCS_acceptable;
+            }
+            var FCS_value = (tempValue)/100;
+          } else if ($scope.CSI){
+            if ($.inArray('c_no', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_no;
+            }
+            if ($.inArray('c_low', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_low;
+            }
+            if ($.inArray('c_med', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_med;
+            }
+             if ($.inArray('c_high', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_high;
+            }
+            var FCS_value = (tempValue)/100;
+          } else{ 
+            var FCS_value = 1;
+          } 
+
+          //console.log(FCS_value);
+
+          /*if ($scope.FCS)
             var FCS_value = $scope.popFloodedData.features[x].properties.FCS/100
           else 
-            var FCS_value = 1;
+            var FCS_value = 1;*/
           angular.forEach(row.properties.addinfo, function(single){
             //console.log(single);
             for (var monthNumber in _shortMonthName){
