@@ -170,6 +170,12 @@ def getGeoJSON_Cyclone_Data(request):
 	for x in results["features"]:
 		x["properties"]["addinfo"]=[]
 		x["properties"]["FCS"]=0
+		x["properties"]["FCS_border"]=0
+		x["properties"]["FCS_acceptable"]=0
+		x["properties"]["CSI_no"]=0
+		x["properties"]["CSI_low"]=0
+		x["properties"]["CSI_med"]=0
+		x["properties"]["CSI_high"]=0
 		for row in rows:
 			if type(row[0]) is not dict :
 				newRow = json.loads(row[0])

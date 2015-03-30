@@ -27,6 +27,9 @@
     $scope.popFloodedData = null;
     $scope.selectedObject = null;
     $scope.FCS = false;
+    $scope.CSI = false;
+    $scope.FlagFCS = ['c_poor','c_borderline'];
+    $scope.FlagCSI = ['c_low'];
     $scope.Country = [];
     $scope.emdatData = [];
     $scope.geojson = {
@@ -35,6 +38,10 @@
       //onEachFeature: onEachFeature,
       resetStyleOnMouseout: true
     };
+
+    $scope.legendRangePercentage = [0.25,0.50,0.75];
+    $scope.legendRange = [0,10000];
+    $scope.maxPopAllProbs = 0;
 
     var popup = new L.Popup({offset:new L.Point(0,-3)});
 
@@ -155,6 +162,90 @@
               crs: L.CRS.EPSG4326,
               transparent : true
             }
+          },
+          FCSLayer : {
+            name:'FCS',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:vam',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'fcs',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          CSILayer : {
+            name:'FCS',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:vam',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'csi',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          NegativeChange : {
+            name:'NegativeChange',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:context_layer',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'context-nch2',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          PositiveChange : {
+            name:'PositiveChange',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:context_layer',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'context-pch2',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          ForestLev : {
+            name:'ForestLev',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:context_layer',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'context-forest-lev',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
+          },
+          CropLev : {
+            name:'ForestLev',
+            type: 'wms',
+            url:'http://10.11.40.84/geoserver/geonode/wms',
+            visible : false,
+            layerOptions: {
+              layers: 'geonode:context_layer',
+              format: 'image/png',
+              opacity: 0.25,
+              styles : 'context-crop-lev',
+              crs: L.CRS.EPSG4326,
+              transparent : true
+            }
           }
         },
         baselayers:{
@@ -228,29 +319,22 @@
     }
 
     function getColor(x) {
-      return x > 10000000 ? '#FF0000' :
-             x > 7500000  ? '#EF000F' :
-             x > 5000000  ? '#DF001F' :
-             x > 2500000  ? '#CF002F' :
-             x > 1000000  ? '#BF003F' :
-             x >  750000  ? '#AF004F' :
-             x >  500000  ? '#9F005F' :
-             x >  250000  ? '#8F006F' :
-             x >  100000  ? '#7F007F' :
-             x >   75000  ? '#6F008F' :
-             x >   50000  ? '#5F009F' :
-             x >   25000  ? '#4F00AF' :
-             x >   10000  ? '#3F00BF' :
-             x >    7000  ? '#2F00CF' :
-             x >    5000  ? '#1F00DF' :
-             x >    2000  ? '#0F00EF' :
-             x >    500  ? '#0000FF' :
-                         '#FFFFFF' ;
+      var multiply = 1;
+      if ($scope.FCS || $scope.CSI){
+        multiply = 0.1;
+      }                   
+      return x > ($scope.legendRange[4]*multiply) ? '#FF0000' :
+             x > ($scope.legendRange[3]*multiply) ? '#FFA500' :
+             x > ($scope.legendRange[2]*multiply) ? '#eff76a' :                   
+             x > ($scope.legendRange[1]*multiply) ? '#76f579' :
+             x > ($scope.legendRange[0]*multiply) ? '#e1d3d3' :
+                                         '#FFFFFF' ;
     }
 
     NProgress.start();
     $('#screen').css({  "display": "block", opacity: 0.25, "width":$(document).width(),"height":$(document).height(), "z-index":1000000});
     $http.get("../../getCycloneGeoJSON/?iso3="+$location.search()['iso']).success(function(data, status) {
+      var _shortMonthNameDef = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
       var last_adm1_code = 0;
       $scope.popFloodedData = data;
 
@@ -258,18 +342,69 @@
         $scope.emdatData = dataEmdat.data;
       });
 
+      angular.forEach(data.features, function(rowC){
+        //console.log(rowC);
+        angular.forEach(rowC.properties.addinfo, function(rowProb){
+          console.log(rowProb);
+          var tempValue = 0;
+          angular.forEach(_shortMonthNameDef, function(monthName){        
+            tempValue += rowProb[monthName]
+            if (tempValue > $scope.maxPopAllProbs) $scope.maxPopAllProbs = tempValue;
+          });
+        });
+      });
+
+      var threshold = 100000;
+      if ($scope.maxPopAllProbs.toString().length == 6){
+        threshold = 100000;
+      } else if ($scope.maxPopAllProbs.toString().length == 5){
+        threshold = 10000;
+      } else if ($scope.maxPopAllProbs.toString().length == 4){
+        threshold = 1000;
+      } else if ($scope.maxPopAllProbs.toString().length == 3){
+        threshold = 100;
+      } else if ($scope.maxPopAllProbs.toString().length == 2){
+        threshold = 10;
+      }
+
+      $scope.maxPopAllProbs = Math.ceil($scope.maxPopAllProbs/(-threshold))*(-threshold);
+      //console.log($scope.maxPopAllProbs);
+      //var eachRange = $scope.maxPopAllProbs/4;
+      for (var tt=0;tt<3;tt++){
+        //console.log($scope.legendRangePercentage[tt]*$scope.maxPopAllProbs);
+        $scope.legendRange.push($scope.legendRangePercentage[tt]*$scope.maxPopAllProbs);
+      }
+
+      //console.log($scope.legendRange);
+      $scope.generateLegend();
+
       /// add FCS
       angular.forEach($scope.popFloodedData.features, function(row){
         last_adm1_code = row.properties.adm1_code;
-        $http.get("http://reporting.vam.wfp.org/JSON/SPARC_GetFCS.aspx?adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=2").success(function(response, status) {
-          var maxMonthYear = new Date(2000, 0, 1, 0, 0, 0, 0);
-          angular.forEach(response, function(item){
-            var currentMonthYear = new Date(item.FCS_year, item.FCS_month-1, 1, 0, 0, 0, 0);
-            if (currentMonthYear>maxMonthYear){
-              row.properties.FCS = item.FCS_poor;
-            }
+        $http.get("http://reporting.vam.wfp.org/API/Get_FCS.aspx?adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=2").success(function(response, status) {
+              var maxMonthYear = new Date(2000, 0, 1, 0, 0, 0, 0);
+              angular.forEach(response, function(item){
+                var currentMonthYear = new Date(item.FCS_year, item.FCS_month-1, 1, 0, 0, 0, 0);
+                if (currentMonthYear>maxMonthYear){
+                  row.properties.FCS = item.FCS_poor;
+                  row.properties.FCS_border = item.FCS_borderline;
+                  row.properties.FCS_acceptable = item.FCS_acceptable;
+                }
+              });
           });
-        });
+          //http://reporting.vam.wfp.org/JSON/GetCsi.aspx ?type=cs&adm0=45&adm1=822&adm2=0&adm3=0&adm4=0&adm5=0&indTypeID=2 
+          $http.get("http://reporting.vam.wfp.org/API/Get_CSI.aspx?type=cs&adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=2").success(function(response, status) {
+              var maxMonthYear = new Date(2000, 0, 1, 0, 0, 0, 0);
+              angular.forEach(response, function(item){
+                var currentMonthYear = new Date(item.CSI_rYear, item.CSI_rMonth-1, 1, 0, 0, 0, 0);
+                if (currentMonthYear>maxMonthYear){
+                  row.properties.CSI_no = item.CSI_rNoCoping;
+                  row.properties.CSI_low = item.CSI_rLowCoping;
+                  row.properties.CSI_med = item.CSI_rMediumCoping;
+                  row.properties.CSI_high = item.CSI_rHighCoping;
+                }
+              });
+          });
       });
 
       $scope.updateGEOJSON($scope.popFloodedData);
@@ -354,10 +489,35 @@
       angular.forEach(rps, function(rp){
         var _each = {'name':rp, data : [0,0,0,0,0,0,0,0,0,0,0,0]};
         angular.forEach(data.features, function(row){
-          if ($scope.FCS)
-            var FCS_value = $scope.popFloodedData.features[x].properties.FCS/100
-          else 
+          var tempValue = 0;
+          if ($scope.FCS){
+            if ($.inArray('c_poor', $scope.FlagFCS)>=0){
+              tempValue += row.properties.FCS;
+            }
+            if ($.inArray('c_borderline', $scope.FlagFCS)>=0){
+              tempValue += row.properties.FCS_border;
+            }
+            if ($.inArray('c_accepptable', $scope.FlagFCS)>=0){
+              tempValue += row.properties.FCS_acceptable;
+            }
+            var FCS_value = (tempValue)/100;
+          } else if ($scope.CSI){
+            if ($.inArray('c_no', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_no;
+            }
+            if ($.inArray('c_low', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_low;
+            }
+            if ($.inArray('c_med', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_med;
+            }
+             if ($.inArray('c_high', $scope.FlagCSI)>=0){
+              tempValue += row.properties.CSI_high;
+            }
+            var FCS_value = (tempValue)/100;
+          } else{ 
             var FCS_value = 1;
+          }
           angular.forEach(row.properties.addinfo, function(single){
             for (var monthNumber in _shortMonthName){
               //console.log(single);
@@ -472,6 +632,42 @@
         $scope.layers.overlays.warehouses.visible = false;  
       }
 
+      if ($.inArray('FCS', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.FCSLayer.visible = true;
+      } else {
+        $scope.layers.overlays.FCSLayer.visible = false;  
+      }
+
+      if ($.inArray('CSI', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.CSILayer.visible = true;
+      } else {
+        $scope.layers.overlays.CSILayer.visible = false;  
+      }
+
+      if ($.inArray('negativechange', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.NegativeChange.visible = true;
+      } else {
+        $scope.layers.overlays.NegativeChange.visible = false;  
+      }
+
+      if ($.inArray('positivechange', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.PositiveChange.visible = true;
+      } else {
+        $scope.layers.overlays.PositiveChange.visible = false;  
+      }
+      
+      if ($.inArray('forestlev', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.ForestLev.visible = true;
+      } else {
+        $scope.layers.overlays.ForestLev.visible = false;  
+      }
+
+      if ($.inArray('croplev', selectedLayerOverlay)>=0){
+        $scope.layers.overlays.CropLev.visible = true;
+      } else {
+        $scope.layers.overlays.CropLev.visible = false;  
+      } 
+
     }
 
     $scope.external_choice_listener = function($event){   
@@ -492,30 +688,54 @@
         }  
       });
 
-      // If the element is active active then deactivate it
       if(element.hasClass('active')){
         // clear the active class from it
         element.removeClass('active');
         // Remove the entry from the correct query in scope        
         query_entry.splice(query_entry.indexOf(value), 1);
+
+        if (value == 'FCS'){
+          angular.forEach(element.parents('li').find('input'), function(rows){
+            $(rows).prop( "disabled", true );
+          });
+          $scope.FCS = false;
+        } else if (value == 'CSI'){
+          angular.forEach(element.parents('li').find('input'), function(rows){
+            $(rows).prop( "disabled", true );
+          });
+          $scope.CSI = false;
+        }  
       }
-      // if is not active then activate it
+
       else if(!element.hasClass('active')){
         // Add the entry in the correct query
-        if (query_entry.indexOf(value) == -1){
-          query_entry.push(value);  
-        }         
+        query_entry = value;
+        // clear the active class from it
+        element.parents('ul').find('a').removeClass('active');
         element.addClass('active');
         filtered.push(value);
-      }  
+        if (value=='FCS'){
+          angular.forEach(element.parents('li').find('input'), function(rows){
+            $(rows).prop( "disabled", false );
+          });
+          $scope.CSI = false;
+          $scope.FCS = true;
+          $('#c_no').prop( "disabled", true );
+          $('#c_low').prop( "disabled", true );
+          $('#c_med').prop( "disabled", true );
+          $('#c_high').prop( "disabled", true );
+        } else if (value=='CSI'){
+          angular.forEach(element.parents('li').find('input'), function(rows){
+            $(rows).prop( "disabled", false );
+          });
+          $scope.CSI = true;
+          $scope.FCS = false;
+          $('#c_poor').prop( "disabled", true );
+          $('#c_borderline').prop( "disabled", true );
+          $('#c_accepptable').prop( "disabled", true );
+        }
+      } 
 
-      if ($.inArray('FCS', filtered)>=0){
-        console.log('FCS-in');
-        $scope.FCS = true;
-      } else {
-        console.log('FCS-out');
-        $scope.FCS = false;
-      }  
       $scope.manage_featuredata();
       $scope.refreshGEOJSON(); 
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
@@ -596,7 +816,7 @@
         // Add the entry in the correct query
         query_entry = value;
         // clear the active class from it
-        element.parents('ul').find('a').removeClass('active');
+        element.parents('#tempCat').find('a').removeClass('active');
         element.addClass('active');
       } 
 
@@ -663,10 +883,39 @@
       for (var x in $scope.popFloodedData.features){
         $scope.popFloodedData.features[x].properties.active_month = 0;
         //console.log($scope.popFloodedData.features[x].properties.FCS);
-        if ($scope.FCS)
-          var FCS_value = $scope.popFloodedData.features[x].properties.FCS/100
-        else 
+        
+        var tempValue = 0;
+        if ($scope.FCS){
+          if ($.inArray('c_poor', $scope.FlagFCS)>=0){
+            tempValue += $scope.popFloodedData.features[x].properties.FCS;
+          }
+          if ($.inArray('c_borderline', $scope.FlagFCS)>=0){
+            tempValue += $scope.popFloodedData.features[x].properties.FCS_border;
+          }
+          if ($.inArray('c_accepptable', $scope.FlagFCS)>=0){
+            tempValue += $scope.popFloodedData.features[x].properties.FCS_acceptable;
+          }
+          var FCS_value = (tempValue)/100;
+        } else if ($scope.CSI){
+          if ($.inArray('c_no', $scope.FlagCSI)>=0){
+            tempValue += $scope.popFloodedData.features[x].properties.CSI_no;
+          }
+          if ($.inArray('c_low', $scope.FlagCSI)>=0){
+            tempValue += $scope.popFloodedData.features[x].properties.CSI_low;
+          }
+          if ($.inArray('c_med', $scope.FlagCSI)>=0){
+            tempValue += $scope.popFloodedData.features[x].properties.CSI_med;
+          }
+           if ($.inArray('c_high', $scope.FlagCSI)>=0){
+            tempValue += $scope.popFloodedData.features[x].properties.CSI_high;
+          }
+          var FCS_value = (tempValue)/100;
+        } else{ 
           var FCS_value = 1;
+        } 
+
+        console.log(FCS_value);
+
         for (var y in $scope.popFloodedData.features[x].properties.addinfo){
           if ($.inArray($scope.popFloodedData.features[x].properties.addinfo[y].prob_class, $scope.selectedProbClass) > -1 && $scope.popFloodedData.features[x].properties.addinfo[y].category == $scope.selectedCategory){
             $scope.popFloodedData.features[x].properties.active_month += $scope.popFloodedData.features[x].properties.addinfo[y][$scope.selectedMonth]*FCS_value;
@@ -739,8 +988,29 @@
        });
     }
 
+    $scope.generateLegend = function(){
+      leafletData.getMap().then(function (map) {
+          var multiply=1;
+          if ($scope.FCS || $scope.CSI){
+            multiply = 0.1;
+          }  
+          var div = L.DomUtil.get('legendCustom'),
+              grades = $scope.legendRange,
+              labels = [];
+          div.innerHTML = '';    
+          // loop through our density intervals and generate a label with a colored square for each interval
+          for (var i = 0; i < grades.length; i++) {
+            if (i==0)
+              div.innerHTML +=
+                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+ (kFormatter(grades[i + 1]*multiply) ? ' < ' + kFormatter(grades[i + 1]*multiply)  : '+')+'</a></li>'
+            else  
+              div.innerHTML +=
+                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+kFormatter(grades[i]*multiply) + (kFormatter(grades[i + 1]*multiply) ? '&ndash;' + kFormatter(grades[i + 1]*multiply)  : '+')+'</a></li>';
+          }
+      });
+    } 
     
-    leafletData.getMap().then(function (map) {
+    /*leafletData.getMap().then(function (map) {
         var div = L.DomUtil.get('legendCustom'),
             grades = [500, 2000, 5000, 7000, 10000, 25000, 50000, 75000,100000,250000,500000,750000,1000000,2500000,5000000,7500000,10000000],
             labels = [];
@@ -750,7 +1020,7 @@
                 '<li><a class=""><i style="background:' + getColor(grades[i] + 1) + '"></i>'+grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1]  : '+')+'</a></li>';
         }
     });
-
+*/
     $scope.quicklinks = function($event){
       var element = $($event.target);
       var query_entry = [];
@@ -786,6 +1056,82 @@
             return false;
         }
         return true;
+    }
+
+    $('#c_poor').on('click', function(){
+      if ($(this).is(':checked')){
+        $scope.FlagFCS.push('c_poor');
+      } else {
+        $scope.FlagFCS.splice( $.inArray('c_poor',$scope.FlagFCS) ,1 );
+      }
+      $scope.procDataRefresh();
+    });
+
+    $('#c_borderline').on('click', function(){
+      if ($(this).is(':checked')){
+        $scope.FlagFCS.push('c_borderline');
+      } else {
+        $scope.FlagFCS.splice( $.inArray('c_borderline',$scope.FlagFCS) ,1 );
+      }
+      $scope.procDataRefresh();
+    });
+
+    $('#c_accepptable').on('click', function(){
+      if ($(this).is(':checked')){
+        $scope.FlagFCS.push('c_accepptable');
+      } else {
+        $scope.FlagFCS.splice( $.inArray('c_accepptable',$scope.FlagFCS) ,1 );
+      }
+      $scope.procDataRefresh();
+    });
+
+    $('#c_no').on('click', function(){
+      if ($(this).is(':checked')){
+        $scope.FlagCSI.push('c_no');
+      } else {
+        $scope.FlagCSI.splice( $.inArray('c_no',$scope.FlagCSI) ,1 );
+      }
+      $scope.procDataRefresh();
+    });
+
+    $('#c_low').on('click', function(){
+      if ($(this).is(':checked')){
+        $scope.FlagCSI.push('c_low');
+      } else {
+        $scope.FlagCSI.splice( $.inArray('c_low',$scope.FlagCSI) ,1 );
+      }
+      $scope.procDataRefresh();
+    });
+
+    $('#c_med').on('click', function(){
+      if ($(this).is(':checked')){
+        $scope.FlagCSI.push('c_med');
+      } else {
+        $scope.FlagCSI.splice( $.inArray('c_med',$scope.FlagCSI) ,1 );
+      }
+      $scope.procDataRefresh();
+    });
+
+    $('#c_high').on('click', function(){
+      if ($(this).is(':checked')){
+        $scope.FlagCSI.push('c_high');
+      } else {
+        $scope.FlagCSI.splice( $.inArray('c_high',$scope.FlagCSI) ,1 );
+      }
+      $scope.procDataRefresh();
+    });
+
+    $scope.procDataRefresh = function() {
+      $scope.manage_featuredata();   
+      $scope.refreshGEOJSON(); 
+      $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
+      $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
+    }
+
+    function kFormatter(num) {
+        return num > 999999 ? (num/1000000).toFixed(0) + ' m' : 
+                num > 999 ? (num/1000).toFixed(0) + ' k' :
+                num; 
     }
 
   });

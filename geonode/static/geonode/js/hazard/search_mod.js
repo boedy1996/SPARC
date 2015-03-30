@@ -489,7 +489,7 @@
       angular.forEach($scope.popFloodedData.features, function(row){
 
           last_adm1_code = row.properties.adm1_code;
-          $http.get("http://reporting.vam.wfp.org/JSON/SPARC_GetFCS.aspx?adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=2").success(function(response, status) {
+          $http.get("http://reporting.vam.wfp.org/API/Get_FCS.aspx?adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=2").success(function(response, status) {
               var maxMonthYear = new Date(2000, 0, 1, 0, 0, 0, 0);
               angular.forEach(response, function(item){
                 var currentMonthYear = new Date(item.FCS_year, item.FCS_month-1, 1, 0, 0, 0, 0);
@@ -500,8 +500,8 @@
                 }
               });
           });
-          http://reporting.vam.wfp.org/JSON/GetCsi.aspx ?type=cs&adm0=45&adm1=822&adm2=0&adm3=0&adm4=0&adm5=0&indTypeID=2 
-          $http.get("http://reporting.vam.wfp.org/JSON/GetCsi.aspx?type=cs&adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=2").success(function(response, status) {
+          //http://reporting.vam.wfp.org/JSON/GetCsi.aspx ?type=cs&adm0=45&adm1=822&adm2=0&adm3=0&adm4=0&adm5=0&indTypeID=2 
+          $http.get("http://reporting.vam.wfp.org/API/Get_CSI.aspx?type=cs&adm0="+row.properties.adm0_code+"&adm1="+row.properties.adm1_code+"&indTypeID=2").success(function(response, status) {
               var maxMonthYear = new Date(2000, 0, 1, 0, 0, 0, 0);
               angular.forEach(response, function(item){
                 var currentMonthYear = new Date(item.CSI_rYear, item.CSI_rMonth-1, 1, 0, 0, 0, 0);
@@ -1317,10 +1317,10 @@
           for (var i = 0; i < grades.length; i++) {
             if (i==0)
               div.innerHTML +=
-                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+ (grades[i + 1]*multiply ? ' < ' + grades[i + 1]*multiply  : '+')+'</a></li>'
+                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+ (kFormatter(grades[i + 1]*multiply) ? ' < ' + kFormatter(grades[i + 1]*multiply)  : '+')+'</a></li>'
             else  
               div.innerHTML +=
-                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+grades[i]*multiply + (grades[i + 1]*multiply ? '&ndash;' + grades[i + 1]*multiply  : '+')+'</a></li>';
+                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+kFormatter(grades[i]*multiply) + (kFormatter(grades[i + 1]*multiply) ? '&ndash;' + kFormatter(grades[i + 1]*multiply)  : '+')+'</a></li>';
           }
       });
     }  
@@ -1436,6 +1436,12 @@
       $scope.updateGEOJSON($scope.popFloodedData);
       $scope.addChartSeries($scope.selectedRP,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedRP,$scope.popFloodedData);
+    }
+
+    function kFormatter(num) {
+        return num > 999999 ? (num/1000000).toFixed(0) + ' m' : 
+                num > 999 ? (num/1000).toFixed(0) + ' k' :
+                num; 
     }
 
   });

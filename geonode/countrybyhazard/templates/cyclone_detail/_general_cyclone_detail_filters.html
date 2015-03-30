@@ -1,7 +1,7 @@
 {% load i18n %}
 <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Legend" %}</a></h4>
-  <ul class="nav closed legend" id="legendCustom">
+  <ul class="nav open legend" id="legendCustom">
   </ul>
 </nav> 
 <!-- <nav class="filter">
@@ -37,14 +37,14 @@
     <li><a data-value="dec" data-filter="" ng-click="month_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %}>December</a><li>
   </ul>
 </nav> -->  
-<nav class="filter">  
+<!-- <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Category" %}</a></h4>
   <ul class="nav closed" id="rps">
     <li><a data-value="cat1_5" data-filter="" ng-click="cat_choice_listener($event)" class="active">1 - 5</a><li>
     <li><a data-value="cat1_3" data-filter="" ng-click="cat_choice_listener($event)">1 - 3</a><li>
     <li><a data-value="cat4_5" data-filter="" ng-click="cat_choice_listener($event)">4 - 5</a><li>
   </ul>
-</nav>
+</nav> -->
 <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Probabilities" %}</a></h4>
   <ul class="nav open" id="rps">
@@ -61,11 +61,29 @@
   </ul>
 </nav>  
 <nav class="filter">  
-   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-right"></i>{% trans "Vulnerability" %}</a></h4>
+   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Vulnerability" %}</a></h4>
   <ul class="nav open" id="external">
-    <li><a data-value="FCS" data-filter="" ng-click="external_choice_listener($event)">Food Consumption</a></li>
-    <li><a data-value="CSI" data-filter="" ng-click="external_choice_listener($event)">CSI</a></li>
-    <li><a data-value="IS" data-filter="" ng-click="external_choice_listener($event)">Income Sources</a></li>
+    <li><a data-value="FCS" data-filter="" ng-click="external_choice_listener($event)">Food Consumption</a>
+      <input type="checkbox" id="c_poor" class="checkbox" disabled checked />
+      <label for="c_poor">Poor</label>
+      <input type="checkbox" id="c_borderline" class="checkbox" disabled checked/>
+      <label for="c_borderline">borderline</label>
+      <input type="checkbox" id="c_accepptable" class="checkbox" disabled/>
+      <label for="c_accepptable">Acceptable</label>
+    </li>
+    <li><a data-value="CSI" data-filter="" ng-click="external_choice_listener($event)">CSI</a>
+      <input type="checkbox" id="c_no" class="checkbox" disabled/>
+      <label for="c_no">No</label>
+      <input type="checkbox" id="c_low" class="checkbox" disabled checked/>
+      <label for="c_low">Low</label>
+      <input type="checkbox" id="c_med" class="checkbox" disabled/>
+      <label for="c_med">Med</label>
+      <input type="checkbox" id="c_high" class="checkbox" disabled/>
+      <label for="c_high">High</label>
+
+    </li>
+    <!-- <li><a data-value="CSI" data-filter="" ng-click="external_choice_listener($event)">CSI</a></li>
+    <li><a data-value="IS" data-filter="" ng-click="external_choice_listener($event)">Income Sources</a></li> -->
   </ul>
 </nav>  
 <!-- <nav class="filter">  
