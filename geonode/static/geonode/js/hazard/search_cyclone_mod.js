@@ -740,6 +740,7 @@
       $scope.refreshGEOJSON(); 
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
+      $scope.generateLegend();
     }
 
     $scope.single_choice_listener = function($event){
@@ -1126,6 +1127,7 @@
       $scope.refreshGEOJSON(); 
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
+
     }
 
     function kFormatter(num) {
