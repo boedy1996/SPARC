@@ -736,7 +736,31 @@ class CycloneCountryResource(HazardModelApi):
         def getKey(item):
             return item.data['exposed_pop']
         def getKey1(item):
-            return item.data['storm_surge_exposed_pop']    
+            return item.data['storm_surge_exposed_pop']   
+        def getJan(item):
+            return item.data['popMonth']['mjan__sum'] 
+        def getFeb(item):
+            return item.data['popMonth']['mfeb__sum'] 
+        def getMar(item):
+            return item.data['popMonth']['mmar__sum'] 
+        def getApr(item):
+            return item.data['popMonth']['mapr__sum']
+        def getMay(item):
+            return item.data['popMonth']['mmay__sum'] 
+        def getJun(item):
+            return item.data['popMonth']['mjun__sum'] 
+        def getJul(item):
+            return item.data['popMonth']['mjul__sum']   
+        def getAug(item):
+            return item.data['popMonth']['maug__sum']  
+        def getSep(item):
+            return item.data['popMonth']['msep__sum'] 
+        def getOct(item):
+            return item.data['popMonth']['moct__sum'] 
+        def getNov(item):
+            return item.data['popMonth']['mnov__sum']   
+        def getDec(item):
+            return item.data['popMonth']['mdec__sum']     
 
         if "rank_by" in request.GET:
             data_med = copy.copy(data)
@@ -748,15 +772,45 @@ class CycloneCountryResource(HazardModelApi):
             elif request.GET["rank_by"]=='max_surge':
                 data['objects'] = sorted(data_med['objects'], key=getKey1, reverse=True)   
             elif request.GET["rank_by"]=='-max_surge':
-                data['objects'] = sorted(data_med['objects'], key=getKey1)        
+                data['objects'] = sorted(data_med['objects'], key=getKey1)
+
+            elif request.GET["rank_by"]=='max_jan':
+                data['objects'] = sorted(data_med['objects'], key=getJan, reverse=True)
+            elif request.GET["rank_by"]=='max_feb':
+                data['objects'] = sorted(data_med['objects'], key=getFeb, reverse=True)
+            elif request.GET["rank_by"]=='max_mar':
+                data['objects'] = sorted(data_med['objects'], key=getMar, reverse=True) 
+            elif request.GET["rank_by"]=='max_apr':
+                data['objects'] = sorted(data_med['objects'], key=getApr, reverse=True)  
+            elif request.GET["rank_by"]=='max_may':
+                data['objects'] = sorted(data_med['objects'], key=getMay, reverse=True) 
+            elif request.GET["rank_by"]=='max_jun':
+                data['objects'] = sorted(data_med['objects'], key=getJun, reverse=True)
+            elif request.GET["rank_by"]=='max_jul':
+                data['objects'] = sorted(data_med['objects'], key=getJul, reverse=True) 
+            elif request.GET["rank_by"]=='max_aug':
+                data['objects'] = sorted(data_med['objects'], key=getAug, reverse=True) 
+            elif request.GET["rank_by"]=='max_sep':
+                data['objects'] = sorted(data_med['objects'], key=getSep, reverse=True)  
+            elif request.GET["rank_by"]=='max_oct':
+                data['objects'] = sorted(data_med['objects'], key=getOct, reverse=True) 
+            elif request.GET["rank_by"]=='max_nov':
+                data['objects'] = sorted(data_med['objects'], key=getNov, reverse=True) 
+            elif request.GET["rank_by"]=='max_dec':
+                data['objects'] = sorted(data_med['objects'], key=getDec, reverse=True)
+
         return data
 
     def dehydrate(self, bundle):
         monthCode = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
+        popMonth = {'mjan__sum':0,'mfeb__sum':0,'mmar__sum':0,'mapr__sum':0,'mmay__sum':0,'mjun__sum':0,'mjul__sum':0,'maug__sum':0,'msep__sum':0,'moct__sum':0,'mnov__sum':0,'mdec__sum':0}
         high_risk = {'max':0,'month':''}
         transaction3 = CountryMonthlyCyclonesInfo.objects.filter(country=bundle.data['iso3']).values('country').annotate(Sum(monthCode[0])).annotate(Sum(monthCode[1])).annotate(Sum(monthCode[2])).annotate(Sum(monthCode[3])).annotate(Sum(monthCode[4])).annotate(Sum(monthCode[5])).annotate(Sum(monthCode[6])).annotate(Sum(monthCode[7])).annotate(Sum(monthCode[8])).annotate(Sum(monthCode[9])).annotate(Sum(monthCode[10])).annotate(Sum(monthCode[11]))
         for x in transaction3:
             for y in monthCode:
+                popMonth['m'+y+'__sum'] += x[y+'__sum']
+                print y
+                print x
                 if x[y+'__sum'] > high_risk['max']:
                     high_risk['max'] = x[y+'__sum']
                     high_risk['month'] = y
@@ -765,7 +819,8 @@ class CycloneCountryResource(HazardModelApi):
         for x in transaction:
             for y in x:
                 if x[y] == None:
-                    x[y]=0          
+                    x[y]=0
+                              
         bundle.data['tot_pop'] = transaction[0]['tot_pop']
         bundle.data['gdp_per_cap'] = transaction[0]['gdp_per_cap']
         bundle.data['hdi'] = transaction[0]['hdi']
@@ -797,6 +852,7 @@ class CycloneCountryResource(HazardModelApi):
             if x['category']=='Cat 5':
                 grab['Cat 5']=str(x['jan'])+','+str(x['feb'])+','+str(x['mar'])+','+str(x['apr'])+','+str(x['may'])+','+str(x['jun'])+','+str(x['jul'])+','+str(x['aug'])+','+str(x['sep'])+','+str(x['oct'])+','+str(x['nov'])+','+str(x['dec'])         
         bundle.data['chartvalue']=grab['Cat 0']+'|'+grab['Cat 1']+'|'+grab['Cat 2']+'|'+grab['Cat 3']+'|'+grab['Cat 4']+'|'+grab['Cat 5']
+        bundle.data['popMonth'] = popMonth
         return bundle
 
     class Meta:
