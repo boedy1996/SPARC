@@ -809,8 +809,6 @@ class CycloneCountryResource(HazardModelApi):
         for x in transaction3:
             for y in monthCode:
                 popMonth['m'+y+'__sum'] += x[y+'__sum']
-                print y
-                print x
                 if x[y+'__sum'] > high_risk['max']:
                     high_risk['max'] = x[y+'__sum']
                     high_risk['month'] = y
