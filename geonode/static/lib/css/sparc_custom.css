@@ -578,11 +578,9 @@ footer {
   moz-border-radius: 6px;
   border-radius: 6px;
 }
-.home-intro h2.tagline{
-	font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-	font-weight:400;
+.home-intro h2.tagLine{
+	font-family:font-family: Arial,Helvetica,sans-serif;
 	font-size:35px;
-	margin-top:50px;
 	font-weight:300
 }
 .home-intro p.lead{
