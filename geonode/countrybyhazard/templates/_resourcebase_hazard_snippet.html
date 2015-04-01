@@ -16,9 +16,11 @@ table tr:nth-child(even) {
 
   <article ng-repeat="item in results" resource_id="{{ item.iso3 }}" ng-cloak>
   	<div class="row items-list">
+       <div class="col-md-12">
+            <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.name}}">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
+      </div>
       <div class="col-md-5">
-        <h4><a href="{% endverbatim %}{% url "hazard_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.name}}
-">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
+        
         <p class="abstract"  ng-if="item.extreme.pop == 0">No assessment performed</p>
         <!--<p class="abstract"  ng-if="item.popCurrentMonth > 0">Total Population at Risk for all return period on this month is {{ item.popCurrentMonth | number:0 }}</p>-->
         <!--<p class="abstract"  ng-if="item.extreme.pop > 0">Table below representing the extreme population at risk for each probability.</p>-->
@@ -74,7 +76,7 @@ table tr:nth-child(even) {
       </div>
       <div class="col-md-7">
   	    <!--<img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x&cht=lc&chd=t:{{ item.chartvalue }}&chco=AAB4FB,AABBBC,FF0000,00FF00,0000FF,00FFFF&chls=2.0&chs=350x150&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=Very High|High|Medium High|Medium Low|Low|Very Low" />-->
-        <img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x,y&cht=bvs&chbh=15,5&chds=a&chd=t:{{ item.chartvalue }}&chco=082155,193C84,2F5BB4,4F7CD5,82A3E5,B5CAF3&chls=2.0&chs=400x300&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=25 years RP|50 years RP|100 years RP|200 years RP|500 years RP|1000 years RP&chtt=Monthly Expected impact values&chts=919191,10&chxs=0,919191,9,0,lt|1,919191,9,0,lt&chdls=919191,9" />
+        <img class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x,y&cht=bvs&chbh=15,5&chds=a&chd=t:{{ item.chartvalue }}&chco=082155,193C84,2F5BB4,4F7CD5,82A3E5,B5CAF3&chls=2.0&chs=400x300&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=25 years RP|50 years RP|100 years RP|200 years RP|500 years RP|1000 years RP&chtt=Monthly Expected Impact Values&chts=999999,12,c&chxs=0,999999,10,0,lt,FF0000|1,999999,10,0,lt,FF0000&chdls=999999,10" />
   	  </div>
     </div>
   </article>

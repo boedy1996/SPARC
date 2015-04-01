@@ -657,7 +657,10 @@ input[type="checkbox"].checkbox:disabled + label {
 
 .thumb {
 	border:#ccc 1px solid;
-
+	padding-left: 25px;
+	padding-top: 25px;
+	padding-bottom: 25px;
+  	background: #FFF;
 	-moz-border-radius:3px;
 	-webkit-border-radius:3px;
 	border-radius:3px;

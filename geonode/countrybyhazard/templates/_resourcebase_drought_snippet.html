@@ -16,11 +16,17 @@ table tr:nth-child(even) {
 {% verbatim %}
   <article ng-repeat="item in results" resource_id="{{ item.iso3 }}" ng-cloak>
   	<div class="row items-list">
-       <div class="col-md-5">
-        <h4><a href="{% endverbatim %}{% url "drought_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.name}}
-">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
-		<p class="abstract" ng-if="item.popatrisk.total == 0">No assessment performed</p>
-		<table class="abstract" ng-if="item.popatrisk.total > 0">
+       <div class="col-md-12"> 
+        <h4><a href="{% endverbatim %}{% url "drought_detail" %}{% verbatim %}?iso={{ item.iso3 }}&country={{item.name}}">{{ item.name }} ({{item.extended_name}})</a> <span class="owner">{{ item.owner.username }}</span></h4>
+       </div> 
+       
+      <div class="col-md-7">
+        <p class="abstract" ng-if="item.popatrisk.total == 0">No assessment performed</p>
+        <img  ng-if="item.popatrisk.total > 0" class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x,y&cht=bvs&chbh=15,5&chds=a&chd=t:{{ item.chartvalue }}&chco=CBAD6D,CCA06C,CD946C,CE886B,CF7C6B,D0706B,D1636A,D2576A,D34B69,D43F69&chls=2.0&chs=400x300&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=1%-10%|11%-20%|21%-30%|31%-40%|41%-50%|51%-60%|61%-70%|71%-80%|81%-90%|91%-100%&chtt=Monthly Expected impact values&chts=999999,11&chxs=0,999999,10,0,lt|1,999999,10,0,lt&chdls=919191,9" />
+      </div>
+
+      <div class="col-md-5">
+        <table class="abstract" ng-if="item.popatrisk.total > 0">
           <thead>
             <th>Probability</th>
             <th># Pop at Risk</th>
@@ -67,9 +73,7 @@ table tr:nth-child(even) {
           </tr>
         </table>
       </div>
-      <div class="col-md-7">
-        <img  ng-if="item.popatrisk.total > 0" class="thumb" ng-src="https://chart.googleapis.com/chart?chxt=x,y&cht=bvs&chbh=15,5&chds=a&chd=t:{{ item.chartvalue }}&chco=CBAD6D,CCA06C,CD946C,CE886B,CF7C6B,D0706B,D1636A,D2576A,D34B69,D43F69&chls=2.0&chs=400x300&chxl=0:|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec&chdl=1%-10%|11%-20%|21%-30%|31%-40%|41%-50%|51%-60%|61%-70%|71%-80%|81%-90%|91%-100%&chtt=Monthly Expected impact values&chts=919191,10&chxs=0,919191,9,0,lt|1,919191,9,0,lt&chdls=919191,9" />
-      </div>
+
     </div>
   </article>
 {% endverbatim %}
