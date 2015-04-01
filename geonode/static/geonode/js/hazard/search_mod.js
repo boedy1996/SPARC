@@ -438,7 +438,9 @@
         angular.forEach(_shortMonthName, function(monthName){
           var tempValue = 0;
           angular.forEach(RPs, function(RP){
-            tempValue += rowC.properties[RP][monthName]
+            //console.log(rowC.properties[RP]);
+            if (typeof rowC.properties[RP]!='undefined')
+              tempValue += rowC.properties[RP][monthName];
           });
           if (tempValue > $scope.maxPopAllProbs) $scope.maxPopAllProbs = tempValue;
         });
@@ -1051,6 +1053,8 @@
           //console.log(temp);
           //console.log(Math.max.apply(Math, temp));
           //$scope.EIV[$scope.selectedRP[key]] += Math.max.apply(Math, temp)*FCS_value;
+          //console.log($scope.popFloodedData.features[x].properties[$scope.selectedRP[key]]);
+          if (typeof $scope.popFloodedData.features[x].properties[$scope.selectedRP[key]]=='undefined') continue;
           if (pertama){
             $scope.popFloodedData.features[x].properties.active.jan=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].jan*FCS_value;
             $scope.popFloodedData.features[x].properties.active.feb=$scope.popFloodedData.features[x].properties[$scope.selectedRP[key]].feb*FCS_value;
