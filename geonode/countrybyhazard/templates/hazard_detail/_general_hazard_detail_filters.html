@@ -1,10 +1,10 @@
 {% load i18n %}
-<nav class="filter">  
+<!-- <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Affected People" %}</a></h4>
   <ul class="nav open legend" id="legendCustom">
   </ul>
   <span style="font-size:10px">Affected = living in flood prone area</span>
-</nav> 
+</nav>  -->
 <!-- 
 <nav class="filter">
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Base Layers" %}</a></h4>
@@ -45,7 +45,7 @@
     <li><a data-value="dec" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %}>December</a><li>
   </ul>
 </nav>  --> 
-<nav class="filter">  
+<!-- <nav class="filter">  
   <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Probabilities" %}</a></h4>
   <ul class="nav open" id="rps">
     <li><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur.
@@ -72,15 +72,11 @@ In this case, a 500 year flood has a 0.002 or 0.2% chance of being exceeded in a
 The theoretical return period is the inverse of the probability that the event will
 be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year).
 In this case, a 1000 year flood has a 0.001 or 0.1% chance of being exceeded in any one year." data-value="RP1000" data-filter="" ng-click="RP_choice_listener($event)" class="active">0.1%<span class="badge_legend RP1000 pull-right">&nbsp</span></a><li>
-    <!--<li style="text-align:end" title="A return period is an estimate of the likelihood of an event, such as a flood, to occur.
-The theoretical return period is the inverse of the probability that the event will
-be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year).
-For example, a 50 year flood has a 0.02 or 2% chance of being exceeded in any one year."><a>more info</a><li>-->
   </ul>
-</nav>  
-<nav class="filter">  
+</nav>  --> 
+<!--<nav class="filter">  
    <h4><a href="#" class="toggle toggle-nav"><i class="fa fa-chevron-down"></i>{% trans "Vulnerability" %}</a></h4>
-  <ul class="nav open" id="external">
+   <ul class="nav open" id="external">
     <li><a data-value="FCS" data-filter="" ng-click="external_choice_listener($event)">Food Consumption</a>
       <input type="checkbox" id="c_poor" class="checkbox" disabled checked />
       <label for="c_poor">Poor</label>
@@ -99,11 +95,11 @@ For example, a 50 year flood has a 0.02 or 2% chance of being exceeded in any on
       <input type="checkbox" id="c_high" class="checkbox" disabled/>
       <label for="c_high">High</label>
 
-    </li>
+    </li> -->
     <!-- <li><a data-value="CSI" data-filter="" ng-click="external_choice_listener($event)">CSI</a></li>
-    <li><a data-value="IS" data-filter="" ng-click="external_choice_listener($event)">Income Sources</a></li> -->
+    <li><a data-value="IS" data-filter="" ng-click="external_choice_listener($event)">Income Sources</a></li> 
   </ul>
-</nav>
+</nav>-->
 
 <!--
 <nav class="filter">  

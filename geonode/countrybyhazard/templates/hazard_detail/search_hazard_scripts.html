@@ -6,6 +6,13 @@
 <script src="http://code.highcharts.com/highcharts.src.js"></script>
 <script src="{{ STATIC_URL }}lib/js/highcharts-ng.js"></script>
 <script src="{{ STATIC_URL }}lib/js/smart-table.debug.js"></script>
+<!-- <script src="{{ STATIC_URL }}lib/js/angular-snap.js"></script> -->
+
+<!-- <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/css/angular-snap.css"> -->
+<!-- link for CSS when using the tree as a Dom element -->
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/css/tree-control.css">
+<!-- link for CSS when using the tree as an attribute -->
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/css/tree-control-attribute.css">
 
 
 {% if include_spatial == 'true' %}
@@ -19,19 +26,89 @@
 {% endif %}
 <script src="{{ STATIC_URL }}geonode/js/search/explore.js"></script>
 <script src="{{ STATIC_URL }}geonode/js/hazard/search_mod.js"></script>
-
+<script src="{{ STATIC_URL }}lib/js/angular-tree-control.js"></script>
 
 
 <script type="text/javascript">
   $('#pageFlag').html('Flood Hazard');
   $("body").attr('ng-controller', 'hazard_map_Controller');
   var module = angular.module('search', ['hazard_main_search']);
-  var deps = ['search','leaflet-directive','highcharts-ng','smart-table','ng.group'];
+  var deps = ['search','leaflet-directive','highcharts-ng','smart-table','ng.group', 'treeControl'];
   angular.bootstrap(document, deps);
 </script>
 
 <script>
 var floodWarning=[];
+var appElement = document.querySelector('[ng-controller=hazard_map_Controller]');
+  var $scope = angular.element(appElement).scope(); 
+  /*  
+  $('#c_poor').on('click', function(){
+    if ($(this).is(':checked')){
+      $scope.FlagFCS.push('c_poor');
+    } else {
+      $scope.FlagFCS.splice( $.inArray('c_poor',$scope.FlagFCS) ,1 );
+    }
+    $scope.procDataRefresh();
+  });
+
+  $('#c_borderline').on('click', function(){
+    if ($(this).is(':checked')){
+      $scope.FlagFCS.push('c_borderline');
+    } else {
+      $scope.FlagFCS.splice( $.inArray('c_borderline',$scope.FlagFCS) ,1 );
+    }
+    $scope.procDataRefresh();
+  });
+
+  $('#c_accepptable').on('click', function(){
+    if ($(this).is(':checked')){
+      $scope.FlagFCS.push('c_accepptable');
+    } else {
+      $scope.FlagFCS.splice( $.inArray('c_accepptable',$scope.FlagFCS) ,1 );
+    }
+    $scope.procDataRefresh();
+  });
+
+  $('#c_no').on('click', function(){
+    if ($(this).is(':checked')){
+      $scope.FlagCSI.push('c_no');
+    } else {
+      $scope.FlagCSI.splice( $.inArray('c_no',$scope.FlagCSI) ,1 );
+    }
+    $scope.procDataRefresh();
+  });
+
+  $('#c_low').on('click', function(){
+    if ($(this).is(':checked')){
+      $scope.FlagCSI.push('c_low');
+    } else {
+      $scope.FlagCSI.splice( $.inArray('c_low',$scope.FlagCSI) ,1 );
+    }
+    $scope.procDataRefresh();
+  });
+
+  $('#c_med').on('click', function(){
+    if ($(this).is(':checked')){
+      $scope.FlagCSI.push('c_med');
+    } else {
+      $scope.FlagCSI.splice( $.inArray('c_med',$scope.FlagCSI) ,1 );
+    }
+    $scope.procDataRefresh();
+  });
+
+  $('#c_high').on('click', function(){
+    if ($(this).is(':checked')){
+      $scope.FlagCSI.push('c_high');
+    } else {
+      $scope.FlagCSI.splice( $.inArray('c_high',$scope.FlagCSI) ,1 );
+    }
+    $scope.procDataRefresh();
+  });
+  */
+  $("#wrap").addClass("mapSpace");
+  console.log($("#wrap").find('div.container'));
+  $("#wrap").find('div.container').removeClass("container");
+
 function pdcShowAlerts(load, append){	
   var appElement = document.querySelector('[ng-controller=hazard_map_Controller]');
   var $scope = angular.element(appElement).scope();	

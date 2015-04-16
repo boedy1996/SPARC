@@ -6,10 +6,11 @@
 
 <style>
   .angular-leaflet-map{
-    height: 500px;
+    min-height: 500px;
+    height: 85vh;
     position : relative;
-    border: 4px #fff solid;
-    box-shadow: 0 0 5px -1px rgba(0, 0, 0, 1);
+    /*border: 4px #fff solid;
+    box-shadow: 0 0 5px -1px rgba(0, 0, 0, 1);*/
   }
 </style> 
 
@@ -27,95 +28,171 @@
     </div>  
   </div>
 
-    <div class="leaflet_map box blue"> 
-      <div class="box-header">
+    <!-- <div class="leaflet_map box blue">  -->
+      <!-- <div class="box-header">
         <h4><i class="fa fa-map-marker"></i><span ng-bind="countryName"></span></h4>  
-      </div>
-      <div class="box-content">
-        <leaflet center="center" events="events" markers="markers" defaults="defaults" layers="layers" geojson="geojson">
-          <div class="leaflet-top leaflet-right">
-            <div class="leaflet-bar-hor leaflet-control">
-              {% endverbatim %}
-              <a data-value="jan" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "January" monthName %} class="active" {% endifequal %} title="January">Jan</a>
-              <a data-value="feb" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "February" monthName %} class="active" {% endifequal %} title="February">Feb</a>
-              <a data-value="mar" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "March" monthName %} class="active" {% endifequal %} title="March">Mar</a>
-              <a data-value="apr" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "April" monthName %} class="active" {% endifequal %} title="April">Apr</a>
-              <a data-value="may" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "May" monthName %} class="active" {% endifequal %} title="May">May</a>
-              <a data-value="jun" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "June" monthName %} class="active" {% endifequal %} title="June">Jun</a>
-              <a data-value="jul" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "July" monthName %} class="active" {% endifequal %} title="July">Jul</a>
-              <a data-value="aug" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "August" monthName %} class="active" {% endifequal %} title="August">Aug</a>
-              <a data-value="sep" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "September" monthName %} class="active" {% endifequal %} title="September">Sep</a>
-              <a data-value="oct" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "October" monthName %} class="active" {% endifequal %} title="October">Oct</a>
-              <a data-value="nov" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "November" monthName %} class="active" {% endifequal %} title="November">Nov</a>
-              <a data-value="dec" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %} title="December">Dec</a>
-              
-              <a data-value="all" data-filter="" ng-click="month_multiple_choice_listener($event)" title="All Month">All</i></a>
-              <a data-value="clear" data-filter="" ng-click="month_multiple_choice_listener($event)" title="Clear Selection">Clear</a>
-              {% verbatim %}
-            </div>
-            <div class="leaflet-bar-hor leaflet-control btn-group">
-              <!-- <button type="button" class="btn btn-default">
-                <i class="glyphicon glyphicon-flash"></i>
-              </button> -->
-              
-              <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="padding: 5px;" title="Additional Legend">
-                  <i class="glyphicon glyphicon-list-alt small"></i>
-                </button>
-                <ul class="dropdown-menu-custom scroll-menu" role="menu">
-                  <li><h6>Population</h6></li>
-                  <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=lscan13"></li>
+      </div> -->
+      <!-- <div class="box-content"> -->
+        <div id="sidebar">
+          <!-- <div>   -->
+            <highchart id="chart1" config="highchartsNG"></highchart>
+            <table class="table table-striped table_font">
+              <thead>
+              <tr>
+                <th style="text-align: center;">Return Period</th>
+                <th style="text-align: center;">Probability</th>
+                <th style="text-align: center;"># Pop at Risk</th>
+                <th style="text-align: center;">EIV</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr ng-if="EIV.RP25 > 0">
+                  <td align="center">25 years</td>
+                  <td align="center">4%</td>
+                  <td align="center">{{ EIV.RP25 | number:0 }}</td>
+                  <td align="center">{{ EIV.RP25 * 0.04 | number:0 }}</td>
+                </tr>
+                <tr ng-if="EIV.RP50 > 0">
+                  <td align="center">50 years</td>
+                  <td align="center">2%</td>
+                  <td align="center">{{ EIV.RP25 + EIV.RP50 | number:0 }}</td>
+                  <td align="center">{{ (EIV.RP25 + EIV.RP50) * 0.02 | number:0 }}</td>
+                </tr> 
+                <tr ng-if="EIV.RP100 > 0">
+                  <td align="center">100 years</td>
+                  <td align="center">1%</td>
+                  <td align="center">{{ EIV.RP25 + EIV.RP50 + EIV.RP100 | number:0 }}</td>
+                  <td align="center">{{ (EIV.RP25 + EIV.RP50 + EIV.RP100) * 0.01 | number:0 }}</td>
+                </tr>
+                <tr ng-if="EIV.RP200 > 0">
+                  <td align="center">200 years</td>
+                  <td align="center">0.5%</td>
+                  <td align="center">{{ EIV.RP25 + EIV.RP50 + EIV.RP100 + EIV.RP200 | number:0 }}</td>
+                  <td align="center">{{ (EIV.RP25 + EIV.RP50 + EIV.RP100 + EIV.RP200) * 0.005 | number:0 }}</td>
+                </tr>
+                <tr ng-if="EIV.RP500 > 0">
+                  <td align="center">500 years</td>
+                  <td align="center">0.2%</td>
+                  <td align="center">{{ EIV.RP25 + EIV.RP50 + EIV.RP100 + EIV.RP200 + EIV.RP500 | number:0 }}</td>
+                  <td align="center">{{ (EIV.RP25 + EIV.RP50 + EIV.RP100 + EIV.RP200 + EIV.RP500) * 0.002 | number:0 }}</td>
+                </tr>
+                <tr ng-if="EIV.RP1000 > 0">
+                  <td align="center">1000 years</td>
+                  <td align="center">0.1%</td>
+                  <td align="center">{{ EIV.RP25 + EIV.RP50 + EIV.RP100 + EIV.RP200 + EIV.RP500 + EIV.RP1000 | number:0 }}</td>
+                  <td align="center">{{ (EIV.RP25 + EIV.RP50 + EIV.RP100 + EIV.RP200 + EIV.RP500 + EIV.RP1000) * 0.001 | number:0 }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        <!-- </div>  --> 
+        <section id="main-content">
+          <leaflet center="center" events="events" markers="markers" defaults="defaults" layers="layers" geojson="geojson">
+            <div class="leaflet-top leaflet-left">
+              <div class="leaflet-control btn-group sidebarPos">
+                <div class="btn-group">
+        
+                    <span class="toggle">
+                        <input type="checkbox" checked id="menu">
+                        <label data-off="&#10006;" data-on="&#10004;"></label>
+                    </span>
+
                   
-                  <li><h6>FCS</h6></li>
-                  <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=vam&style=fcs"></li>
-                  <li><h6>CSI</h6></li>
-                  <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=vam&style=csi"></li>
-
-                  <li><h6>Negative Change</h6></li>
-                  <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-nch2"></li>
-                  <li><h6>Positive Change</h6></li>
-                  <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-pch2"></li>
-                  <li><h6>Forest Lev</h6></li>
-                  <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-forest-lev"></li>
-                  <li><h6>Crop Lev</h6></li>
-                  <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-crop-lev"></li>
-                </ul>
+                </div>  
+              </div>  
+            </div>  
+            <div class="leaflet-top leaflet-right">
+              <div class="leaflet-bar-hor leaflet-control">
+                {% endverbatim %}
+                <a data-value="jan" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "January" monthName %} class="active" {% endifequal %} title="January">Jan</a>
+                <a data-value="feb" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "February" monthName %} class="active" {% endifequal %} title="February">Feb</a>
+                <a data-value="mar" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "March" monthName %} class="active" {% endifequal %} title="March">Mar</a>
+                <a data-value="apr" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "April" monthName %} class="active" {% endifequal %} title="April">Apr</a>
+                <a data-value="may" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "May" monthName %} class="active" {% endifequal %} title="May">May</a>
+                <a data-value="jun" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "June" monthName %} class="active" {% endifequal %} title="June">Jun</a>
+                <a data-value="jul" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "July" monthName %} class="active" {% endifequal %} title="July">Jul</a>
+                <a data-value="aug" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "August" monthName %} class="active" {% endifequal %} title="August">Aug</a>
+                <a data-value="sep" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "September" monthName %} class="active" {% endifequal %} title="September">Sep</a>
+                <a data-value="oct" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "October" monthName %} class="active" {% endifequal %} title="October">Oct</a>
+                <a data-value="nov" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "November" monthName %} class="active" {% endifequal %} title="November">Nov</a>
+                <a data-value="dec" data-filter="" ng-click="month_multiple_choice_listener($event)" {% ifequal "December" monthName %} class="active" {% endifequal %} title="December">Dec</a>
+                
+                <a data-value="all" data-filter="" ng-click="month_multiple_choice_listener($event)" title="All Month">All</i></a>
+                <a data-value="clear" data-filter="" ng-click="month_multiple_choice_listener($event)" title="Clear Selection">Clear</a>
+                {% verbatim %}
               </div>
-
-              <div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"  style="padding: 5px;" title="Layers">
-                    <i class="glyphicon glyphicon-pushpin small"></i> 
+              <div class="leaflet-control btn-group">
+                <!-- <button type="button" class="btn btn-default">
+                  <i class="glyphicon glyphicon-flash"></i>
+                </button> -->
+                
+                <!-- <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="padding: 5px;" title="Additional Legend">
+                    <i class="glyphicon glyphicon-list-alt small"></i>
                   </button>
-                  <ul class="dropdown-menu-custom scroll-menu" role="menu">
-                      <li><a data-value="raster" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i>Flood Probability</a></li>
-                      <li><a data-value="popatrisk_block" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i>Population at Risk (block map)</a></li>
-                      <li><a data-value="popatrisk_heat" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Flood Events</a></li>
-                      <li><a data-value="landscan" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Population Landscan</a></li>
-                      <li><a data-value="warehouses" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>WFP Warehouses</a></li>
-                      <li><a data-value="EIVLayer" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>EIV</a></li>
-                      <li><a data-value="FCS" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>VAM - FCS</a></li> 
-                      <li><a data-value="CSI" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>VAM - CSI</a></li> 
-                      <li><a data-value="negativechange" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Negative Change</a></li>
-                      <li><a data-value="positivechange" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Positive Change</a></li>
-                      <li><a data-value="forestlev" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Forest Lev</a></li>
-                      <li><a data-value="croplev" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Crop Lev</a></li>          
+                  <ul class="dropdown-menu-custom scroll-menu" role="menu" ng-click="preventClose($event)">
+                    <li><h6>Population</h6></li>
+                    <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=lscan13"></li>
+                    
+                    <li><h6>FCS</h6></li>
+                    <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=vam&style=fcs"></li>
+                    <li><h6>CSI</h6></li>
+                    <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=vam&style=csi"></li>
+
+                    <li><h6>Negative Change</h6></li>
+                    <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-nch2"></li>
+                    <li><h6>Positive Change</h6></li>
+                    <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-pch2"></li>
+                    <li><h6>Forest Lev</h6></li>
+                    <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-forest-lev"></li>
+                    <li><h6>Crop Lev</h6></li>
+                    <li><img src="http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-crop-lev"></li>
                   </ul>
+                </div> -->
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"  style="padding: 5px;" title="Layers">
+                      <i class="glyphicon glyphicon-pushpin small"></i> 
+                    </button>
+                    <ul class="dropdown-menu-custom-layers scroll-menu" role="menu"><li>
+                      <treecontrol class="tree-classic"
+                         tree-model="dataForTheTree"
+                         options="treeOptions"
+                         on-selection="showSelected(node, selected)"
+                         selected-nodes="selected"
+                         ng-click="preventClose($event)">
+                         {{node.name}}
+                      </treecontrol>
+                    </li></ul>  
+                    <!-- <ul class="dropdown-menu-custom scroll-menu" role="menu">
+                        <li><a data-value="raster" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i>Flood Probability</a></li>
+                        <li><a data-value="popatrisk_block" data-filter="" ng-click="multiple_choice_listener($event)" class="active"><i class="fa fa-arrow-circle-o-right"></i>Population at Risk (block map)</a></li>
+                        <li><a data-value="popatrisk_heat" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Flood Events</a></li>
+                        <li><a data-value="landscan" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>Population Landscan</a></li>
+                        <li><a data-value="warehouses" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>WFP Warehouses</a></li>
+                        <li><a data-value="EIVLayer" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>EIV</a></li>
+                        <li><a data-value="FCS" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>VAM - FCS</a></li> 
+                        <li><a data-value="CSI" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>VAM - CSI</a></li> 
+                        <li><a data-value="negativechange" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Negative Change</a></li>
+                        <li><a data-value="positivechange" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Positive Change</a></li>
+                        <li><a data-value="forestlev" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Forest Lev</a></li>
+                        <li><a data-value="croplev" data-filter="" ng-click="multiple_choice_listener($event)"><i class="fa fa-arrow-circle-o-right"></i>CL-Crop Lev</a></li>          
+                    </ul> -->
                 </div> 
 
 
+              </div>  
+              <!-- <div class="leaflet-bar leaflet-control">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-align-justify" style="margin-right: 0px !important;"></i></a>  
+                 
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-align-justify" style="margin-right: 0px !important;"></i></a>  
+              </div>   -->
             </div>  
-            <!-- <div class="leaflet-bar leaflet-control">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-align-justify" style="margin-right: 0px !important;"></i></a>  
-               
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-align-justify" style="margin-right: 0px !important;"></i></a>  
-            </div>   -->
-          </div>  
-        </leaflet>  
-      </div>  
-    </div>
+          </leaflet>  
+      <!-- </div> -->  
+        </section>
 
-
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
       <div class="box blue">
         <div class="box-header">
           <h4><i class="fa fa-bar-chart-o"></i>Estimated population at risk on monthly bases</h4>
@@ -172,7 +249,7 @@
           </table>
         </div> 
       </div>  
-    </div> 
+    </div>  -->
 
     <!--
     <div class="col-md-6 column" style="padding-right:0;">
@@ -221,7 +298,7 @@
       </div>  
     </div>
   -->
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
       <div class="box blue">
         <div class="box-header">
           <h4><i class="fa fa-th-list"></i>Flood History (source : EMDAT)</h4>
@@ -255,7 +332,7 @@
           </table>  
         </div>  
       </div>  
-    </div>
+    </div> -->
 
 
 

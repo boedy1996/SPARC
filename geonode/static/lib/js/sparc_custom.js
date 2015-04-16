@@ -18,3 +18,12 @@ $('#opener').on('click', function() {
     } 
     return false; 
 });
+
+$(function(){
+    $('#menu').on('click', function(){
+        $('#sidebar').toggle('slide', { direction: 'left' }, 250);
+        $('#main-content').animate({
+            'margin-left' : $('#main-content').css('margin-left') == '0px' ? '350px' : '0px'
+        }, 250);
+    });
+});
