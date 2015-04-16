@@ -181,7 +181,7 @@ nav.filter h4 {
 
 .table {
 	/*table-layout: fixed !important;*/
-	  width: 350px;
+	  width: 365px;
 }
 
 .table>thead>tr>th {
@@ -905,8 +905,8 @@ table tr:hover td {
 }
 
 #sidebar {
-  width: 350px;
-  height: 80vh;
+  width: 375px;
+  height: 85vh;
   /*height: 100px; */
   position: absolute;
   background: #eee;
@@ -915,7 +915,7 @@ table tr:hover td {
  }
 
  #main-content {
-  margin-left: 350px;
+  margin-left: 375px;
  }
 .navbar{
     cursor:pointer;

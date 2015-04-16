@@ -23,6 +23,12 @@
         c_high : false
       };
 
+    $scope.refreshMAPSize = function(){
+      leafletData.getMap().then(function (map) {
+        return map.invalidateSize();
+      }); 
+    } 
+
     $scope.FCSChange = function(src, type){
         if ($scope.fcsFilter[src]){
           if (type=='FCS')
@@ -132,7 +138,7 @@
             chart: {
                 type: 'column',
                 height: 350,
-                width: 350,
+                width: 365,
                 color : '#eee'
             },
             plotOptions: {
