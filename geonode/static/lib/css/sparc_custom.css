@@ -837,7 +837,7 @@ table tr:hover td {
     height: 100%;
 }
 
-#rps
+.vamControl#rps
 {
 	border: 0;
 	margin: 0;
@@ -846,7 +846,7 @@ table tr:hover td {
 	text-align: center;
 }
 
-#rps li
+.vamControl#rps li
 {
 	display: block;
 	float: left;
@@ -855,7 +855,7 @@ table tr:hover td {
 	margin: 0;
 }
 
-#rps li a
+.vamControl#rps li a
 {
 	/*background: #fff;*/
 	/*width: 78px;

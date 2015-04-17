@@ -25,7 +25,7 @@
 
     $scope.refreshMAPSize = function(){
       leafletData.getMap().then(function (map) {
-        return map.invalidateSize();
+        map.invalidateSize();
       }); 
     } 
 
