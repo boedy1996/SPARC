@@ -58,7 +58,7 @@ treecontrol.tree-classic li.tree-leaf i.tree-leaf-head {
 }
 
 treecontrol.tree-classic li .tree-selected {
-    background-color: #aaddff;
+    /*background-color: #aaddff;*/
     font-weight: bold;
 }
 
