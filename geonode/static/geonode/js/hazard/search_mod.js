@@ -39,7 +39,7 @@
           if (type=='FCS')
             $scope.FlagFCS.splice( $.inArray(src,$scope.FlagFCS) ,1 )
           else 
-            $scope.FlagFCS.splice( $.inArray(src,$scope.FlagCSI) ,1 );
+            $scope.FlagCSI.splice( $.inArray(src,$scope.FlagCSI) ,1 );
         }
       $scope.procDataRefresh();
     }

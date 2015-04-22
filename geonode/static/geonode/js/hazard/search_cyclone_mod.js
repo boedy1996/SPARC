@@ -13,12 +13,48 @@
   });
 
   module.controller('hazard_map_Controller', function($injector, $scope, $location, $http, leafletData){
+    $scope.fcsFilter = {
+        c_poor: true,
+        c_borderline: true,
+        c_accepptable : false,
+        c_no : true,
+        c_low : true,
+        c_med : false,
+        c_high : false
+      };
+    $scope.refreshMAPSize = function(){
+      leafletData.getMap().then(function (map) {
+        map.invalidateSize();
+      }); 
+    } 
+
+    $scope.FCSChange = function(src, type){
+      console.log('src : ',src);
+      console.log('type : ',type);
+      
+        if ($scope.fcsFilter[src]){
+          if (type=='FCS')
+            $scope.FlagFCS.push(src)
+          else 
+            $scope.FlagCSI.push(src);
+        } else {
+          if (type=='FCS')
+            $scope.FlagFCS.splice( $.inArray(src,$scope.FlagFCS) ,1 )
+          else 
+            $scope.FlagCSI.splice( $.inArray(src,$scope.FlagCSI) ,1 );
+        }
+        
+      $scope.procDataRefresh();
+      console.log('Flag FCS : ',$scope.FlagFCS);
+      console.log('Flag CSI : ',$scope.FlagCSI);
+    }
+
     $('#cycloneQL').removeClass('hide');
     var date = new Date(),
         month = date.getMonth();
     var _shortMonthName = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
 
-    $scope.selectedProbClass = ['0.01-0.1'];
+    $scope.selectedProbClass = ['0.01-0.1','0.1-0.2','0.2-0.3','0.3-0.4','0.4-0.5','0.5-0.6','0.6-0.7','0.7-0.8','0.8-0.9','0.9-1.0'];
     $scope.selectedCategory = 'cat1_5';
     $scope.selectedStyle = ['cyclone1']
     $scope.countryName = $location.search()['country'];
@@ -29,7 +65,7 @@
     $scope.FCS = false;
     $scope.CSI = false;
     $scope.FlagFCS = ['c_poor','c_borderline'];
-    $scope.FlagCSI = ['c_low'];
+    $scope.FlagCSI = ['c_no','c_low'];
     $scope.Country = [];
     $scope.emdatData = [];
     $scope.geojson = {
@@ -80,7 +116,10 @@
     $scope.highchartsNG = {
         options: {
             chart: {
-                type: 'column'
+                type: 'column',
+                height: 350,
+                width: 365,
+                color : '#eee'
             },
             plotOptions: {
                 column: {
@@ -155,9 +194,9 @@
             url:'http://10.11.40.84/geoserver/geonode/wms',
             visible : true,
             layerOptions: {
-              layers: 'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2',
+              layers: 'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2'+','+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2'+','+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2'+','+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2'+','+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2'+','+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2'+','+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2'+','+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2'+','+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2'+','+'geonode:'+$scope.selectedCategory+'_'+$scope.selectedMonth+'_cls2',
               format: 'image/png',
-              styles : 'cyclone1',
+              styles : 'cyclone1,cyclone2,cyclone3,cyclone4,cyclone5,cyclone6,cyclone7,cyclone8,cyclone9,cyclone10',
               opacity:0.8,
               crs: L.CRS.EPSG4326,
               transparent : true
@@ -345,7 +384,7 @@
       angular.forEach(data.features, function(rowC){
         //console.log(rowC);
         angular.forEach(rowC.properties.addinfo, function(rowProb){
-          console.log(rowProb);
+         /* console.log(rowProb);*/
           var tempValue = 0;
           angular.forEach(_shortMonthNameDef, function(monthName){        
             tempValue += rowProb[monthName]
@@ -406,7 +445,7 @@
               });
           });
       });
-
+      
       $scope.updateGEOJSON($scope.popFloodedData);
       $scope.addChartSeries($scope.selectedProbClass,$scope.popFloodedData);
       $scope.addTableSeries($scope.selectedProbClass,$scope.popFloodedData,$scope.selectedCategory);
@@ -679,6 +718,9 @@
       //console.log(element);
       var allElement = angular.element(element).parent().parent();
 
+      $('#extCSI').addClass("hide");
+      $('#extFCS').addClass("hide");
+
       angular.forEach(allElement[0].children, function(rows){
         var temp = $(rows.children);
         if (temp.hasClass('active')){
@@ -695,14 +737,14 @@
         query_entry.splice(query_entry.indexOf(value), 1);
 
         if (value == 'FCS'){
-          angular.forEach(element.parents('li').find('input'), function(rows){
+          /*angular.forEach(element.parents('li').find('input'), function(rows){
             $(rows).prop( "disabled", true );
-          });
+          });*/
           $scope.FCS = false;
         } else if (value == 'CSI'){
-          angular.forEach(element.parents('li').find('input'), function(rows){
+          /*angular.forEach(element.parents('li').find('input'), function(rows){
             $(rows).prop( "disabled", true );
-          });
+          });*/
           $scope.CSI = false;
         }  
       }
@@ -711,28 +753,30 @@
         // Add the entry in the correct query
         query_entry = value;
         // clear the active class from it
-        element.parents('ul').find('a').removeClass('active');
+        element.parents('ul#external').find('a').removeClass('active');
         element.addClass('active');
         filtered.push(value);
         if (value=='FCS'){
-          angular.forEach(element.parents('li').find('input'), function(rows){
+          /*angular.forEach(element.parents('li').find('input'), function(rows){
             $(rows).prop( "disabled", false );
-          });
+          });*/
           $scope.CSI = false;
           $scope.FCS = true;
-          $('#c_no').prop( "disabled", true );
+          /*$('#c_no').prop( "disabled", true );
           $('#c_low').prop( "disabled", true );
           $('#c_med').prop( "disabled", true );
-          $('#c_high').prop( "disabled", true );
+          $('#c_high').prop( "disabled", true );*/
+          $('#extCSI').removeClass("hide");
         } else if (value=='CSI'){
-          angular.forEach(element.parents('li').find('input'), function(rows){
+          /*angular.forEach(element.parents('li').find('input'), function(rows){
             $(rows).prop( "disabled", false );
-          });
+          });*/
           $scope.CSI = true;
           $scope.FCS = false;
-          $('#c_poor').prop( "disabled", true );
+          /*$('#c_poor').prop( "disabled", true );
           $('#c_borderline').prop( "disabled", true );
-          $('#c_accepptable').prop( "disabled", true );
+          $('#c_accepptable').prop( "disabled", true );*/
+          $('#extFCS').removeClass("hide");
         }
       } 
 
@@ -834,7 +878,7 @@
       var query_entry = [];
       var data_filter = element.attr('data-filter');
       var value = element.attr('data-value');
-      console.log(data_filter);
+      //console.log(data_filter);
       //console.log(element);
       var allElement = angular.element(element).parent().parent();
       //console.log(allElement[0].children);
@@ -869,8 +913,8 @@
         $scope.selectedStyle.push(data_filter);
       }  
 
-      console.log($scope.selectedProbClass);
-      console.log($scope.selectedStyle);
+      //console.log($scope.selectedProbClass);
+      //console.log($scope.selectedStyle);
 
       $scope.manage_featuredata();
       
@@ -915,13 +959,14 @@
           var FCS_value = 1;
         } 
 
-        console.log(FCS_value);
+        //console.log(FCS_value);
 
         for (var y in $scope.popFloodedData.features[x].properties.addinfo){
           if ($.inArray($scope.popFloodedData.features[x].properties.addinfo[y].prob_class, $scope.selectedProbClass) > -1 && $scope.popFloodedData.features[x].properties.addinfo[y].category == $scope.selectedCategory){
             $scope.popFloodedData.features[x].properties.active_month += $scope.popFloodedData.features[x].properties.addinfo[y][$scope.selectedMonth]*FCS_value;
           }
-        }  
+        }
+        $scope.popFloodedData.features[x].properties.active_month = Math.floor($scope.popFloodedData.features[x].properties.active_month);  
       }
     }
 
@@ -998,16 +1043,21 @@
           var div = L.DomUtil.get('legendCustom'),
               grades = $scope.legendRange,
               labels = [];
-          div.innerHTML = '';    
-          // loop through our density intervals and generate a label with a colored square for each interval
-          for (var i = 0; i < grades.length; i++) {
-            if (i==0)
-              div.innerHTML +=
-                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+ (kFormatter(grades[i + 1]*multiply) ? ' < ' + kFormatter(grades[i + 1]*multiply)  : '+')+'</a></li>'
-            else  
-              div.innerHTML +=
-                  '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+kFormatter(grades[i]*multiply) + (kFormatter(grades[i + 1]*multiply) ? '&ndash;' + kFormatter(grades[i + 1]*multiply)  : '+')+'</a></li>';
-          }
+
+          if (div === null){
+
+          } else {     
+            div.innerHTML = '';    
+            // loop through our density intervals and generate a label with a colored square for each interval
+            for (var i = 0; i < grades.length; i++) {
+              if (i==0)
+                div.innerHTML +=
+                    '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+ (kFormatter(grades[i + 1]*multiply) ? ' < ' + kFormatter(grades[i + 1]*multiply)  : '+')+'</a></li>'
+              else  
+                div.innerHTML +=
+                    '<li><a class=""><i style="background:' + getColor(grades[i]*multiply + 1) + '"></i>'+kFormatter(grades[i]*multiply) + (kFormatter(grades[i + 1]*multiply) ? '&ndash;' + kFormatter(grades[i + 1]*multiply)  : '+')+'</a></li>';
+            }
+          }  
       });
     } 
     
@@ -1059,7 +1109,7 @@
         return true;
     }
 
-    $('#c_poor').on('click', function(){
+    /*$('#c_poor').on('click', function(){
       if ($(this).is(':checked')){
         $scope.FlagFCS.push('c_poor');
       } else {
@@ -1120,7 +1170,7 @@
         $scope.FlagCSI.splice( $.inArray('c_high',$scope.FlagCSI) ,1 );
       }
       $scope.procDataRefresh();
-    });
+    });*/
 
     $scope.procDataRefresh = function() {
       $scope.manage_featuredata();   
@@ -1136,6 +1186,107 @@
                 num; 
     }
 
+    $scope.preventClose = function(event) { 
+      event.stopPropagation(); 
+      try {
+          $scope.generateLegend();
+      }
+      catch(err) {
+          //document.getElementById("demo").innerHTML = err.message;
+      }
+      
+    };
+
+    $scope.showSelected = function(node, selected){
+      if (typeof node.obj != 'string'){
+        if (selected){
+          node.obj.visible = true;
+        } else {
+          node.obj.visible = false;
+        }
+      } else {
+        switch(node.obj){
+          case 'popatrisk':
+            if (selected){
+              $scope.updateGEOJSON($scope.popFloodedData);
+            }else{ 
+              $scope.updateGEOJSON({
+                  type : "FeatureCollection",
+                  features : []
+              });
+            }  
+            break;
+          case 'floodevents':
+              if (selected)
+                leafletData.getMap().then(function (map) {
+                  map.addLayer(heatmapLayer);
+                  heatmapLayer.setData($scope.floodEvents);
+                })
+              else 
+                leafletData.getMap().then(function (map) {
+                  map.removeLayer(heatmapLayer);
+                });
+              break;   
+        }
+      } 
+    } 
+
+    $scope.treeOptions = {
+        nodeChildren: "children",
+        dirSelectable: false,
+        multiSelection : true,
+        injectClasses: {
+            ul: "a1",
+            li: "a2",
+            liSelected: "a7",
+            iExpanded: "glyphicon glyphicon-minus",
+            iCollapsed: "glyphicon glyphicon-plus",
+            iLeaf: "a5",
+            label: "a6",
+            labelSelected: "a8"
+        }
+    }
+    $scope.dataForTheTree =
+    [
+        { "name" : "Cyclone Probability", "obj" : $scope.layers.overlays.probabilities, "legend":"", "exp":"cycloneprob", "children" : [] },
+        { "name" : "Population At Risk", "obj" : "popatrisk", "legend":"", "exp":"popatrisk", "children" : [] },
+        { "name" : "Population landscan", "obj" : $scope.layers.overlays.landscan, "legend":"http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=lscan13", "children" : [] },
+        { "name" : "Geonode", "url" : "", "layer":"", "children" : [
+            { "name" : "Warehouses", "obj" : $scope.layers.overlays.warehouses, "legend":"", "children" : [] },
+        ]},
+        { "name" : "VAM", "children" : [
+            { "name" : "FCS", "obj" : $scope.layers.overlays.FCSLayer, "legend":"http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=vam&style=fcs", "children" : [] },
+            { "name" : "CSI", "obj" : $scope.layers.overlays.CSILayer, "legend":"http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=vam&style=csi", "children" : [] }
+        ]},
+        { "name" : "Context Layers", "children" : [
+            { "name" : "Negative Change", "obj" : $scope.layers.overlays.NegativeChange, "legend":"http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-nch2", "children" : [] },
+            { "name" : "Positive Change", "obj" : $scope.layers.overlays.PositiveChange, "legend":"http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-pch2", "children" : [] },
+            { "name" : "Forest Lev", "obj" : $scope.layers.overlays.ForestLev, "legend":"http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-forest-lev", "children" : [] },
+            { "name" : "Crop Lev", "obj" : $scope.layers.overlays.CropLev, "legend":"http://10.11.40.84/geoserver/geonode/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&layer=context_layer&style=context-crop-lev", "children" : [] }
+        ]}
+        
+    ];
+
+    $scope.selected = [$scope.dataForTheTree[0],$scope.dataForTheTree[1]];
+
+    $scope.getRPClass = function(text){
+      if ($.inArray(text, $scope.selectedProbClass)>=0)
+        return 'active'
+      else return '';
+    }
+
+    $scope.getVulnerabilityClass = function(text){
+      if (text=='FCS' && $scope.FCS)
+        return 'active'
+      else if (text=='CSI' && $scope.CSI) return 'active';
+    }
+
+    $scope.getExternalClass = function(text){
+      if (text=='FCS' && $scope.FCS)
+        return 'show'
+      else if (text=='CSI' && $scope.CSI) return 'show'
+      else return' hide'  ;
+    }
   });
 })();
 

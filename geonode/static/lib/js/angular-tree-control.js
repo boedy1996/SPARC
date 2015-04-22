@@ -230,7 +230,7 @@
                                     '<label for="c_no">No</label>'+
                                     '<input type="checkbox" id="c_low" ng-model="parent.fcsFilter.c_low" ng-change="parent.FCSChange(\'c_low\',\'CSI\')" class="checkbox" checked/>'+
                                     '<label for="c_low">Low</label>'+
-                                    '<input type="checkbox" id="c_med" ng-model="parent.fcsFilter.c_med" ng-change="parent.FCSChange(\'c_med\')" class="checkbox"/>'+
+                                    '<input type="checkbox" id="c_med" ng-model="parent.fcsFilter.c_med" ng-change="parent.FCSChange(\'c_med\',\'CSI\')" class="checkbox"/>'+
                                     '<label for="c_med">Med</label>'+
                                     '<input type="checkbox" id="c_high" ng-model="parent.fcsFilter.c_high" ng-change="parent.FCSChange(\'c_high\',\'CSI\')" class="checkbox"/>'+
                                     '<label for="c_high">High</label>'+
@@ -255,6 +255,19 @@
                                 '<li class="RP200"><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur. The theoretical return period is the inverse of the probability that the event will be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year). In this case, a 200 year flood has a 0.005 or 0.5% chance of being exceeded in any one year." data-value="RP200" data-filter="" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'RP200\')">0.5%</a><li>'+
                                 '<li class="RP500"><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur. The theoretical return period is the inverse of the probability that the event will be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year). In this case, a 500 year flood has a 0.002 or 0.2% chance of being exceeded in any one year." data-value="RP500" data-filter="" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'RP500\')">0.2%</a><li>'+
                                 '<li class="RP1000"><a title="A return period is an estimate of the likelihood of an event, such as a flood, to occur. The theoretical return period is the inverse of the probability that the event will be exceeded in any one year (or more accurately the inverse of the expected number of occurrences in a year). In this case, a 1000 year flood has a 0.001 or 0.1% chance of being exceeded in any one year." data-value="RP1000" data-filter="" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'RP1000\')">0.1%</a><li>'+
+                            '</ul>'+
+
+                            '<ul class="vamControl" id="rps" ng-if="isSelectedHasNoChild(node) && node.exp == \'cycloneprob\'">'+
+                                '<li class="cyclone1"><a data-value="0.01-0.1" data-filter="cyclone1" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.01-0.1\')">1</a><li>'+
+                                '<li class="cyclone2"><a data-value="0.1-0.2"  data-filter="cyclone2" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.1-0.2\')">2</a><li>'+
+                                '<li class="cyclone3"><a data-value="0.2-0.3"  data-filter="cyclone3" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.2-0.3\')">3</a><li>'+
+                                '<li class="cyclone4"><a data-value="0.3-0.4"  data-filter="cyclone4" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.3-0.4\')">4</a><li>'+
+                                '<li class="cyclone5"><a data-value="0.4-0.5"  data-filter="cyclone5" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.4-0.5\')">5</a><li>'+
+                                '<li class="cyclone6"><a data-value="0.5-0.6"  data-filter="cyclone6" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.5-0.6\')">6</a><li>'+
+                                '<li class="cyclone7"><a data-value="0.6-0.7"  data-filter="cyclone7" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.6-0.7\')">7</a><li>'+
+                                '<li class="cyclone8"><a data-value="0.7-0.8"  data-filter="cyclone8" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.7-0.8\')">8</a><li>'+
+                                '<li class="cyclone9"><a data-value="0.8-0.9"  data-filter="cyclone9" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.8-0.9\')">9</a><li>'+
+                                '<li class="cyclone10"><a data-value="0.9-1.0"  data-filter="cyclone10" ng-click="parent.RP_choice_listener($event)" ng-class="parent.getRPClass(\'0.9-1.0\')">10</a><li>'+
                             '</ul>'+
 
                             '<treeitem ng-if="nodeExpanded()"></treeitem>' +
